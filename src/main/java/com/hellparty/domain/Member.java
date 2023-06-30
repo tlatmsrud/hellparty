@@ -1,7 +1,7 @@
 package com.hellparty.domain;
 
-import com.hellparty.domain.embeded.BigThree;
-import com.hellparty.domain.embeded.HealthInfo;
+import com.hellparty.domain.embedded.BigThree;
+import com.hellparty.domain.embedded.HealthInfo;
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
 import jakarta.persistence.*;
