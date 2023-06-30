@@ -2,6 +2,7 @@ package com.hellparty.domain;
 
 import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.domain.embedded.HealthInfo;
+import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
 import jakarta.persistence.*;
@@ -58,4 +59,7 @@ public class Member extends Base{
     @Embedded
     private HealthInfo healthInfo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private ExecStatus status = ExecStatus.W;
 }
