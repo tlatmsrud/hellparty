@@ -1,7 +1,6 @@
 package com.hellparty.domain;
 
 import com.hellparty.domain.embedded.BigThree;
-import com.hellparty.domain.embedded.HealthInfo;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
@@ -55,9 +54,6 @@ public class Member extends Base{
 
     @Embedded
     private BigThree bigThree;
-
-    @Embedded
-    private HealthInfo healthInfo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
