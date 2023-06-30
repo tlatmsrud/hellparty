@@ -50,14 +50,4 @@ public class SecurityConfig{
         return http.build();
     }
 
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository(
-            OAuth2ClientProperties oAuth2ClientProperties){
-
-        List<ClientRegistration> registrations = new ArrayList<>(
-                OAuth2ClientPropertiesRegistrationAdapter.getClientRegistrations(oAuth2ClientProperties).values());
-
-        return new InMemoryClientRegistrationRepository(registrations);
-    }
-
 }
