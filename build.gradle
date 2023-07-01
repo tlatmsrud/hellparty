@@ -44,8 +44,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// querydsl 추가
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
 
 	runtimeOnly 'com.h2database:h2'
 }
