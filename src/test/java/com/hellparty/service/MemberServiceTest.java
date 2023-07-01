@@ -1,10 +1,13 @@
 package com.hellparty.service;
 
+import com.hellparty.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * title        :
@@ -14,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class MemberServiceTest {
 
-    private MemberService memberService = new MemberService();
+    private MemberService memberService;
+    private MemberRepository memberRepository;
 
     private String VALID_EMAIL = "test@naver.com";
 
@@ -22,7 +26,11 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp(){
+        memberRepository = mock(MemberRepository.class);
+        memberService = new MemberService(memberRepository);
 
+        given(memberRepository.existsMemberByEmail(VALID_EMAIL)).willReturn(true);
+        given(memberRepository.existsMemberByEmail(INVALID_EMAIL)).willReturn(false);
 
     }
     @Test
