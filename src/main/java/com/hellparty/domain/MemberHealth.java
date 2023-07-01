@@ -1,6 +1,7 @@
 package com.hellparty.domain;
 
 import com.hellparty.domain.embedded.Address;
+import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.enums.Division;
 import jakarta.persistence.*;
 
@@ -23,7 +24,7 @@ public class MemberHealth {
 
     @OneToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member memberId;
+    private Member member;
 
     @Column(name = "EXEC_STT_TIME")
     @Temporal(TemporalType.TIME)
@@ -45,4 +46,10 @@ public class MemberHealth {
 
     @Column(name = "SPCL_NOTE")
     private String spclNote;
+
+    @Embedded
+    private BigThree bigThree;
+
+    @Column(name = "HEALTH_MOTTO")
+    private String healthMotto;
 }

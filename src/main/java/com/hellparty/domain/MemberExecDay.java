@@ -19,7 +19,7 @@ public class MemberExecDay {
 
     @OneToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member memberId;
+    private Member member;
 
     @Column(name = "SUN")
     private int sun;
