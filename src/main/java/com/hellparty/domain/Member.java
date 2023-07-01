@@ -38,10 +38,10 @@ public class Member extends Base{
     private String email;
 
     @Column(name = "HEIGHT")
-    private Long height;
+    private double height;
 
     @Column(name = "WEIGHT")
-    private Long weight;
+    private double weight;
 
     @Column(name = "AGE")
     private int age;
@@ -60,4 +60,16 @@ public class Member extends Base{
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private ExecStatus status = ExecStatus.W;
+
+    public void updateMember(String nickname, String email, double height, double weight
+            , int age, Sex sex, MBTI mbti, String profileUrl){
+        this.nickname = nickname;
+        this.email = email;
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+        this.sex = sex;
+        this.mbti = mbti;
+        this.profileUrl = profileUrl;
+    }
 }
