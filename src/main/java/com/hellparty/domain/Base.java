@@ -26,13 +26,8 @@ abstract public class Base {
     @Column(name = "CREATE_DATE", nullable = false)
     private LocalDateTime createDate;
 
-    @Column(name = "CREATE_ID", nullable = false)
-    private Long createId;
-
     @LastModifiedDate
     @Column(name = "UPDATE_DATE")
     private LocalDateTime updateDate;
 
-    @Column(name = "UPDATE_ID")
-    private Long updateId;
 }
