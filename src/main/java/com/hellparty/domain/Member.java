@@ -1,10 +1,12 @@
 package com.hellparty.domain;
 
-import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -17,6 +19,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "TBL_MEMBER")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member extends Base{
 
     @Id @GeneratedValue
@@ -29,17 +34,20 @@ public class Member extends Base{
     @Column(name = "NICKNAME", nullable = false)
     private String nickname;
 
-    @Column(name = "HEIGHT" , nullable = false)
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "HEIGHT")
     private Long height;
 
-    @Column(name = "WEIGHT" , nullable = false)
+    @Column(name = "WEIGHT")
     private Long weight;
 
-    @Column(name = "AGE" , nullable = false)
+    @Column(name = "AGE")
     private int age;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "SEX", nullable = false)
+    @Column(name = "SEX")
     private Sex sex;
 
     @Enumerated(EnumType.STRING)
@@ -48,12 +56,6 @@ public class Member extends Base{
     
     @Column(name = "PROFILE_URL")
     private String profileUrl;
-
-    @Column(name = "HEALTH_MOTTO")
-    private String healthMotto;
-
-    @Embedded
-    private BigThree bigThree;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
