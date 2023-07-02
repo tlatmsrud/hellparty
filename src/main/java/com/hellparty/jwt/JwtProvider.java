@@ -38,15 +38,15 @@ public class JwtProvider {
 
     /**
      * 액세스 토큰 생성
-     * @param id 사용자 ID
+     * @param email 이메일
      * @return accessToken
      */
-    public String generateAccessToken(Long id){
+    public String generateAccessToken(String email){
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setSubject(accessTokenSubject)
-                .claim("id", id)
+                .claim("email", email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ONE_HOUR))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -55,15 +55,15 @@ public class JwtProvider {
 
     /**
      * 리프레시 토큰 생성
-     * @param id - 사용자 ID
+     * @param email 이메일
      * @return refreshToken
      */
-    public String generateRefreshToken(Long id){
+    public String generateRefreshToken(String email){
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setSubject(refreshTokenSubject)
-                .claim("id", id)
+                .claim("email", email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+TEN_DAY))
                 .signWith(key, SignatureAlgorithm.HS256)
