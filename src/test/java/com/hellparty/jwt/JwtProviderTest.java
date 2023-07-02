@@ -8,7 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JwtProviderTest {
 
-    JwtProvider jwtProvider = new JwtProvider();
+    private final String secretKey = "123456789012345678901234567890";
+    JwtProvider jwtProvider = new JwtProvider(secretKey);
 
     private final static Long MEMBER_ID = 1L;
     private final static String VALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
