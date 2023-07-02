@@ -8,24 +8,25 @@ import lombok.Getter;
 import java.util.Map;
 
 /**
- * title        :
+ * title        : OAuth2 속성 클래스
  * author       : sim
  * date         : 2023-06-30
- * description  :
+ * description  : OAuth2를 통해 조회한 사용자 정보를 관리하는 클래스.
+ *                OAuth2 타입별로 상이한 조회 값들을 하나의 클래스로 통합관리하기 위함.
  */
 @Getter
 public class OAuth2Attributes {
 
-    private Map<String, Object> attributes;
-    private String nickname;
-    private String email;
-    private String profileImage;
+    private final Map<String, Object> attributes;
+    private final String nickname;
+    private final String email;
+    private final String profileUrl;
 
-    public OAuth2Attributes(Map<String, Object> attributes, String nickname, String email, String profileImage) {
+    public OAuth2Attributes(Map<String, Object> attributes, String nickname, String email, String profileUrl) {
         this.attributes = attributes;
         this.nickname = nickname;
         this.email = email;
-        this.profileImage = profileImage;
+        this.profileUrl = profileUrl;
     }
 
     public static OAuth2Attributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
@@ -42,7 +43,8 @@ public class OAuth2Attributes {
         return new OAuth2Attributes(attributes,
                 profile.get("nickname"),
                 (String) kakaoAccount.get("email"),
-                profile.get("profile_image_url"));
+                profile.get("profile_image_url")
+        );
     }
 
     private static OAuth2Attributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
@@ -58,7 +60,7 @@ public class OAuth2Attributes {
         return Member.builder()
                 .email(email)
                 .nickname(nickname)
-                .profileUrl(profileImage)
+                .profileUrl(profileUrl)
                 .status(ExecStatus.W)
                 .build();
     }
