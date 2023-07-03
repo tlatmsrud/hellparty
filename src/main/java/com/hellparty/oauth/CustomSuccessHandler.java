@@ -1,7 +1,6 @@
 package com.hellparty.oauth;
 
 import com.hellparty.jwt.JwtProvider;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -29,9 +28,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
-        String email =oAuth2User.getAttribute("email");
+        String email = oAuth2User.getAttribute("email");
 
         String accessToken = jwtProvider.generateAccessToken(email);
         String refreshToken = jwtProvider.generateRefreshToken(email);
