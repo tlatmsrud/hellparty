@@ -36,10 +36,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // registrationId는 서비스 Owner를 가리킴 (naver. kakao)
         String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
 
-        String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-
         // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 of 메소드.
-        OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, oAuth2User.getAttributes());
 
         if(!memberRepository.existsMemberByEmail(attributes.getEmail())){
             memberRepository.save(attributes.toMemberEntity());
