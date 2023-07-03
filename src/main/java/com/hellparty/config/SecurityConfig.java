@@ -35,6 +35,7 @@ public class SecurityConfig{
                 .requestMatchers(new AntPathRequestMatcher("/api/login/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/token/**")).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable() // frameOptions은 기본 Deny. h2는 iframe을 사용하기에 disable 처리
