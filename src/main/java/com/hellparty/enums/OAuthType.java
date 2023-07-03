@@ -12,9 +12,10 @@ import lombok.Getter;
 @Getter
 public enum OAuthType {
     KAKAO("kakao")
-    , NAVER("naver");
+    , NAVER("naver")
+    , GOOGLE("google");
 
-    private String value;
+    private final String value;
 
     OAuthType(String value){
         this.value = value;

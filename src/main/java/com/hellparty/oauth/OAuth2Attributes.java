@@ -34,6 +34,8 @@ public class OAuth2Attributes {
     public static OAuth2Attributes of(String registrationId, Map<String, Object> attributes) {
         if (registrationId.equals(OAuthType.KAKAO.getValue())) {
             return ofKakao("email", attributes);
+        }else if (registrationId.equals(OAuthType.GOOGLE.getValue())){
+            return ofGoogle("email", attributes);
         }
         return ofNaver("email",attributes);
     }
@@ -58,6 +60,15 @@ public class OAuth2Attributes {
                 (String)response.get("nickname"),
                 (String)response.get("email"),
                 (String)response.get("profile_image"));
+    }
+
+    private static OAuth2Attributes ofGoogle(String attributesKey, Map<String, Object> attributes) {
+
+        return new OAuth2Attributes(attributes,
+                attributesKey,
+                (String)attributes.get("name"),
+                (String)attributes.get("email"),
+                (String)attributes.get("picture"));
     }
 
     public Member toMemberEntity(){
