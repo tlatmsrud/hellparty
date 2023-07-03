@@ -17,15 +17,11 @@ import java.util.Map;
 @Getter
 public class OAuth2Attributes {
 
-    private final Map<String, Object> attributes;
-    private final String attributesKey;
     private final String nickname;
     private final String email;
     private final String profileUrl;
 
-    public OAuth2Attributes(Map<String, Object> attributes, String attributesKey, String nickname, String email, String profileUrl) {
-        this.attributes = attributes;
-        this.attributesKey = attributesKey;
+    public OAuth2Attributes(String nickname, String email, String profileUrl) {
         this.nickname = nickname;
         this.email = email;
         this.profileUrl = profileUrl;
@@ -33,39 +29,36 @@ public class OAuth2Attributes {
 
     public static OAuth2Attributes of(String registrationId, Map<String, Object> attributes) {
         if (registrationId.equals(OAuthType.KAKAO.getValue())) {
-            return ofKakao("email", attributes);
+            return ofKakao(attributes);
         }else if (registrationId.equals(OAuthType.GOOGLE.getValue())){
-            return ofGoogle("email", attributes);
+            return ofGoogle(attributes);
         }
-        return ofNaver("email",attributes);
+        return ofNaver(attributes);
     }
 
-    private static OAuth2Attributes ofKakao(String attributesKey, Map<String, Object> attributes) {
+    private static OAuth2Attributes ofKakao(Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, String> profile = (Map<String, String>) kakaoAccount.get("profile");
 
-        return new OAuth2Attributes(kakaoAccount,
-                attributesKey,
+        return new OAuth2Attributes(
                 profile.get("nickname"),
                 (String) kakaoAccount.get("email"),
                 profile.get("profile_image_url")
         );
     }
 
-    private static OAuth2Attributes ofNaver(String attributesKey, Map<String, Object> attributes) {
+    private static OAuth2Attributes ofNaver(Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");    // 네이버에서 받은 데이터에서 프로필 정보다 담긴 response 값을 꺼낸다.
 
-        return new OAuth2Attributes(response,
-                attributesKey,
+        return new OAuth2Attributes(
                 (String)response.get("nickname"),
                 (String)response.get("email"),
                 (String)response.get("profile_image"));
     }
 
-    private static OAuth2Attributes ofGoogle(String attributesKey, Map<String, Object> attributes) {
+    private static OAuth2Attributes ofGoogle(Map<String, Object> attributes) {
 
-        return new OAuth2Attributes(attributes,
-                attributesKey,
+        return new OAuth2Attributes(
                 (String)attributes.get("name"),
                 (String)attributes.get("email"),
                 (String)attributes.get("picture"));
