@@ -3,6 +3,7 @@ package com.hellparty.service;
 import com.hellparty.domain.Member;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.exception.NotFoundException;
+import com.hellparty.factory.MemberFactory;
 import com.hellparty.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,14 @@ public class MemberService {
     public boolean isExistMemberByEmail(String email){
 
         return memberRepository.existsMemberByEmail(email);
+    }
+
+    public MemberDTO getDetail(Long id){
+        Member findMember = memberRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("사용자를 찾을 수 없습니다.")
+        );
+
+        return MemberFactory.entityToDTO(findMember);
     }
 
     public void update(MemberDTO.Update memberDTO){
