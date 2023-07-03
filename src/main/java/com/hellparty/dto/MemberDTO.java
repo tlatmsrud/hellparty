@@ -2,9 +2,6 @@ package com.hellparty.dto;
 
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,7 +11,20 @@ import lombok.Getter;
  * date         : 2023-07-01
  * description  :
  */
+@Getter
+@Builder
 public class MemberDTO {
+
+    private Long id;
+    private String nickname;
+    private String email;
+    private String profileUrl;
+    private String bodyProfileUrl;
+    private int age;
+    private double height;
+    private double weight;
+    private MBTI mbti;
+    private Sex sex;
 
     @Getter
     @Builder
@@ -22,12 +32,13 @@ public class MemberDTO {
         private Long id;
         private String nickname;
         private String email;
+        private String profileUrl;
+        private String bodyProfileUrl;
+        private int age;
         private double height;
         private double weight;
-        private int age;
-        private Sex sex;
         private MBTI mbti;
-        private String profileUrl;
+        private Sex sex;
     }
 
 
