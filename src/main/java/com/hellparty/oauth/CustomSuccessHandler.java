@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * title        : Custom AuthenticationSuccessHandler
@@ -30,11 +31,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
-        String email = oAuth2User.getAttribute("email");
+        Map<String,Object> attributes = oAuth2User.getAttributes();
 
-        String accessToken = jwtProvider.generateAccessToken(email);
-        String refreshToken = jwtProvider.generateRefreshToken(email);
+        String accessToken = jwtProvider.generateAccessToken(attributes);
+        String refreshToken = jwtProvider.generateRefreshToken(attributes);
 
+        responseRedirectUrl(request, response, accessToken, refreshToken);
+    }
+
+    public void responseRedirectUrl(HttpServletRequest request, HttpServletResponse response,
+                                    String accessToken, String refreshToken) throws IOException {
         String targetUrl = UriComponentsBuilder.fromUriString("/login?status=success")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
