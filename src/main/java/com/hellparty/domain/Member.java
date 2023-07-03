@@ -59,6 +59,9 @@ public class Member extends Base{
     @Column(name = "PROFILE_URL")
     private String profileUrl;
 
+    @Column(name = "BODY_PROFILE_URL")
+    private String bodyProfileUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private ExecStatus status = ExecStatus.W;
