@@ -1,5 +1,6 @@
 package com.hellparty.oauth;
 
+import com.hellparty.enums.Role;
 import com.hellparty.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,7 +30,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
-        OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest); // 유저 정보 조회
 
         // registrationId는 서비스 Owner를 가리킴 (naver. kakao)
@@ -44,8 +45,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             memberRepository.save(attributes.toMemberEntity());
         }
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(Role.ROLE_USER.name()))
                 , attributes.getAttributes()
-                , userNameAttributeName);
+                , attributes.getAttributesKey());
     }
 }
