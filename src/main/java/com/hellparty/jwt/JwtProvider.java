@@ -20,6 +20,8 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
+    private final static String JWT_TYPE = "Bearer ";
+
     public JwtProvider(@Value("${jwt.secret-key}") String secretKey){
         byte[] keyBytes = Base64.getEncoder().encode(secretKey.getBytes());
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -94,5 +96,15 @@ public class JwtProvider {
         } catch (IllegalArgumentException e) {
             throw new JwtException("토큰 파싱 중 에러가 발생했습니다. 관리자에게 문의해주세요.");
         }
+    }
+
+    /**
+     * Authorization Header 의 JWT 토큰 추출
+     * @param authorization - Authorization Header
+     * @return 완전한 JWT 토큰
+     */
+
+    public String extractAccessToken(String authorization){
+        return authorization.substring(JWT_TYPE.length());
     }
 }
