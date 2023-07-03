@@ -14,9 +14,9 @@ import java.util.Collections;
  */
 public class AuthenticationFactory {
 
-    public static Authentication getAuthentication(String email){
+    public static Authentication getAuthentication(Long id){
         return new UsernamePasswordAuthenticationToken(
-                email
+                id
                 , ""
                 , Collections.singleton(new SimpleGrantedAuthority(Role.ROLE_USER.name()))
         );
