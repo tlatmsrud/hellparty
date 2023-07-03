@@ -5,6 +5,8 @@ import com.hellparty.jwt.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * title        : 토큰 서비스
  * author       : sim
@@ -20,11 +22,10 @@ public class TokenService {
 
     public TokenDTO renewToken(String refreshToken){
 
-        String email = jwtProvider.parseJwtToken(refreshToken)
-                .get("email",String.class);
+        Map<String, Object> claims = jwtProvider.parseJwtToken(refreshToken);
 
-        String renewAccessToken = jwtProvider.generateAccessToken(email);
-        String renewRefreshToken = jwtProvider.generateRefreshToken(email);
+        String renewAccessToken = jwtProvider.generateAccessToken(claims);
+        String renewRefreshToken = jwtProvider.generateRefreshToken(claims);
 
         return TokenDTO.builder()
                 .accessToken(renewAccessToken)
