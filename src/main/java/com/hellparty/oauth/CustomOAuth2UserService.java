@@ -1,5 +1,6 @@
 package com.hellparty.oauth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.enums.Role;
 import com.hellparty.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * title        : OAuth2UserService
@@ -27,6 +29,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private final MemberRepository memberRepository;
 
+    private final ObjectMapper objectMapper;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
@@ -44,7 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(Role.ROLE_USER.name()))
-                , attributes.getAttributes()
-                , attributes.getAttributesKey());
+                , objectMapper.convertValue(attributes, Map.class)
+                , "email");
     }
 }
