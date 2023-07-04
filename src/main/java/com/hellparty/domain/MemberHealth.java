@@ -4,6 +4,7 @@ import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.enums.Division;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Time;
 
@@ -16,6 +17,10 @@ import java.sql.Time;
 
 @Entity
 @Table(name = "TBL_MEMBER_HEALTH")
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberHealth {
 
     @Id @GeneratedValue
