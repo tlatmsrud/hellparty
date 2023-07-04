@@ -37,6 +37,7 @@ public class MemberHealthDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update{
+        private Long id;
         private Time execStartTime;
         private Time execEndTime;
         private Division div;
@@ -45,5 +46,7 @@ public class MemberHealthDTO {
         private String spclNote;
         private BigThree bigThree;
         private String healthMotto;
+        private ExecDayDTO execDay;
     }
+
 }
