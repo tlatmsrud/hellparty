@@ -1,4 +1,4 @@
-package com.hellparty.factory;
+package com.hellparty.mapper;
 
 import com.hellparty.domain.Member;
 import com.hellparty.dto.MemberDTO;
@@ -9,7 +9,7 @@ import com.hellparty.dto.MemberDTO;
  * date         : 2023-07-01
  * description  :
  */
-public class MemberFactory {
+public class MemberMapper {
 
     public static MemberDTO entityToDTO(Member member){
         return MemberDTO.builder()
