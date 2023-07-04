@@ -2,6 +2,7 @@ package com.hellparty.service;
 
 import com.hellparty.domain.Member;
 import com.hellparty.domain.MemberHealth;
+import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
@@ -13,9 +14,11 @@ import com.hellparty.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Time;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -27,11 +30,11 @@ import static org.mockito.Mockito.mock;
  */
 class MemberServiceTest {
 
-    private MemberHealthRepository memberHealthRepository = mock(MemberHealthRepository.class);
-    private MemberRepository memberRepository = mock(MemberRepository.class);
-    private MemberService memberService = new MemberService(memberRepository, memberHealthRepository);
-    private String VALID_EMAIL = "test@naver.com";
-    private String INVALID_EMAIL = "no@naver.com";
+    private final MemberHealthRepository memberHealthRepository = mock(MemberHealthRepository.class);
+    private final MemberRepository memberRepository = mock(MemberRepository.class);
+    private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository);
+    private final String VALID_EMAIL = "test@naver.com";
+    private final String INVALID_EMAIL = "no@naver.com";
 
     private final Long VALID_ID = 1L;
     private final Long INVALID_ID = 1000L;
@@ -39,6 +42,24 @@ class MemberServiceTest {
             .nickname("update-nickname")
             .age(10)
             .sex(Sex.M)
+            .build();
+
+    private final MemberHealthDTO.Update UPDATE_HEALTH_DETAIL_REQUEST = MemberHealthDTO.Update.builder()
+            .execStartTime(Time.valueOf("19:00:00"))
+            .execEndTime(Time.valueOf("20:00:00"))
+            .bigThree(BigThree.builder()
+                    .squat(100)
+                    .daedlift(110)
+                    .benchPress(80)
+                    .build())
+            .execArea(123L)
+            .healthMotto("뇌는 근육으로 이루어져있다.")
+            .gymAddress(Address.builder()
+                    .y(1L)
+                    .x(2L)
+                    .address("서울시 중랑구")
+                    .placeName("중랑헬스장")
+                    .build())
             .build();
 
     @BeforeEach
@@ -109,8 +130,17 @@ class MemberServiceTest {
     }
     @Test
     void updateDetail(){
-        assertThatNoException().isThrownBy(() -> memberService.update(VALID_ID, UPDATE_REQUEST));
+        assertThatNoException().isThrownBy(() -> memberService.updateDetail(VALID_ID, UPDATE_REQUEST));
     }
 
+    @Test
+    void updateHealthDetailWithValidId(){
+        assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(VALID_ID, UPDATE_HEALTH_DETAIL_REQUEST));
+    }
 
+    @Test
+    void updateHealthDetailWithInvalidId(){
+        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_ID, any(MemberHealthDTO.Update.class)))
+                .isInstanceOf(NotFoundException.class);
+    }
 }
