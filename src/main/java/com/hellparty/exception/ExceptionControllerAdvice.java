@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * title        :
+ * title        : ControllerAdvice
  * author       : sim
  * date         : 2023-07-01
- * description  :
+ * description  : Controller에서 발생한 예외 핸들러
  */
 
 @RestControllerAdvice
@@ -22,7 +22,6 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponseDTO NotFoundExceptionHandler(NotFoundException e){
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
