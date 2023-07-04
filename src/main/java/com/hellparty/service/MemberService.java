@@ -4,9 +4,9 @@ import com.hellparty.domain.Member;
 import com.hellparty.domain.MemberHealth;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
+import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.mapper.MemberMapper;
-import com.hellparty.mapper.MemberHealthMapper;
 import com.hellparty.repository.MemberHealthRepository;
 import com.hellparty.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -28,6 +28,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final MemberHealthRepository memberHealthRepository;
+    private final MemberMapper memberMapper;
     /**
      * 이메일 존재 여부 체크
      * @param email - 이메일
@@ -48,7 +49,7 @@ public class MemberService {
                 () -> new NotFoundException("사용자를 찾을 수 없습니다.")
         );
 
-        return MemberMapper.entityToDTO(findMember);
+        return memberMapper.memberEntityToDto(findMember);
     }
 
     /**
@@ -60,7 +61,7 @@ public class MemberService {
         MemberHealth findMemberHealth = memberHealthRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("입력된 헬스 정보가 없습니다. 헬스 정보를 입력해주세요."));
 
-        return MemberHealthMapper.entityToDTO(findMemberHealth);
+        return memberMapper.memberHealthEntityToDto(findMemberHealth);
     }
 
     /**
@@ -91,18 +92,11 @@ public class MemberService {
      */
     public void updateHealthDetail(Long id, MemberHealthDTO.Update request){
 
-        MemberHealth findMemberHealth = memberHealthRepository.findById(id)
-                        .orElseThrow(() -> new NotFoundException("입력된 헬스 정보가 없습니다. 헬스 정보를 입력해주세요."));
+        if(!id.equals(request.getId())){
+            throw new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.");
+        }
 
-        findMemberHealth.updateMemberHealth(
-                request.getExecStartTime()
-                ,request.getExecEndTime()
-                ,request.getDiv()
-                ,request.getExecArea()
-                ,request.getGymAddress()
-                ,request.getSpclNote()
-                ,request.getBigThree()
-                ,request.getHealthMotto()
-        );
+        MemberHealth memberHealth = memberMapper.memberHealthUpdateDtoToEntity(request);
+        memberHealthRepository.save(memberHealth);
     }
 }

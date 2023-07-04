@@ -60,9 +60,14 @@ public class MemberController {
         memberService.updateDetail(id, request);
     }
 
+    /**
+     * 사용자 헬스정보 업데이트
+     * @param id - 사용자 ID
+     * @param request - 업데이트 데이터
+     */
     @PutMapping("/health")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateHealthDetail(@LoginMemberId long id, @RequestBody MemberHealthDTO.Update request){
+    public void updateHealthDetail(@LoginMemberId Long id, @RequestBody MemberHealthDTO.Update request){
 
         memberService.updateHealthDetail(id, request);
     }
