@@ -2,6 +2,9 @@ package com.hellparty.domain.embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 /**
  * title        : 주소 정보
@@ -11,6 +14,9 @@ import jakarta.persistence.Embeddable;
  */
 
 @Embeddable
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
 
     @Column(name = "PLACE_NAME")
