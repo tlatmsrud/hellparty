@@ -2,8 +2,7 @@ package com.hellparty.dto;
 
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 /**
  * title        :
@@ -28,8 +27,9 @@ public class MemberDTO {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Update{
-        private Long id;
         private String nickname;
         private String email;
         private String profileUrl;
