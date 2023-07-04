@@ -4,13 +4,12 @@ import com.hellparty.factory.AuthenticationFactory;
 import com.hellparty.jwt.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
@@ -22,14 +21,13 @@ import java.io.IOException;
  */
 
 @RequiredArgsConstructor
-public class JwtAuthorizationFilter extends GenericFilterBean {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-        String authorizationValue = ((HttpServletRequest)request).getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String authorizationValue = request.getHeader("Authorization");
 
         if(authorizationValue != null && authorizationValue.contains("TEST_TOKEN")){
             Authentication authentication = AuthenticationFactory.getAuthentication(1L);
@@ -43,6 +41,6 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }
