@@ -4,11 +4,13 @@ import com.hellparty.domain.Member;
 import com.hellparty.domain.MemberHealth;
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
+import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
-import com.hellparty.enums.Division;
 import com.hellparty.enums.Sex;
+import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
+import com.hellparty.mapper.MemberMapper;
 import com.hellparty.repository.MemberHealthRepository;
 import com.hellparty.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +23,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * title        :
@@ -32,7 +35,8 @@ class MemberServiceTest {
 
     private final MemberHealthRepository memberHealthRepository = mock(MemberHealthRepository.class);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository);
+    private final MemberMapper memberMapper = mock(MemberMapper.class);
+    private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository, memberMapper);
     private final String VALID_EMAIL = "test@naver.com";
     private final String INVALID_EMAIL = "no@naver.com";
 
@@ -45,6 +49,7 @@ class MemberServiceTest {
             .build();
 
     private final MemberHealthDTO.Update UPDATE_HEALTH_DETAIL_REQUEST = MemberHealthDTO.Update.builder()
+            .id(VALID_ID)
             .execStartTime(Time.valueOf("19:00:00"))
             .execEndTime(Time.valueOf("20:00:00"))
             .bigThree(BigThree.builder()
@@ -60,6 +65,7 @@ class MemberServiceTest {
                     .address("서울시 중랑구")
                     .placeName("중랑헬스장")
                     .build())
+            .execDay(new ExecDayDTO(false, true, true, true, true, true, false))
             .build();
 
     @BeforeEach
@@ -72,29 +78,22 @@ class MemberServiceTest {
                 .willReturn(false);
 
         given(memberRepository.findById(VALID_ID))
-                .willReturn(Optional.of(
-                        Member.builder()
-                                .id(VALID_ID)
-                                .email("test@naver.com")
-                                .build()
-                ));
+                .willReturn(Optional.of(Member.builder().id(VALID_ID).build()));
 
         given(memberHealthRepository.findById(VALID_ID))
-                .willReturn(Optional.of(
-                        MemberHealth.builder()
-                                .id(VALID_ID)
-                                .div(Division.THREE)
-                                .bigThree(BigThree.builder()
-                                        .squat(100.5)
-                                        .daedlift(100)
-                                        .benchPress(100)
-                                        .build())
-                                .build()
-                ));
+                .willReturn(Optional.of(MemberHealth.builder().id(VALID_ID).build()));
 
         given(memberHealthRepository.findById(INVALID_ID))
                 .willReturn(Optional.empty());
 
+        given(memberMapper.memberHealthUpdateDtoToEntity(any(MemberHealthDTO.Update.class)))
+                .willReturn(MemberHealth.builder().id(VALID_ID).build());
+
+        given(memberMapper.memberEntityToDto(any(Member.class)))
+                .willReturn(MemberDTO.builder().id(VALID_ID).build());
+
+        given(memberMapper.memberHealthEntityToDto(any(MemberHealth.class)))
+                .willReturn(MemberHealthDTO.builder().id(VALID_ID).build());
     }
     @Test
     void isExistMemberByEmailWithValidEmail() {
@@ -112,14 +111,12 @@ class MemberServiceTest {
     void getDetail(){
         MemberDTO memberDTO = memberService.getDetail(VALID_ID);
         assertThat(memberDTO.getId()).isEqualTo(VALID_ID);
-        assertThat(memberDTO.getEmail()).isEqualTo("test@naver.com");
     }
 
     @Test
     void getHealthDetailWithValidId(){
         MemberHealthDTO memberHealthDTO = memberService.getHealthDetail(VALID_ID);
         assertThat(memberHealthDTO.getId()).isEqualTo(VALID_ID);
-        assertThat(memberHealthDTO.getBigThree().getSquat()).isEqualTo(100.5);
     }
 
     @Test
@@ -136,11 +133,12 @@ class MemberServiceTest {
     @Test
     void updateHealthDetailWithValidId(){
         assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(VALID_ID, UPDATE_HEALTH_DETAIL_REQUEST));
+        verify(memberHealthRepository).save(any(MemberHealth.class));
     }
 
     @Test
     void updateHealthDetailWithInvalidId(){
-        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_ID, any(MemberHealthDTO.Update.class)))
-                .isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_ID, UPDATE_HEALTH_DETAIL_REQUEST))
+                .isInstanceOf(BadRequestException.class);
     }
 }
