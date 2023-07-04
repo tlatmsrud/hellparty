@@ -2,6 +2,7 @@ package com.hellparty.domain;
 
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
+import com.hellparty.domain.embedded.ExecDay;
 import com.hellparty.enums.Division;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,15 +59,7 @@ public class MemberHealth {
     @Column(name = "HEALTH_MOTTO")
     private String healthMotto;
 
-    public void updateMemberHealth(Time execStartTime, Time execEndTime, Division div, Long execArea,
-                                   Address gymAddress, String spclNote, BigThree bigThree, String healthMotto){
-        this.execStartTime = execStartTime;
-        this.execEndTime = execEndTime;
-        this.div = div;
-        this.execArea = execArea;
-        this.gymAddress = gymAddress;
-        this.spclNote = spclNote;
-        this.bigThree = bigThree;
-        this.healthMotto = healthMotto;
-    }
+    @Embedded
+    private ExecDay execDay;
+
 }
