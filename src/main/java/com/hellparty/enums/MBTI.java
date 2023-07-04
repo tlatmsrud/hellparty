@@ -1,5 +1,7 @@
 package com.hellparty.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * title        :
  * author       : sim
@@ -7,5 +9,10 @@ package com.hellparty.enums;
  * description  :
  */
 public enum MBTI {
-    ISTJ, ISFJ, INFJ, INTJ,  ISTP, ISFP, INFP, INTP, ESTP, ESFP, ENFP, ENTP, ESTJ, ESFJ, ENFJ, ENTJ
+    ISTJ, ISFJ, INFJ, INTJ,  ISTP, ISFP, INFP, INTP, ESTP, ESFP, ENFP, ENTP, ESTJ, ESFJ, ENFJ, ENTJ;
+
+    @JsonCreator
+    public static MBTI from(String mbti){
+        return MBTI.valueOf(mbti.toUpperCase());
+    }
 }

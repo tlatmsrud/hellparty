@@ -1,5 +1,7 @@
 package com.hellparty.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * title        :
  * author       : sim
@@ -8,5 +10,10 @@ package com.hellparty.enums;
  */
 public enum Sex {
 
-    M,W
+    M,W;
+
+    @JsonCreator
+    public static Sex from(String sex){
+        return Sex.valueOf(sex.toUpperCase());
+    }
 }
