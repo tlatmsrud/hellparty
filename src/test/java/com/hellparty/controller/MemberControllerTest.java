@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.dto.MemberDTO;
+import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.Division;
 import com.hellparty.enums.Sex;
@@ -12,8 +13,10 @@ import com.hellparty.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(MemberController.class) // Web layer만 동작하도록
 @MockBean(JpaMetamodelMappingContext.class)
+@Import(HttpEncodingAutoConfiguration.class)
 class MemberControllerTest {
 
     @MockBean
@@ -49,7 +53,7 @@ class MemberControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final Long VALID_MEMBER_ID = 1L;
+    private static final Long VALID_MEMBER_ID = 1L;
 
     private final MemberDTO.Update UPDATE_DETAIL_REQUEST = MemberDTO.Update.builder()
             .age(10).height(170).weight(50.1).sex(Sex.M)
@@ -74,6 +78,7 @@ class MemberControllerTest {
                     .build())
             .spclNote("특이사항")
             .div(Division.THREE)
+            .execDay(new ExecDayDTO(false, true, true, true, true,true,false))
             .build();
 
     @BeforeEach
