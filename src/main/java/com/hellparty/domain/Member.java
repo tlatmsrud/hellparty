@@ -77,4 +77,8 @@ public class Member extends Base{
         this.mbti = mbti;
         this.profileUrl = profileUrl;
     }
+
+    public void updateExecStatus(ExecStatus status){
+        this.status = status;
+    }
 }
