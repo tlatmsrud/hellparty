@@ -26,8 +26,7 @@ import java.sql.Time;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -144,6 +143,16 @@ class MemberControllerTest {
                 put("/api/member/health")
                         .content(objectMapper.writeValueAsString(UPDATE_HEALTH_DETAIL_REQUEST))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+        ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @TestMemberAuth
+    void updateStatusToW() throws Exception{
+        mockMvc.perform(
+                patch("/api/member/status")
+                        .param("status", "W")
                         .with(csrf())
         ).andExpect(status().isNoContent());
     }

@@ -7,6 +7,7 @@ import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
+import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.Sex;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
@@ -39,7 +40,6 @@ class MemberServiceTest {
     private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository, memberMapper);
     private final String VALID_EMAIL = "test@naver.com";
     private final String INVALID_EMAIL = "no@naver.com";
-
     private final Long VALID_ID = 1L;
     private final Long INVALID_ID = 1000L;
     private final MemberDTO.Update UPDATE_REQUEST = MemberDTO.Update.builder()
@@ -140,5 +140,11 @@ class MemberServiceTest {
     void updateHealthDetailWithInvalidId(){
         assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_ID, UPDATE_HEALTH_DETAIL_REQUEST))
                 .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void updateStatusToW(){
+        memberService.updateStatus(VALID_ID, ExecStatus.W);
+        verify(memberRepository).findById(VALID_ID);
     }
 }
