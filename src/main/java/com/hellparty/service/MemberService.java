@@ -5,6 +5,7 @@ import com.hellparty.domain.MemberHealth;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.mapper.MemberMapper;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final MemberHealthRepository memberHealthRepository;
     private final MemberMapper memberMapper;
     /**
@@ -106,12 +106,25 @@ public class MemberService {
      * @param id - 사용자 ID
      * @param status - 사용자 상태
      */
-    public void updateStatus(Long id, ExecStatus status) {
+    public void updateExecStatus(Long id, ExecStatus status) {
 
         Member findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updateExecStatus(status);
 
+    }
+
+    /**
+     * 사용자 파트너 구함 상태 수정
+     * @param id - 사용자 ID
+     * @param status - 파트너 구함 상태
+     */
+    public void updatePartnerFindStatus(Long id, PartnerFindStatus status){
+
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
+
+        findMember.updatePartnerFindStatus(status);
     }
 }
