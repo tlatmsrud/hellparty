@@ -4,6 +4,7 @@ import com.hellparty.domain.Member;
 import com.hellparty.domain.MemberHealth;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
+import com.hellparty.enums.ExecStatus;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.mapper.MemberMapper;
@@ -98,5 +99,19 @@ public class MemberService {
 
         MemberHealth memberHealth = memberMapper.memberHealthUpdateDtoToEntity(request);
         memberHealthRepository.save(memberHealth);
+    }
+
+    /**
+     * 사용자 상태 수정
+     * @param id - 사용자 ID
+     * @param status - 사용자 상태
+     */
+    public void updateStatus(Long id, ExecStatus status) {
+
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
+
+        findMember.updateExecStatus(status);
+
     }
 }
