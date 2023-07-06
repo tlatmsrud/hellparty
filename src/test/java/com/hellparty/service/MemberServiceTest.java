@@ -8,6 +8,7 @@ import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.enums.Sex;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
@@ -143,8 +144,14 @@ class MemberServiceTest {
     }
 
     @Test
-    void updateStatusToW(){
-        memberService.updateStatus(VALID_ID, ExecStatus.W);
+    void updateExecStatusToW(){
+        memberService.updateExecStatus(VALID_ID, ExecStatus.W);
+        verify(memberRepository).findById(VALID_ID);
+    }
+
+    @Test
+    void updatePartnerFindStatusToY(){
+        memberService.updatePartnerFindStatus(VALID_ID, PartnerFindStatus.Y);
         verify(memberRepository).findById(VALID_ID);
     }
 }

@@ -8,6 +8,8 @@ import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.Division;
+import com.hellparty.enums.ExecStatus;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.enums.Sex;
 import com.hellparty.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -149,11 +151,22 @@ class MemberControllerTest {
 
     @Test
     @TestMemberAuth
-    void updateStatusToW() throws Exception{
+    void updateExecStatusToW() throws Exception{
         mockMvc.perform(
-                patch("/api/member/status")
-                        .param("status", "W")
+                patch("/api/member/exec-status")
+                        .param("status", ExecStatus.W.name())
                         .with(csrf())
         ).andExpect(status().isNoContent());
     }
+
+    @Test
+    @TestMemberAuth
+    void updatePartnerFindStatusToW() throws Exception{
+        mockMvc.perform(
+                patch("/api/member/partner-find-status")
+                        .param("status", PartnerFindStatus.Y.name())
+                        .with(csrf())
+        ).andExpect(status().isNoContent());
+    }
+
 }
