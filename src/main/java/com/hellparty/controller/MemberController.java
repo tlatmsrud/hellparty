@@ -4,6 +4,7 @@ import com.hellparty.annotation.LoginMemberId;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,10 +74,17 @@ public class MemberController {
         memberService.updateHealthDetail(id, request);
     }
 
-    @PatchMapping("/status")
+    @PatchMapping("/exec-status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStatus(@LoginMemberId Long id, @RequestParam ExecStatus status){
+    public void updateExecStatus(@LoginMemberId Long id, @RequestParam ExecStatus status){
 
-        memberService.updateStatus(id,status);
+        memberService.updateExecStatus(id,status);
+    }
+
+    @PatchMapping("/partner-find-status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updatePartnerFindStatus(@LoginMemberId Long id, @RequestParam PartnerFindStatus status){
+
+        memberService.updatePartnerFindStatus(id,status);
     }
 }
