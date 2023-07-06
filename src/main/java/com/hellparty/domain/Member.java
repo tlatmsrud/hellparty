@@ -2,6 +2,7 @@ package com.hellparty.domain;
 
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.MBTI;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.enums.Sex;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -63,8 +64,12 @@ public class Member extends Base{
     private String bodyProfileUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false)
-    private ExecStatus status = ExecStatus.W;
+    @Column(name = "EXEC_STATUS", nullable = false)
+    private ExecStatus execStatus = ExecStatus.W;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PARTNER_FIND_STATUS")
+    private PartnerFindStatus findStatus = PartnerFindStatus.N;
 
     public void updateMember(String nickname, String email, double height, double weight
             , int age, Sex sex, MBTI mbti, String profileUrl){
@@ -78,7 +83,11 @@ public class Member extends Base{
         this.profileUrl = profileUrl;
     }
 
-    public void updateExecStatus(ExecStatus status){
-        this.status = status;
+    public void updateExecStatus(ExecStatus execStatus){
+        this.execStatus = execStatus;
+    }
+
+    public void updatePartnerFindStatus(PartnerFindStatus findStatus){
+        this.findStatus = findStatus;
     }
 }

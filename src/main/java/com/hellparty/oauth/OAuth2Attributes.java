@@ -3,6 +3,7 @@ package com.hellparty.oauth;
 import com.hellparty.domain.Member;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.OAuthType;
+import com.hellparty.enums.PartnerFindStatus;
 import lombok.Getter;
 
 import java.util.Map;
@@ -69,7 +70,8 @@ public class OAuth2Attributes {
                 .email(email)
                 .nickname(nickname)
                 .profileUrl(profileUrl)
-                .status(ExecStatus.W)
+                .execStatus(ExecStatus.W)
+                .findStatus(PartnerFindStatus.N)
                 .build();
     }
 }
