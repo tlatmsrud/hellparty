@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-06
  * description  :
  */
-public interface PartnerRepository extends JpaRepository<Long, Partner> {
+public interface PartnerRepository extends JpaRepository<Partner, Long> {
 }
