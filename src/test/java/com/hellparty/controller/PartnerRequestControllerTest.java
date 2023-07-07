@@ -1,8 +1,9 @@
 package com.hellparty.controller;
 
-import auth.TestMemberAuth;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hellparty.dto.PartnerRequestDTO;
+import attributes.TestFixture;
+import attributes.TestMemberAuth;
+import com.hellparty.exception.BadRequestException;
+import com.hellparty.exception.NotFoundException;
 import com.hellparty.service.PartnerRequestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,12 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -31,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PartnerRequestController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(HttpEncodingAutoConfiguration.class)
-class PartnerRequestControllerTest {
+class PartnerRequestControllerTest implements TestFixture {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,26 +42,47 @@ class PartnerRequestControllerTest {
     @MockBean
     private PartnerRequestService partnerRequestService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Long VALID_FROM_MEMBER_ID = 1L;
-    private static final Long VALID_TO_MEMBER_ID = 2L;
-    private static final PartnerRequestDTO REQUEST = PartnerRequestDTO.builder()
-            .toMemberId(VALID_TO_MEMBER_ID)
-            .build();
-
     @BeforeEach
     void setUp(){
         willDoNothing().given(partnerRequestService)
-                .requestPartner(eq(VALID_FROM_MEMBER_ID), eq(VALID_TO_MEMBER_ID));
+                .requestPartner(eq(LOGIN_MEMBER_ID), eq(VALID_MEMBER_ID));
+
+        willThrow(new NotFoundException("대상 사용자를 찾을 수 없습니다. 다시 시도해주세요.")).given(partnerRequestService)
+                .requestPartner(eq(LOGIN_MEMBER_ID), eq(INVALID_MEMBER_ID));
+
+        willThrow(new BadRequestException("대상 사용자는 파트너를 구하지 않는 상태입니다. 다른 사용자를 찾아보세요.")).given(partnerRequestService)
+                .requestPartner(eq(LOGIN_MEMBER_ID), eq(NOT_LOOKING_FOR_PARTNER_MEMBER_ID));
+
     }
     @Test
     @TestMemberAuth
-    void requestPartnerWithValidId() throws Exception {
+    void requestPartnerWithValidMemberId() throws Exception {
         mockMvc.perform(
-                post("/api/partner-req")
+                post("/api/partner-req/{toMemberId}", VALID_MEMBER_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(REQUEST))
                         .with(csrf())
         ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @TestMemberAuth
+    void requestPartnerWithInvalidMemberId() throws Exception {
+        mockMvc.perform(
+                post("/api/partner-req/{toMemberId}", INVALID_MEMBER_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+        ).andExpect(status().isNotFound())
+                .andExpect(content().string(containsString("대상 사용자를 찾을 수 없습니다. 다시 시도해주세요.")));
+    }
+
+    @Test
+    @TestMemberAuth
+    void requestPartnerWithMemberIdForNotLookingForPartner() throws Exception {
+        mockMvc.perform(
+                        post("/api/partner-req/{toMemberId}", NOT_LOOKING_FOR_PARTNER_MEMBER_ID)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf())
+                ).andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("대상 사용자는 파트너를 구하지 않는 상태입니다. 다른 사용자를 찾아보세요.")));
     }
 }
