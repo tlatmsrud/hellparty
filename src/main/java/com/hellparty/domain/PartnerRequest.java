@@ -1,5 +1,6 @@
 package com.hellparty.domain;
 
+import com.hellparty.enums.PartnerResponseStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +35,7 @@ public class PartnerRequest {
     @JoinColumn(name = "TO_MEMBER_ID")
     private Member toMember;
 
-    @Column(name = "RESPONSE_FLAG")
-    private boolean responseFlag;
+    @Column(name = "RESPONSE_STATUS")
+    @Enumerated(EnumType.STRING)
+    private PartnerResponseStatus responseStatus;
 }

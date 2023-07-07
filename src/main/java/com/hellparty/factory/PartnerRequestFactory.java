@@ -2,6 +2,7 @@ package com.hellparty.factory;
 
 import com.hellparty.domain.Member;
 import com.hellparty.domain.PartnerRequest;
+import com.hellparty.enums.PartnerResponseStatus;
 
 /**
  * title        :
@@ -15,6 +16,7 @@ public class PartnerRequestFactory {
         return PartnerRequest.builder()
                 .fromMember(fromMember)
                 .toMember(toMember)
+                .responseStatus(PartnerResponseStatus.NO)
                 .build();
     }
 }
