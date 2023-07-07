@@ -2,12 +2,15 @@ package com.hellparty.service;
 
 import com.hellparty.domain.Member;
 import com.hellparty.domain.PartnerRequest;
+import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.factory.PartnerRequestFactory;
 import com.hellparty.repository.MemberRepository;
 import com.hellparty.repository.PartnerRequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,5 +46,7 @@ public class PartnerRequestService {
     }
 
 
-
+    public Page<PartnerRequestDTO> getPartnerRequestList(Long id, Pageable pageable) {
+        return partnerRequestRepository.findPartnerRequestList(id, pageable);
+    }
 }
