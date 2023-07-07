@@ -3,6 +3,7 @@ package com.hellparty.controller;
 import attributes.TestFixture;
 import attributes.TestMemberAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.service.PartnerRequestService;
@@ -60,6 +61,9 @@ class PartnerRequestControllerTest implements TestFixture {
 
         given(partnerRequestService.getPartnerRequestList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
                 .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
+
+        willDoNothing().given(partnerRequestService)
+                .answerPartnerRequest(eq(LOGIN_MEMBER_ID), any(PartnerRequestDTO.Answer.class));
     }
     @Test
     @TestMemberAuth
@@ -108,7 +112,7 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 post("/api/partner-req/answer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(PARTNER_REQUEST_ANSWER))
+                        .content(objectMapper.writeValueAsString(VALID_PARTNER_REQUEST_ANSWER))
                         .with(csrf())
         ).andExpect(status().isNoContent());
     }
