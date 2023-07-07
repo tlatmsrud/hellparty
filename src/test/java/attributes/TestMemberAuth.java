@@ -1,4 +1,4 @@
-package auth;
+package attributes;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

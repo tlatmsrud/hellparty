@@ -1,4 +1,4 @@
-package auth;
+package attributes;
 
 import com.hellparty.factory.AuthenticationFactory;
 import org.springframework.security.core.Authentication;
@@ -7,17 +7,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
 /**
- * title        :
+ * title        : SecurityContextFactory
  * author       : sim
  * date         : 2023-07-04
- * description  :
+ * description  : @TestMemberAuth 가 붙은 메서드에 대해 SecurityContext 객체를 생성해준다.
  */
-public class TestMemberSecurityContextFactory implements WithSecurityContextFactory<TestMemberAuth> {
+public class TestMemberSecurityContextFactory
+        implements WithSecurityContextFactory<TestMemberAuth>, TestFixture {
 
-    private static final Long TEST_MEMBER_ID = 1L;
     @Override
     public SecurityContext createSecurityContext(TestMemberAuth annotation) {
-        Authentication authentication = AuthenticationFactory.getAuthentication(TEST_MEMBER_ID);
+        Authentication authentication = AuthenticationFactory.getAuthentication(LOGIN_MEMBER_ID);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
         return securityContext;
