@@ -1,6 +1,6 @@
 package com.hellparty.controller;
 
-import auth.TestMemberAuth;
+import attributes.TestMemberAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
