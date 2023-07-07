@@ -12,14 +12,17 @@ import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfig
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +56,8 @@ class PartnerRequestControllerTest implements TestFixture {
         willThrow(new BadRequestException("대상 사용자는 파트너를 구하지 않는 상태입니다. 다른 사용자를 찾아보세요.")).given(partnerRequestService)
                 .requestPartner(eq(LOGIN_MEMBER_ID), eq(NOT_LOOKING_FOR_PARTNER_MEMBER_ID));
 
+        given(partnerRequestService.getPartnerRequestList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
     }
     @Test
     @TestMemberAuth
@@ -84,5 +89,14 @@ class PartnerRequestControllerTest implements TestFixture {
                                 .with(csrf())
                 ).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("대상 사용자는 파트너를 구하지 않는 상태입니다. 다른 사용자를 찾아보세요.")));
+    }
+
+    @Test
+    @TestMemberAuth
+    void getPartnerRequestList() throws Exception{
+        mockMvc.perform(
+                get("/api/partner-req")
+        ).andExpect(status().isOk())
+                .andExpect(content().string(containsString("20")));
     }
 }
