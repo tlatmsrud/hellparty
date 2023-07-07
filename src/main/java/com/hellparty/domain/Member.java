@@ -90,4 +90,8 @@ public class Member extends Base{
     public void updatePartnerFindStatus(PartnerFindStatus findStatus){
         this.findStatus = findStatus;
     }
+
+    public boolean isLookingForPartner(){
+        return findStatus == PartnerFindStatus.Y;
+    }
 }
