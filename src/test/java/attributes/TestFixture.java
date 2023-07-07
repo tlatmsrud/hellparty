@@ -1,16 +1,20 @@
 package attributes;
 
 import com.hellparty.domain.Member;
-import com.hellparty.enums.ExecStatus;
-import com.hellparty.enums.MBTI;
-import com.hellparty.enums.PartnerFindStatus;
-import com.hellparty.enums.Sex;
+import com.hellparty.dto.MemberDTO;
+import com.hellparty.dto.PartnerRequestDTO;
+import com.hellparty.enums.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * title        :
+ * title        : Text Fixture
  * author       : sim
  * date         : 2023-07-07
- * description  :
+ * description  : 테스트 픽스처 관리 인터페이스
  */
 public interface TestFixture{
     Long LOGIN_MEMBER_ID = 1L;
@@ -18,6 +22,7 @@ public interface TestFixture{
     Long NOT_LOOKING_FOR_PARTNER_MEMBER_ID = 4L;
     Long INVALID_MEMBER_ID = 1000L;
 
+    Pageable DEFAULT_PAGEABLE = PageRequest.of(0,10);
     Member LOGIN_MEMBER_ENTITY = Member.builder()
             .id(LOGIN_MEMBER_ID)
             .age(28)
@@ -60,5 +65,10 @@ public interface TestFixture{
             .findStatus(PartnerFindStatus.N)
             .build();
 
+    List<PartnerRequestDTO> PARTNER_REQUEST_DTO_LIST = Arrays.asList(
+            new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(20L).build(), PartnerResponseStatus.WAIT)
+            ,new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(21L).build(), PartnerResponseStatus.NO)
+            ,new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(22L).build(), PartnerResponseStatus.YES)
 
+    );
 }
