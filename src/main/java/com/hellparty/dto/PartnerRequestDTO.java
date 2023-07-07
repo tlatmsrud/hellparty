@@ -21,4 +21,13 @@ public class PartnerRequestDTO {
     private Long id;
     private MemberDTO member;
     private PartnerResponseStatus status;
+
+    @AllArgsConstructor
+    @Getter
+    @NoArgsConstructor
+    public static class Answer{
+        private Long id;
+        private PartnerResponseStatus status;
+
+    }
 }
