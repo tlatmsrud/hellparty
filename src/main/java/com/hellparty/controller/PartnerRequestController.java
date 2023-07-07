@@ -37,13 +37,24 @@ public class PartnerRequestController {
 
     /**
      * 나의 파트너 요청 리스트 조회
-     * @param id - 사용자 ID
+     * @param memberId - 사용자 ID
      * @param pageable - page 속성
      * @return 페이징 처리된 파트너 요청 리스트
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PartnerRequestDTO> getPartnerRequestList(@LoginMemberId Long id, @PageableDefault Pageable pageable){
-        return partnerRequestService.getPartnerRequestList(id, pageable);
+    public Page<PartnerRequestDTO> getPartnerRequestList(@LoginMemberId Long memberId, @PageableDefault Pageable pageable){
+        return partnerRequestService.getPartnerRequestList(memberId, pageable);
+    }
+
+    /**
+     * 파트너 요청에 대한 응답
+     * @param memberId - 사용자 ID
+     * @param request - 파트너 요청 응답 Dto
+     */
+    @PostMapping("/answer")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void answerPartnerRequest(@LoginMemberId Long memberId, @RequestBody PartnerRequestDTO.Answer request){
+        partnerRequestService.answerPartnerRequest(memberId, request);
     }
 }
