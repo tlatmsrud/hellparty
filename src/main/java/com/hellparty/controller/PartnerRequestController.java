@@ -1,7 +1,8 @@
 package com.hellparty.controller;
 
 import com.hellparty.annotation.LoginMemberId;
-import com.hellparty.dto.PartnerRequestDTO;
+import com.hellparty.service.PartnerRequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,18 +14,20 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/partner-req")
 public class PartnerRequestController {
 
+    private final PartnerRequestService partnerRequestService;
 
     /**
      * 파트너 요청
      * @param fromMemberId - 요청자 ID
-     * @param request - 요청 DTO
+     * @param toMemberId - 파트너 요청 수신 ID
      */
-    @PostMapping
+    @PostMapping("/{toMemberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void requestPartner(@LoginMemberId Long fromMemberId, @RequestBody PartnerRequestDTO request){
-
+    public void requestPartner(@LoginMemberId Long fromMemberId, @PathVariable("toMemberId") Long toMemberId){
+        partnerRequestService.requestPartner(fromMemberId, toMemberId);
     }
 }
