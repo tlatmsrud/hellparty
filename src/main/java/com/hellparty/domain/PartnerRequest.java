@@ -38,4 +38,8 @@ public class PartnerRequest {
     @Column(name = "RESPONSE_STATUS")
     @Enumerated(EnumType.STRING)
     private PartnerResponseStatus responseStatus;
+
+    public void updateStatus(PartnerResponseStatus responseStatus){
+        this.responseStatus = responseStatus;
+    }
 }
