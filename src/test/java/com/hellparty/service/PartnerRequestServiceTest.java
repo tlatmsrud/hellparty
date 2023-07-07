@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -45,6 +46,9 @@ class PartnerRequestServiceTest implements TestFixture {
 
         given(memberRepository.findById(NOT_LOOKING_FOR_PARTNER_MEMBER_ID))
                 .willThrow(new BadRequestException("대상 사용자는 파트너를 구하지 않는 상태입니다. 다른 사용자를 찾아보세요."));
+
+        given(partnerRequestRepository.findById(VALID_PARTNER_REQUEST_ID))
+                .willReturn(Optional.of(PARTNER_REQUEST_TO_LOGIN_MEMBER));
     }
     @Test
     void requestPartnerWithValidMemberId() {
@@ -64,5 +68,43 @@ class PartnerRequestServiceTest implements TestFixture {
         assertThatThrownBy(()-> partnerRequestService.requestPartner(LOGIN_MEMBER_ID, NOT_LOOKING_FOR_PARTNER_MEMBER_ID))
                 .isInstanceOf(BadRequestException.class);
 
+    }
+
+    @Test
+    void answerPartnerRequestWithValidRequest(){
+        partnerRequestService.answerPartnerRequest(LOGIN_MEMBER_ID, VALID_PARTNER_REQUEST_ANSWER);
+    }
+
+    @Test
+    void answerPartnerRequestWithInvalidRequest(){
+        assertThatThrownBy(() ->
+                partnerRequestService.answerPartnerRequest(LOGIN_MEMBER_ID, INVALID_PARTNER_REQUEST_ANSWER))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void answerPartnerRequestByDifferentMemberId(){
+        assertThatThrownBy(() ->
+                partnerRequestService.answerPartnerRequest(VALID_MEMBER_ID, VALID_PARTNER_REQUEST_ANSWER))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void answerPartnerRequestWithInvalidRequestId(){
+        partnerRequestService.answerPartnerRequest(LOGIN_MEMBER_ID, VALID_PARTNER_REQUEST_ANSWER);
+    }
+
+    @Test
+    void isRequestForLoginMemberWithLoginMemberId(){
+        assertThat(partnerRequestService
+                .isRequestForLoginMember(LOGIN_MEMBER_ID, PARTNER_REQUEST_TO_LOGIN_MEMBER))
+                .isTrue();
+    }
+
+    @Test
+    void isRequestForLoginMemberWithNotLoginMemberId(){
+        assertThat(partnerRequestService
+                .isRequestForLoginMember(VALID_MEMBER_ID, PARTNER_REQUEST_TO_LOGIN_MEMBER))
+                .isFalse();
     }
 }
