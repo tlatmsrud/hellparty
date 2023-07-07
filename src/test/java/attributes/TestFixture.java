@@ -1,6 +1,7 @@
 package attributes;
 
 import com.hellparty.domain.Member;
+import com.hellparty.domain.PartnerRequest;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.enums.*;
@@ -71,4 +72,19 @@ public interface TestFixture{
             ,new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(22L).build(), PartnerResponseStatus.YES)
 
     );
+
+    Long VALID_PARTNER_REQUEST_ID = 1L;
+
+    Long INVALID_PARTNER_REQUEST_ID = 1000L;
+
+    PartnerRequestDTO.Answer VALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(VALID_PARTNER_REQUEST_ID, PartnerResponseStatus.NO);
+
+    PartnerRequestDTO.Answer INVALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(INVALID_PARTNER_REQUEST_ID, PartnerResponseStatus.NO);
+
+    PartnerRequest PARTNER_REQUEST_TO_LOGIN_MEMBER = PartnerRequest.builder()
+            .id(1L)
+            .toMember(LOGIN_MEMBER_ENTITY)
+            .fromMember(VALID_MEMBER_ENTITY)
+            .responseStatus(PartnerResponseStatus.WAIT)
+            .build();
 }
