@@ -2,6 +2,7 @@ package com.hellparty.controller;
 
 import attributes.TestFixture;
 import attributes.TestMemberAuth;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.service.PartnerRequestService;
@@ -42,6 +43,7 @@ class PartnerRequestControllerTest implements TestFixture {
     @Autowired
     private MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @MockBean
     private PartnerRequestService partnerRequestService;
 
@@ -98,5 +100,16 @@ class PartnerRequestControllerTest implements TestFixture {
                 get("/api/partner-req")
         ).andExpect(status().isOk())
                 .andExpect(content().string(containsString("20")));
+    }
+
+    @Test
+    @TestMemberAuth
+    void answerPartnerRequest() throws Exception{
+        mockMvc.perform(
+                post("/api/partner-req/answer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(PARTNER_REQUEST_ANSWER))
+                        .with(csrf())
+        ).andExpect(status().isNoContent());
     }
 }
