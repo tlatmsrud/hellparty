@@ -87,4 +87,14 @@ public class PartnerRequestService {
     public boolean isRequestForLoginMember(Long memberId, PartnerRequestEntity partnerRequest){
         return memberId.equals(partnerRequest.getToMember().getId());
     }
+
+    /**
+     * 사용자에게 요청한 파트너 요청 리스트 조회
+     * @param memberId - 사용자 ID
+     * @param pageable - 페이지 속성
+     * @return 페이징 처리된 사용자에게 요청한 파트너 요청 리스트
+     */
+    public Page<PartnerRequestDTO> getPartnerRequestToMeList(Long memberId, Pageable pageable) {
+        return partnerRequestRepository.findPartnerRequestToMeList(memberId, pageable);
+    }
 }
