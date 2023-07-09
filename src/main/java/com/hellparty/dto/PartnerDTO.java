@@ -1,6 +1,8 @@
 package com.hellparty.dto;
 
+import com.hellparty.enums.ExecStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -9,11 +11,14 @@ import lombok.Getter;
  * date         : 2023-07-06
  * description  :
  */
+
+@Getter
+@AllArgsConstructor
+@Builder
 public class PartnerDTO {
 
-    @Getter
-    @AllArgsConstructor
-    public static class Request{
-        private Long partnerId;
-    }
+    private Long id;
+    private String nickname;
+    private ExecStatus execStatus;
+
 }
