@@ -23,6 +23,6 @@ public class PartnerService {
     private final PartnerRepository partnerRepository;
 
     public List<PartnerDTO> getPartnerList(Long memberId){
-        return null;
+        return partnerRepository.getPartnerList(memberId);
     }
 }

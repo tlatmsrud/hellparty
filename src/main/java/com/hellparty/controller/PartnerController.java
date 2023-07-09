@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * title        : 파트너 컨트롤러
  * author       : sim
@@ -21,10 +23,9 @@ public class PartnerController {
 
     private final PartnerService partnerService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RequestPartner(@LoginMemberId Long id, PartnerDTO.Request request){
-
-        partnerService.RequestPartner(id, request);
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PartnerDTO> getPartnerList(@LoginMemberId Long memberId){
+        return partnerService.getPartnerList(memberId);
     }
 }
