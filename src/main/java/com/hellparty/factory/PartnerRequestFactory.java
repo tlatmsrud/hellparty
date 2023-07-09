@@ -1,7 +1,7 @@
 package com.hellparty.factory;
 
-import com.hellparty.domain.Member;
-import com.hellparty.domain.PartnerRequest;
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.enums.PartnerResponseStatus;
 
 /**
@@ -12,8 +12,8 @@ import com.hellparty.enums.PartnerResponseStatus;
  */
 public class PartnerRequestFactory {
 
-    public static PartnerRequest createEntity(Member fromMember, Member toMember){
-        return PartnerRequest.builder()
+    public static PartnerRequestEntity createEntity(MemberEntity fromMember, MemberEntity toMember){
+        return PartnerRequestEntity.builder()
                 .fromMember(fromMember)
                 .toMember(toMember)
                 .responseStatus(PartnerResponseStatus.NO)

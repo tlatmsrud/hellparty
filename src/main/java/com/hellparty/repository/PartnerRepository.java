@@ -1,6 +1,6 @@
 package com.hellparty.repository;
 
-import com.hellparty.domain.Partner;
+import com.hellparty.domain.PartnerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-06
  * description  :
  */
-public interface PartnerRepository extends JpaRepository<Partner, Long> {
+public interface PartnerRepository extends JpaRepository<PartnerEntity, Long> {
 }

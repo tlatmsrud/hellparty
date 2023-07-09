@@ -1,7 +1,7 @@
 package com.hellparty.service;
 
 import attributes.TestFixture;
-import com.hellparty.domain.PartnerRequest;
+import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.repository.MemberRepository;
@@ -53,7 +53,7 @@ class PartnerRequestServiceTest implements TestFixture {
     @Test
     void requestPartnerWithValidMemberId() {
         partnerRequestService.requestPartner(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
-        verify(partnerRequestRepository).save(any(PartnerRequest.class));
+        verify(partnerRequestRepository).save(any(PartnerRequestEntity.class));
     }
 
     @Test

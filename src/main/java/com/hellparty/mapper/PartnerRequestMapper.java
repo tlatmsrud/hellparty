@@ -1,6 +1,6 @@
 package com.hellparty.mapper;
 
-import com.hellparty.domain.PartnerRequest;
+import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.PartnerRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class PartnerRequestMapper {
 
     private final MemberMapper memberMapper;
-    public PartnerRequestDTO entityToDto(PartnerRequest partnerRequest){
+    public PartnerRequestDTO entityToDto(PartnerRequestEntity partnerRequest){
         MemberDTO toMember = memberMapper.memberEntityToDto(partnerRequest.getToMember());
 
         return PartnerRequestDTO.builder()

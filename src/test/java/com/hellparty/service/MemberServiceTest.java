@@ -1,7 +1,7 @@
 package com.hellparty.service;
 
-import com.hellparty.domain.Member;
-import com.hellparty.domain.MemberHealth;
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
 import com.hellparty.dto.ExecDayDTO;
@@ -79,21 +79,21 @@ class MemberServiceTest {
                 .willReturn(false);
 
         given(memberRepository.findById(VALID_ID))
-                .willReturn(Optional.of(Member.builder().id(VALID_ID).build()));
+                .willReturn(Optional.of(MemberEntity.builder().id(VALID_ID).build()));
 
         given(memberHealthRepository.findById(VALID_ID))
-                .willReturn(Optional.of(MemberHealth.builder().id(VALID_ID).build()));
+                .willReturn(Optional.of(MemberHealthEntity.builder().id(VALID_ID).build()));
 
         given(memberHealthRepository.findById(INVALID_ID))
                 .willReturn(Optional.empty());
 
         given(memberMapper.memberHealthUpdateDtoToEntity(any(MemberHealthDTO.Update.class)))
-                .willReturn(MemberHealth.builder().id(VALID_ID).build());
+                .willReturn(MemberHealthEntity.builder().id(VALID_ID).build());
 
-        given(memberMapper.memberEntityToDto(any(Member.class)))
+        given(memberMapper.memberEntityToDto(any(MemberEntity.class)))
                 .willReturn(MemberDTO.builder().id(VALID_ID).build());
 
-        given(memberMapper.memberHealthEntityToDto(any(MemberHealth.class)))
+        given(memberMapper.memberHealthEntityToDto(any(MemberHealthEntity.class)))
                 .willReturn(MemberHealthDTO.builder().id(VALID_ID).build());
     }
     @Test
@@ -134,7 +134,7 @@ class MemberServiceTest {
     @Test
     void updateHealthDetailWithValidId(){
         assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(VALID_ID, UPDATE_HEALTH_DETAIL_REQUEST));
-        verify(memberHealthRepository).save(any(MemberHealth.class));
+        verify(memberHealthRepository).save(any(MemberHealthEntity.class));
     }
 
     @Test

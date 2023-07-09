@@ -1,6 +1,6 @@
 package com.hellparty.oauth;
 
-import com.hellparty.domain.Member;
+import com.hellparty.domain.MemberEntity;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.OAuthType;
 import com.hellparty.enums.PartnerFindStatus;
@@ -65,8 +65,8 @@ public class OAuth2Attributes {
                 (String)attributes.get("picture"));
     }
 
-    public Member toMemberEntity(){
-        return Member.builder()
+    public MemberEntity toMemberEntity(){
+        return MemberEntity.builder()
                 .email(email)
                 .nickname(nickname)
                 .profileUrl(profileUrl)

@@ -25,14 +25,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Member extends Base{
+public class MemberEntity extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @OneToMany(mappedBy = "memberId")
-    private List<Partner> partnerList;
+    @OneToMany(mappedBy = "member")
+    private List<PartnerEntity> partnerList;
 
     @Column(name = "NICKNAME", nullable = false)
     private String nickname;

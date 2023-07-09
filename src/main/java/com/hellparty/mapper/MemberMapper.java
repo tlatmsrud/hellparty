@@ -1,7 +1,7 @@
 package com.hellparty.mapper;
 
-import com.hellparty.domain.Member;
-import com.hellparty.domain.MemberHealth;
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.domain.embedded.ExecDay;
 import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.MemberDTO;
@@ -24,7 +24,7 @@ public class MemberMapper {
 
     private final MemberRepository memberRepository;
 
-    public MemberDTO memberEntityToDto(Member member){
+    public MemberDTO memberEntityToDto(MemberEntity member){
         return MemberDTO.builder()
                 .id(member.getId())
                 .age(member.getAge())
@@ -40,7 +40,7 @@ public class MemberMapper {
 
     }
 
-    public MemberHealthDTO memberHealthEntityToDto(MemberHealth memberHealth){
+    public MemberHealthDTO memberHealthEntityToDto(MemberHealthEntity memberHealth){
 
         return MemberHealthDTO.builder()
                 .id(memberHealth.getId())
@@ -55,12 +55,12 @@ public class MemberMapper {
                 .build();
     }
 
-    public MemberHealth memberHealthUpdateDtoToEntity(MemberHealthDTO.Update dto){
+    public MemberHealthEntity memberHealthUpdateDtoToEntity(MemberHealthDTO.Update dto){
 
-        Member findMember = memberRepository.findById(dto.getId())
+        MemberEntity findMember = memberRepository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
-        return MemberHealth.builder()
+        return MemberHealthEntity.builder()
                 .member(findMember)
                 .execStartTime(dto.getExecStartTime())
                 .execEndTime(dto.getExecEndTime())

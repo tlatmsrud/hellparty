@@ -1,6 +1,6 @@
 package com.hellparty.repository.impl;
 
-import com.hellparty.domain.PartnerRequest;
+import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.mapper.PartnerRequestMapper;
 import com.hellparty.repository.custom.PartnerRequestRepositoryCustom;
@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hellparty.domain.QPartnerRequest.partnerRequest;
+import static com.hellparty.domain.QPartnerRequestEntity.partnerRequestEntity;
 
 /**
  * title        : 파트너 요청 리포지토리 구현체
@@ -29,8 +29,8 @@ public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCus
     private final PartnerRequestMapper partnerRequestMapper;
     @Override
     public Page<PartnerRequestDTO> findPartnerRequestList(Long memberId, Pageable pageable) {
-        List<PartnerRequest> list = queryFactory
-                .selectFrom(partnerRequest)
+        List<PartnerRequestEntity> list = queryFactory
+                .selectFrom(partnerRequestEntity)
                 .where(
                         eqMemberId(memberId)
                 )
@@ -39,8 +39,8 @@ public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCus
                 .fetch();
 
         Long totalCount = queryFactory
-                .select(partnerRequest.count())
-                .from(partnerRequest)
+                .select(partnerRequestEntity.count())
+                .from(partnerRequestEntity)
                 .where(eqMemberId(memberId))
                 .fetchOne();
 
@@ -52,6 +52,6 @@ public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCus
     }
 
     public BooleanExpression eqMemberId(Long memberId){
-        return memberId == null ? null : partnerRequest.fromMember.id.eq(memberId);
+        return memberId == null ? null : partnerRequestEntity.fromMember.id.eq(memberId);
     }
 }

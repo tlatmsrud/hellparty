@@ -1,7 +1,7 @@
 package attributes;
 
-import com.hellparty.domain.Member;
-import com.hellparty.domain.PartnerRequest;
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.enums.*;
@@ -24,7 +24,7 @@ public interface TestFixture{
     Long INVALID_MEMBER_ID = 1000L;
 
     Pageable DEFAULT_PAGEABLE = PageRequest.of(0,10);
-    Member LOGIN_MEMBER_ENTITY = Member.builder()
+    MemberEntity LOGIN_MEMBER_ENTITY = MemberEntity.builder()
             .id(LOGIN_MEMBER_ID)
             .age(28)
             .profileUrl("profileUrl")
@@ -38,7 +38,7 @@ public interface TestFixture{
             .findStatus(PartnerFindStatus.Y)
             .build();
 
-    Member VALID_MEMBER_ENTITY = Member.builder()
+    MemberEntity VALID_MEMBER_ENTITY = MemberEntity.builder()
             .id(VALID_MEMBER_ID)
             .age(23)
             .profileUrl("profileUrl")
@@ -52,7 +52,7 @@ public interface TestFixture{
             .findStatus(PartnerFindStatus.Y)
             .build();
 
-    Member NOT_LOOKING_FOR_PARTNER_MEMBER_ENTITY = Member.builder()
+    MemberEntity NOT_LOOKING_FOR_PARTNER_MEMBER_ENTITY = MemberEntity.builder()
             .id(NOT_LOOKING_FOR_PARTNER_MEMBER_ID)
             .age(30)
             .profileUrl("profileUrl")
@@ -81,7 +81,7 @@ public interface TestFixture{
 
     PartnerRequestDTO.Answer INVALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(INVALID_PARTNER_REQUEST_ID, PartnerResponseStatus.NO);
 
-    PartnerRequest PARTNER_REQUEST_TO_LOGIN_MEMBER = PartnerRequest.builder()
+    PartnerRequestEntity PARTNER_REQUEST_TO_LOGIN_MEMBER = PartnerRequestEntity.builder()
             .id(1L)
             .toMember(LOGIN_MEMBER_ENTITY)
             .fromMember(VALID_MEMBER_ENTITY)

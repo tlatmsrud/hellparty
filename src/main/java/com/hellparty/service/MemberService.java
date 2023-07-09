@@ -1,7 +1,7 @@
 package com.hellparty.service;
 
-import com.hellparty.domain.Member;
-import com.hellparty.domain.MemberHealth;
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
@@ -46,7 +46,7 @@ public class MemberService {
      * @return 사용자 기본정보
      */
     public MemberDTO getDetail(Long id){
-        Member findMember = memberRepository.findById(id).orElseThrow(
+        MemberEntity findMember = memberRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("사용자를 찾을 수 없습니다.")
         );
 
@@ -59,7 +59,7 @@ public class MemberService {
      * @return 사용자 헬스정보
      */
     public MemberHealthDTO getHealthDetail(Long id){
-        MemberHealth findMemberHealth = memberHealthRepository.findById(id)
+        MemberHealthEntity findMemberHealth = memberHealthRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("입력된 헬스 정보가 없습니다. 헬스 정보를 입력해주세요."));
 
         return memberMapper.memberHealthEntityToDto(findMemberHealth);
@@ -72,7 +72,7 @@ public class MemberService {
      */
     public void updateDetail(Long id, MemberDTO.Update request){
 
-        Member findMember = memberRepository.findById(id).get();
+        MemberEntity findMember = memberRepository.findById(id).get();
 
         findMember.updateMember(
                 request.getNickname()
@@ -97,7 +97,7 @@ public class MemberService {
             throw new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.");
         }
 
-        MemberHealth memberHealth = memberMapper.memberHealthUpdateDtoToEntity(request);
+        MemberHealthEntity memberHealth = memberMapper.memberHealthUpdateDtoToEntity(request);
         memberHealthRepository.save(memberHealth);
     }
 
@@ -108,7 +108,7 @@ public class MemberService {
      */
     public void updateExecStatus(Long id, ExecStatus status) {
 
-        Member findMember = memberRepository.findById(id)
+        MemberEntity findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updateExecStatus(status);
@@ -122,7 +122,7 @@ public class MemberService {
      */
     public void updatePartnerFindStatus(Long id, PartnerFindStatus status){
 
-        Member findMember = memberRepository.findById(id)
+        MemberEntity findMember = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updatePartnerFindStatus(status);

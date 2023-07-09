@@ -22,7 +22,7 @@ import java.sql.Time;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberHealth {
+public class MemberHealthEntity {
 
     @Id @GeneratedValue
     @Column(name = "ID")
@@ -30,7 +30,7 @@ public class MemberHealth {
 
     @OneToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private MemberEntity member;
 
     @Column(name = "EXEC_STT_TIME")
     @Temporal(TemporalType.TIME)

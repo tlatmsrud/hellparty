@@ -1,6 +1,6 @@
 package com.hellparty.repository;
 
-import com.hellparty.domain.MemberHealth;
+import com.hellparty.domain.MemberHealthEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-01
  * description  :
  */
-public interface MemberHealthRepository extends JpaRepository<MemberHealth, Long> {
+public interface MemberHealthRepository extends JpaRepository<MemberHealthEntity, Long> {
     
 }

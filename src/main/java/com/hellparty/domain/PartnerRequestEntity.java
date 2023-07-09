@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartnerRequest {
+public class PartnerRequestEntity {
 
     @Id
     @GeneratedValue
@@ -29,11 +29,11 @@ public class PartnerRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FROM_MEMBER_ID")
-    private Member fromMember;
+    private MemberEntity fromMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TO_MEMBER_ID")
-    private Member toMember;
+    private MemberEntity toMember;
 
     @Column(name = "RESPONSE_STATUS")
     @Enumerated(EnumType.STRING)

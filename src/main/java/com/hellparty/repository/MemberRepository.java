@@ -1,6 +1,6 @@
 package com.hellparty.repository;
 
-import com.hellparty.domain.Member;
+import com.hellparty.domain.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-01
  * description  :
  */
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
     boolean existsMemberByEmail(String email);
 }

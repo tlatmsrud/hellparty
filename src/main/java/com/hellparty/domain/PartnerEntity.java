@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "TBL_PARTNER")
-public class Partner extends Base{
+public class PartnerEntity extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "ID")
@@ -19,9 +19,9 @@ public class Partner extends Base{
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member memberId;
+    private MemberEntity member;
 
     @ManyToOne
     @JoinColumn(name = "PARTNER_ID")
-    private Member partnerId;
+    private MemberEntity partner;
 }
