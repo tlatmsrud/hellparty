@@ -14,4 +14,6 @@ public interface PartnerRequestRepositoryCustom {
 
     Page<PartnerRequestDTO> findPartnerRequestList(Long memberId, Pageable pageable);
 
+    Page<PartnerRequestDTO>  findPartnerRequestToMeList(Long memberId, Pageable pageable);
+
 }
