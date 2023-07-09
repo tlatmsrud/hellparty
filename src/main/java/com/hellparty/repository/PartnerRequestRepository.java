@@ -1,6 +1,7 @@
 package com.hellparty.repository;
 
 import com.hellparty.domain.PartnerRequestEntity;
+import com.hellparty.repository.custom.PartnerRequestRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -9,6 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-07
  * description  : 파트너 요청 관리 리포지토리
  */
-public interface PartnerRequestRepository extends JpaRepository<PartnerRequestEntity, Long> , com.hellparty.repository.custom.PartnerRequestRepositoryCustom {
+public interface PartnerRequestRepository extends JpaRepository<PartnerRequestEntity, Long> , PartnerRequestRepositoryCustom {
 
 }
