@@ -3,6 +3,7 @@ package attributes;
 import com.hellparty.domain.MemberEntity;
 import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.dto.MemberDTO;
+import com.hellparty.dto.PartnerDTO;
 import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.enums.*;
 import org.springframework.data.domain.PageRequest;
@@ -87,4 +88,10 @@ public interface TestFixture{
             .fromMember(VALID_MEMBER_ENTITY)
             .responseStatus(PartnerResponseStatus.WAIT)
             .build();
+
+    List<PartnerDTO> PARTNER_DTO_LIST_FOR_LOGIN_MEMBER = Arrays.asList(
+            new PartnerDTO(1L, "파트너1", ExecStatus.W)
+            ,new PartnerDTO(2L, "파트너2", ExecStatus.I)
+            ,new PartnerDTO(3L, "파트너3", ExecStatus.H)
+    );
 }
