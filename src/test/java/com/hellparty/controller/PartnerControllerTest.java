@@ -1,8 +1,7 @@
 package com.hellparty.controller;
 
+import attributes.TestFixture;
 import attributes.TestMemberAuth;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hellparty.dto.PartnerDTO;
 import com.hellparty.service.PartnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,15 +11,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 /**
  * title        : 파트너 컨트롤러 테스트
@@ -32,32 +30,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PartnerController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(HttpEncodingAutoConfiguration.class)
-class PartnerControllerTest {
+class PartnerControllerTest implements TestFixture {
 
     @MockBean
     private PartnerService partnerService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-    private static final Long VALID_ID = 1L;
-    private static final Long PARTNER_VALID_ID = 100L;
-    private PartnerDTO.Request PARTNER_REQUEST = new PartnerDTO.Request(PARTNER_VALID_ID);
+
     @BeforeEach
     void setUp(){
-
-        willDoNothing().given(partnerService).RequestPartner(eq(VALID_ID), any(PartnerDTO.Request.class));
-
+        given(partnerService.getPartnerList(LOGIN_MEMBER_ID))
+                .willReturn(PARTNER_DTO_LIST_FOR_LOGIN_MEMBER);
     }
     @Test
     @TestMemberAuth
-    void requestPartner() throws Exception {
-
+    void getPartnerListWithValidMemberId() throws Exception {
         mockMvc.perform(
-                post("/api/partner")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(PARTNER_REQUEST))
-                        .with(csrf())
-        ).andExpect(status().isNoContent());
+                get("/api/partner/list")
+        ).andExpect(status().isOk())
+                .andExpect(content().string(containsString("파트너1")));
     }
 }
