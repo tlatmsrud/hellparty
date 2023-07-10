@@ -68,9 +68,9 @@ public interface TestFixture{
             .build();
 
     List<PartnerRequestDTO> PARTNER_REQUEST_DTO_LIST = Arrays.asList(
-            new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(20L).build(), PartnerResponseStatus.WAIT)
-            ,new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(21L).build(), PartnerResponseStatus.NO)
-            ,new PartnerRequestDTO(LOGIN_MEMBER_ID, MemberDTO.builder().id(22L).build(), PartnerResponseStatus.YES)
+            new PartnerRequestDTO(1L, MemberDTO.builder().id(20L).build(), PartnerResponseStatus.WAIT)
+            ,new PartnerRequestDTO(2L, MemberDTO.builder().id(21L).build(), PartnerResponseStatus.NO)
+            ,new PartnerRequestDTO(3L, MemberDTO.builder().id(22L).build(), PartnerResponseStatus.YES)
 
     );
 

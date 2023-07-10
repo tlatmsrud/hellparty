@@ -62,6 +62,9 @@ class PartnerRequestControllerTest implements TestFixture {
         given(partnerRequestService.getPartnerRequestList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
                 .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
 
+        given(partnerRequestService.getPartnerRequestToMeList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
+
         willDoNothing().given(partnerRequestService)
                 .answerPartnerRequest(eq(LOGIN_MEMBER_ID), any(PartnerRequestDTO.Answer.class));
     }
@@ -103,8 +106,20 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner-req")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("20")));
+                .andExpect(content().string(containsString("\"numberOfElements\":3")))
+                .andExpect(content().string(containsString("\"id\":20")));
     }
+
+    @Test
+    @TestMemberAuth
+    void getPartnerRequestToMeList() throws Exception{
+        mockMvc.perform(
+                get("/api/partner-req/to-me")
+        ).andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"numberOfElements\":3")))
+                .andExpect(content().string(containsString("\"id\":20")));
+    }
+
 
     @Test
     @TestMemberAuth
@@ -116,4 +131,6 @@ class PartnerRequestControllerTest implements TestFixture {
                         .with(csrf())
         ).andExpect(status().isNoContent());
     }
+
+
 }

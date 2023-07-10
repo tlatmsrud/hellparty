@@ -2,12 +2,15 @@ package com.hellparty.service;
 
 import attributes.TestFixture;
 import com.hellparty.domain.PartnerRequestEntity;
+import com.hellparty.dto.PartnerRequestDTO;
 import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.repository.MemberRepository;
 import com.hellparty.repository.PartnerRequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 
 import java.util.Optional;
@@ -49,6 +52,12 @@ class PartnerRequestServiceTest implements TestFixture {
 
         given(partnerRequestRepository.findById(VALID_PARTNER_REQUEST_ID))
                 .willReturn(Optional.of(PARTNER_REQUEST_TO_LOGIN_MEMBER));
+
+        given(partnerRequestRepository.findPartnerRequestList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE))
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
+
+        given(partnerRequestRepository.findPartnerRequestToMeList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE))
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
     }
     @Test
     void requestPartnerWithValidMemberId() {
@@ -106,5 +115,22 @@ class PartnerRequestServiceTest implements TestFixture {
         assertThat(partnerRequestService
                 .isRequestForLoginMember(VALID_MEMBER_ID, PARTNER_REQUEST_TO_LOGIN_MEMBER))
                 .isFalse();
+    }
+
+    @Test
+    void getPartnerRequestListWithLoginMemberId(){
+        Page<PartnerRequestDTO> result = partnerRequestService
+                .getPartnerRequestList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE);
+
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).isEqualTo(PARTNER_REQUEST_DTO_LIST);
+    }
+    @Test
+    void getPartnerRequestToMeListWithLoginMemberId(){
+        Page<PartnerRequestDTO> result = partnerRequestService
+                .getPartnerRequestToMeList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE);
+
+        assertThat(result.getTotalElements()).isEqualTo(3);
+        assertThat(result.getContent()).isEqualTo(PARTNER_REQUEST_DTO_LIST);
     }
 }
