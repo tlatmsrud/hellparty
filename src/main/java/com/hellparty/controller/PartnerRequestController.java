@@ -48,6 +48,12 @@ public class PartnerRequestController {
         return partnerRequestService.getPartnerRequestList(memberId, pageable);
     }
 
+    /**
+     * 나에게 요청한 파트너 요청 리스트 조회
+     * @param memberId - 사용자 ID
+     * @param pageable - 페이지 객체
+     * @return 페이징 처리된 나에게 요청한 파트너 요청 리스트
+     */
     @GetMapping("/to-me")
     @ResponseStatus(HttpStatus.OK)
     public Page<PartnerRequestDTO> getPartnerRequestToMeList(@LoginMemberId Long memberId
