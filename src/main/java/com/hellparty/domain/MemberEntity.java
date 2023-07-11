@@ -34,6 +34,9 @@ public class MemberEntity extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<PartnerEntity> partnerList;
 
+    @OneToOne(mappedBy = "member")
+    private MemberHealthEntity memberHealth;
+
     @Column(name = "NICKNAME", nullable = false)
     private String nickname;
 
