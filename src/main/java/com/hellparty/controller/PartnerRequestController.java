@@ -43,7 +43,7 @@ public class PartnerRequestController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PartnerRequestDTO> getPartnerRequestList(@LoginMemberId Long memberId
+    public Page<PartnerRequestDTO.History> getPartnerRequestList(@LoginMemberId Long memberId
             , @PageableDefault Pageable pageable){
         return partnerRequestService.getPartnerRequestList(memberId, pageable);
     }
@@ -56,7 +56,7 @@ public class PartnerRequestController {
      */
     @GetMapping("/to-me")
     @ResponseStatus(HttpStatus.OK)
-    public Page<PartnerRequestDTO> getPartnerRequestToMeList(@LoginMemberId Long memberId
+    public Page<PartnerRequestDTO.History> getPartnerRequestToMeList(@LoginMemberId Long memberId
             , @PageableDefault Pageable pageable){
         return partnerRequestService.getPartnerRequestToMeList(memberId, pageable);
     }

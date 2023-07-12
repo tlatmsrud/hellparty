@@ -2,7 +2,6 @@ package com.hellparty.dto;
 
 import com.hellparty.enums.PartnerResponseStatus;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,14 +12,20 @@ import lombok.NoArgsConstructor;
  * description  : 파트너 요청 관련 DTO
  */
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 public class PartnerRequestDTO {
-    private Long id;
-    private MemberDTO member;
-    private PartnerResponseStatus status;
+
+    @Getter
+    @AllArgsConstructor
+    public static class History{
+        private Long requestId;
+        private PartnerResponseStatus status;
+        private Long memberId;
+        private String nickname;
+        private String profileUrl;
+
+    }
 
     @AllArgsConstructor
     @Getter

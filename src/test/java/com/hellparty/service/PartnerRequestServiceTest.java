@@ -119,7 +119,7 @@ class PartnerRequestServiceTest implements TestFixture {
 
     @Test
     void getPartnerRequestListWithLoginMemberId(){
-        Page<PartnerRequestDTO> result = partnerRequestService
+        Page<PartnerRequestDTO.History> result = partnerRequestService
                 .getPartnerRequestList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE);
 
         assertThat(result.getTotalElements()).isEqualTo(3);
@@ -127,7 +127,7 @@ class PartnerRequestServiceTest implements TestFixture {
     }
     @Test
     void getPartnerRequestToMeListWithLoginMemberId(){
-        Page<PartnerRequestDTO> result = partnerRequestService
+        Page<PartnerRequestDTO.History> result = partnerRequestService
                 .getPartnerRequestToMeList(LOGIN_MEMBER_ID, DEFAULT_PAGEABLE);
 
         assertThat(result.getTotalElements()).isEqualTo(3);

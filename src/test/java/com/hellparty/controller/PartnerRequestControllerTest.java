@@ -106,8 +106,8 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner-req")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"numberOfElements\":3")))
-                .andExpect(content().string(containsString("\"id\":20")));
+                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_DTO_LIST))))
+                .andExpect(content().string(containsString("pageable")));
     }
 
     @Test
@@ -116,8 +116,8 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner-req/to-me")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"numberOfElements\":3")))
-                .andExpect(content().string(containsString("\"id\":20")));
+                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_DTO_LIST))))
+                .andExpect(content().string(containsString("pageable")));
     }
 
 

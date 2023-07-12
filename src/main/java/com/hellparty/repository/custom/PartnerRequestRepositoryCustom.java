@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PartnerRequestRepositoryCustom {
 
-    Page<PartnerRequestDTO> findPartnerRequestList(Long memberId, Pageable pageable);
+    Page<PartnerRequestDTO.History> findPartnerRequestList(Long memberId, Pageable pageable);
 
-    Page<PartnerRequestDTO>  findPartnerRequestToMeList(Long memberId, Pageable pageable);
+    Page<PartnerRequestDTO.History>  findPartnerRequestToMeList(Long memberId, Pageable pageable);
 
 }
