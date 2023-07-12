@@ -3,10 +3,12 @@ package com.hellparty.repository.impl;
 import com.hellparty.dto.ExecDayDTO;
 import com.hellparty.dto.PartnerFindDTO;
 import com.hellparty.enums.MBTI;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.enums.Sex;
 import com.hellparty.repository.custom.PartnerFindRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.sql.Time;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import static com.hellparty.domain.QMemberEntity.memberEntity;
 import static com.hellparty.domain.QMemberHealthEntity.memberHealthEntity;
+import static com.hellparty.domain.QPartnerEntity.partnerEntity;
 
 /**
  * title        :
@@ -28,11 +31,12 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(PartnerFindDTO.Search request) {
+    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(Long loginId, PartnerFindDTO.Search request) {
 
         return queryFactory.select(
                 Projections.constructor(PartnerFindDTO.Summary.class
                     ,memberEntity.id
+                    ,memberEntity.nickname
                     ,memberEntity.age
                     ,memberEntity.sex
                     ,memberEntity.profileUrl
@@ -52,9 +56,17 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
                         eqAge(request.getFromAge(), request.getToAge())
                         ,eqSex(request.getSex())
                         ,eqMbti(request.getMbti())
-                        ,eqExecTime(request.getExecStartTime(), request.getExecEndTime())
+                        ,eqExecStartTime(request.getExecStartTime())
+                        ,eqExecEndTime(request.getExecEndTime())
                         ,eqExecArea(request.getExecArea())
                         ,eqExecDay(request.getExecDay())
+                        ,memberEntity.findStatus.eq(PartnerFindStatus.Y)
+                        ,memberEntity.id.ne(loginId)
+                        ,memberEntity.notIn(
+                                JPAExpressions.select(partnerEntity.partner)
+                                        .from(partnerEntity)
+                                        .where(partnerEntity.member.id.eq(loginId))
+                        )
                 ).fetch();
 
     }
@@ -71,9 +83,12 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
         return mbti == null ? null : memberEntity.mbti.eq(mbti);
     }
 
-    public BooleanExpression eqExecTime(Time execStartTime, Time execEndTime){
-        return memberHealthEntity.execStartTime.goe(execStartTime)
-                .and(memberHealthEntity.execEndTime.loe(execEndTime));
+    public BooleanExpression eqExecStartTime(Time execStartTime){
+        return execStartTime == null ? null : memberHealthEntity.execStartTime.goe(execStartTime);
+    }
+
+    public BooleanExpression eqExecEndTime(Time execEndTime){
+        return execEndTime == null ? null : memberHealthEntity.execEndTime.loe(execEndTime);
     }
 
     public BooleanExpression eqExecArea(Long execArea){
@@ -85,12 +100,12 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
             return null;
         }
 
-        return memberHealthEntity.execDay.sun.eq(execDay.isSun())
-                .and(memberHealthEntity.execDay.mon.eq(execDay.isSun()))
-                .and(memberHealthEntity.execDay.tue.eq(execDay.isSun()))
-                .and(memberHealthEntity.execDay.wed.eq(execDay.isSun()))
-                .and(memberHealthEntity.execDay.thu.eq(execDay.isSun()))
-                .and(memberHealthEntity.execDay.fri.eq(execDay.isSun()))
-                .and(memberHealthEntity.execDay.sat.eq(execDay.isSun()));
+        return memberEntity.memberHealth.execDay.sun.eq(execDay.isSun())
+                .and(memberEntity.memberHealth.execDay.mon.eq(execDay.isMon()))
+                .and(memberEntity.memberHealth.execDay.tue.eq(execDay.isTue()))
+                .and(memberEntity.memberHealth.execDay.wed.eq(execDay.isWed()))
+                .and(memberEntity.memberHealth.execDay.thu.eq(execDay.isThu()))
+                .and(memberEntity.memberHealth.execDay.fri.eq(execDay.isFri()))
+                .and(memberEntity.memberHealth.execDay.sat.eq(execDay.isSat()));
     }
 }
