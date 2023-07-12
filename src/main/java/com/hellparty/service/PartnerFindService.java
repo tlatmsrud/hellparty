@@ -20,8 +20,8 @@ public class PartnerFindService {
 
     private final PartnerFindRepository partnerFindRepository;
 
-    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(PartnerFindDTO.Search request){
-        return partnerFindRepository.searchPartnerCandidateList(request);
+    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(Long loginId, PartnerFindDTO.Search request){
+        return partnerFindRepository.searchPartnerCandidateList(loginId, request);
     }
 
 }

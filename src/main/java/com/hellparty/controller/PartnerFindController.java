@@ -1,5 +1,6 @@
 package com.hellparty.controller;
 
+import com.hellparty.annotation.LoginMemberId;
 import com.hellparty.dto.PartnerFindDTO;
 import com.hellparty.service.PartnerFindService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class PartnerFindController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(@RequestBody PartnerFindDTO.Search request){
-        return partnerFindService.searchPartnerCandidateList(request);
+    public List<PartnerFindDTO.Summary> searchPartnerCandidateList(@LoginMemberId Long loginId, @RequestBody PartnerFindDTO.Search request){
+        return partnerFindService.searchPartnerCandidateList(loginId, request);
     }
 }

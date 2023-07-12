@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * date         : 2023-07-12
  * description  : 파트너 구하기 리포지토리
  */
-public interface PartnerFindRepository extends JpaRepository<Long, PartnerEntity>, PartnerFindRepositoryCustom {
+public interface PartnerFindRepository extends JpaRepository<PartnerEntity, Long>, PartnerFindRepositoryCustom {
 }

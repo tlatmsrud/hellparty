@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,10 +42,10 @@ class PartnerFindControllerTest implements TestFixture {
     @MockBean
     private PartnerFindService partnerFindService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @BeforeEach
     void setUp(){
-        given(partnerFindService.searchPartnerCandidateList(any(PartnerFindDTO.Search.class)))
+        given(partnerFindService.searchPartnerCandidateList(eq(LOGIN_MEMBER_ID), any(PartnerFindDTO.Search.class)))
                 .willReturn(PARTNER_FIND_DTO_SUMMARY_LIST);
     }
 
@@ -53,7 +54,7 @@ class PartnerFindControllerTest implements TestFixture {
     public void searchPartnerCandidateList() throws Exception {
         mockMvc.perform(
                 get("/api/find-partner/search")
-                        .content(objectMapper.writeValueAsString(PARTNER_SEARCH_DTO_ONLY_AGE_CONDITION))
+                        .content(objectMapper.writeValueAsString(PARTNER_FIND_SEARCH_REQUEST))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"memberId\":11")));
