@@ -66,11 +66,10 @@ public interface TestFixture{
             .findStatus(PartnerFindStatus.N)
             .build();
 
-    List<PartnerRequestDTO> PARTNER_REQUEST_DTO_LIST = Arrays.asList(
-            new PartnerRequestDTO(1L, MemberDTO.builder().id(20L).build(), PartnerResponseStatus.WAIT)
-            ,new PartnerRequestDTO(2L, MemberDTO.builder().id(21L).build(), PartnerResponseStatus.NO)
-            ,new PartnerRequestDTO(3L, MemberDTO.builder().id(22L).build(), PartnerResponseStatus.YES)
-
+    List<PartnerRequestDTO.History> PARTNER_REQUEST_DTO_LIST = Arrays.asList(
+            new PartnerRequestDTO.History(1L, PartnerResponseStatus.NO, 30L, "테스터1", "profileUrl1")
+            ,new PartnerRequestDTO.History(22L, PartnerResponseStatus.YES, 31L, "테스터2", "profileUrl2")
+            ,new PartnerRequestDTO.History(34L, PartnerResponseStatus.NO, 32L, "테스터3", "profileUrl3")
     );
 
     Long VALID_PARTNER_REQUEST_ID = 1L;
