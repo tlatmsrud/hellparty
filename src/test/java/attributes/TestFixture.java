@@ -93,7 +93,7 @@ public interface TestFixture{
             ,new PartnerDTO(3L, "파트너3", ExecStatus.H)
     );
     ExecDayDTO EXEC_DAY_DTO = new ExecDayDTO(false, true, true, true, true, true, false);
-    PartnerFindDTO.Search PARTNER_SEARCH_DTO_ONLY_AGE_CONDITION = PartnerFindDTO.Search.builder()
+    PartnerFindDTO.Search PARTNER_FIND_SEARCH_REQUEST = PartnerFindDTO.Search.builder()
             .fromAge(20)
             .toAge(30)
             .sex(null)
