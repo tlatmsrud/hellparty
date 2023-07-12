@@ -1,11 +1,9 @@
 package com.hellparty.repository.impl;
 
-import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.domain.QMemberEntity;
-import com.hellparty.domain.QPartnerRequestEntity;
 import com.hellparty.dto.PartnerRequestDTO;
-import com.hellparty.mapper.PartnerRequestMapper;
 import com.hellparty.repository.custom.PartnerRequestRepositoryCustom;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.hellparty.domain.QPartnerRequestEntity.partnerRequestEntity;
 
@@ -28,18 +25,24 @@ import static com.hellparty.domain.QPartnerRequestEntity.partnerRequestEntity;
 @RequiredArgsConstructor
 public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    private final PartnerRequestMapper partnerRequestMapper;
 
     /**
-     * 파트너 요청 리스트 조회
+     * 파트너 요청한 리스트 조회
      * @param memberId - 사용자 ID
      * @param pageable - 페이지 객체
-     * @return 사용자가 요청한 파트너 요청 리스트 조회
+     * @return 파트너 요청 리스트 조회
      */
     @Override
-    public Page<PartnerRequestDTO> findPartnerRequestList(Long memberId, Pageable pageable) {
-        List<PartnerRequestEntity> list = queryFactory
-                .selectFrom(partnerRequestEntity)
+    public Page<PartnerRequestDTO.History> findPartnerRequestList(Long memberId, Pageable pageable) {
+        List<PartnerRequestDTO.History> list = queryFactory
+                .select(Projections.constructor(PartnerRequestDTO.History.class
+                        ,partnerRequestEntity.id
+                        ,partnerRequestEntity.responseStatus
+                        ,partnerRequestEntity.toMember.id
+                        ,partnerRequestEntity.toMember.nickname
+                        ,partnerRequestEntity.toMember.profileUrl
+                ))
+                .from(partnerRequestEntity)
                 .where(
                         eqMemberIdWithMemberEntity(partnerRequestEntity.fromMember, memberId))
                 .offset(pageable.getOffset())
@@ -53,23 +56,26 @@ public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCus
                         eqMemberIdWithMemberEntity(partnerRequestEntity.fromMember, memberId))
                 .fetchOne();
 
-        List<PartnerRequestDTO> result = list.stream()
-                .map(partnerRequestMapper::entityToDto)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(result, pageable, totalCount);
+        return new PageImpl<>(list, pageable, totalCount);
     }
 
     /**
-     * 타인이 요청한 파트너 요청 리스트 조회
+     * 파트너 요청 받은 리스트 조회
      * @param memberId - 사용자 ID
      * @param pageable - 페이지 객체
-     * @return 타인이 요청한 파트너 요청 리스트 조회
+     * @return 파트너 요청 받은 리스트 조회
      */
     @Override
-    public Page<PartnerRequestDTO> findPartnerRequestToMeList(Long memberId, Pageable pageable) {
-        List<PartnerRequestEntity> list = queryFactory
-                .selectFrom(partnerRequestEntity)
+    public Page<PartnerRequestDTO.History> findPartnerRequestToMeList(Long memberId, Pageable pageable) {
+        List<PartnerRequestDTO.History> list = queryFactory
+                .select(Projections.constructor(PartnerRequestDTO.History.class
+                        ,partnerRequestEntity.id
+                        ,partnerRequestEntity.responseStatus
+                        ,partnerRequestEntity.fromMember.id
+                        ,partnerRequestEntity.fromMember.nickname
+                        ,partnerRequestEntity.fromMember.profileUrl
+                        ))
+                .from(partnerRequestEntity)
                 .where(
                     eqMemberIdWithMemberEntity(partnerRequestEntity.toMember, memberId))
                 .offset(pageable.getOffset())
@@ -83,11 +89,7 @@ public class PartnerRequestRepositoryImpl implements PartnerRequestRepositoryCus
                         eqMemberIdWithMemberEntity(partnerRequestEntity.toMember, memberId))
                 .fetchOne();
 
-        List<PartnerRequestDTO> result = list.stream()
-                .map(partnerRequestMapper::entityToDto)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(result, pageable, totalCount);
+        return new PageImpl<>(list, pageable, totalCount);
     }
 
     public BooleanExpression eqMemberIdWithMemberEntity(QMemberEntity memberEntity, Long memberId){
