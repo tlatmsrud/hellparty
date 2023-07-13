@@ -1,5 +1,6 @@
 package com.hellparty.dto;
 
+import com.hellparty.enums.Division;
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
 import lombok.AllArgsConstructor;
@@ -45,5 +46,32 @@ public class PartnerFindDTO {
         private Time execStartTime;
         private Time execEndTime;
 
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class Detail{
+        private Long memberId;
+        private String nickname;
+        private int age;
+        private double height;
+        private double weight;
+        private MBTI mbti;
+        private Sex sex;
+        private ExecDayDTO execDay;
+        private Time execStartTime;
+        private Time execEndTime;
+        private Division div;
+        private Long execArea;
+        private String placeName;
+        private String address;
+        private Long x;
+        private Long y;
+        private String spclNote;
+        private double benchPress;
+        private double squat;
+        private double deadlift;
+        private String healthMotto;
     }
 }
