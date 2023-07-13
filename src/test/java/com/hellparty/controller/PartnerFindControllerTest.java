@@ -16,7 +16,6 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -47,6 +46,9 @@ class PartnerFindControllerTest implements TestFixture {
     void setUp(){
         given(partnerFindService.searchPartnerCandidateList(eq(LOGIN_MEMBER_ID), any(PartnerFindDTO.Search.class)))
                 .willReturn(PARTNER_FIND_DTO_SUMMARY_LIST);
+
+        given(partnerFindService.getPartnerCandidateDetail(VALID_MEMBER_ID))
+                .willReturn(PARTNER_FIND_DETAIL_FOR_VALID_MEMBER_ID);
     }
 
     @Test
@@ -57,7 +59,16 @@ class PartnerFindControllerTest implements TestFixture {
                         .content(objectMapper.writeValueAsString(PARTNER_FIND_SEARCH_REQUEST))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"memberId\":11")));
+                .andExpect(content().string(objectMapper.writeValueAsString(PARTNER_FIND_DTO_SUMMARY_LIST)));
+    }
+
+    @Test
+    @TestMemberAuth
+    public void getPartnerCandidateDetail() throws Exception{
+        mockMvc.perform(
+                get("/api/find-partner/detail/{memberId}", VALID_MEMBER_ID)
+        ).andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(PARTNER_FIND_DETAIL_FOR_VALID_MEMBER_ID)));
     }
 
 }
