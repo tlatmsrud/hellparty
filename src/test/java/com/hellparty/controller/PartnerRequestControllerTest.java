@@ -8,6 +8,7 @@ import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
 import com.hellparty.service.PartnerRequestService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
@@ -23,9 +24,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,13 +62,17 @@ class PartnerRequestControllerTest implements TestFixture {
                 .requestPartner(eq(LOGIN_MEMBER_ID), eq(NOT_LOOKING_FOR_PARTNER_MEMBER_ID));
 
         given(partnerRequestService.getPartnerRequestList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
-                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_HISTORY_FROM_LOGIN_MEMBER,DEFAULT_PAGEABLE,PARTNER_REQUEST_HISTORY_FROM_LOGIN_MEMBER.size()));
 
         given(partnerRequestService.getPartnerRequestToMeList(eq(LOGIN_MEMBER_ID), any(Pageable.class)))
-                .willReturn(new PageImpl<>(PARTNER_REQUEST_DTO_LIST,DEFAULT_PAGEABLE,PARTNER_REQUEST_DTO_LIST.size()));
+                .willReturn(new PageImpl<>(PARTNER_REQUEST_HISTORY_TO_LOGIN_MEMBER,DEFAULT_PAGEABLE,PARTNER_REQUEST_HISTORY_TO_LOGIN_MEMBER.size()));
 
         willDoNothing().given(partnerRequestService)
                 .answerPartnerRequest(eq(LOGIN_MEMBER_ID), any(PartnerRequestDTO.Answer.class));
+
+        willThrow(new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.")).given(partnerRequestService)
+                .cancelPartner(LOGIN_MEMBER_ID, PARTNER_REQUEST_ID_TO_LOGIN_MEMBER);
+
     }
     @Test
     @TestMemberAuth
@@ -106,7 +112,7 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner-req")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_DTO_LIST))))
+                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_HISTORY_FROM_LOGIN_MEMBER))))
                 .andExpect(content().string(containsString("pageable")));
     }
 
@@ -116,7 +122,7 @@ class PartnerRequestControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner-req/to-me")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_DTO_LIST))))
+                .andExpect(content().string(containsString(objectMapper.writeValueAsString(PARTNER_REQUEST_HISTORY_TO_LOGIN_MEMBER))))
                 .andExpect(content().string(containsString("pageable")));
     }
 
@@ -130,6 +136,30 @@ class PartnerRequestControllerTest implements TestFixture {
                         .content(objectMapper.writeValueAsString(VALID_PARTNER_REQUEST_ANSWER))
                         .with(csrf())
         ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @TestMemberAuth
+    @DisplayName("로그인한 사용자가 했던 파트너 요청 취소")
+    void cancelPartner() throws Exception{
+        mockMvc.perform(
+                delete("/api/partner-req/{requestId}", PARTNER_REQUEST_ID_FROM_LOGIN_MEMBER)
+                        .with(csrf())
+        ).andExpect(status().isNoContent());
+
+        verify(partnerRequestService).cancelPartner(LOGIN_MEMBER_ID, PARTNER_REQUEST_ID_FROM_LOGIN_MEMBER);
+    }
+
+    @Test
+    @TestMemberAuth
+    @DisplayName("다른 사용자의 파트너 요청 취소 - BadRequestException")
+    void cancelPartnerWithNotMatchingLoginId() throws Exception{
+        mockMvc.perform(
+                delete("/api/partner-req/{requestId}", PARTNER_REQUEST_ID_TO_LOGIN_MEMBER)
+                        .with(csrf())
+        ).andExpect(status().isBadRequest());
+
+        verify(partnerRequestService).cancelPartner(LOGIN_MEMBER_ID, PARTNER_REQUEST_ID_TO_LOGIN_MEMBER);
     }
 
 
