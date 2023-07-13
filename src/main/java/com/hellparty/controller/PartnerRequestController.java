@@ -35,6 +35,11 @@ public class PartnerRequestController {
         partnerRequestService.requestPartner(loginId, toMemberId);
     }
 
+    /**
+     * 파트너 요청 취소하기
+     * @param loginId - 로그인 ID
+     * @param requestId - 파트너 요청 ID
+     */
     @DeleteMapping("/{requestId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelPartner(@LoginMemberId Long loginId, @PathVariable("requestId") Long requestId){
