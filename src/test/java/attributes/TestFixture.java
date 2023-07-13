@@ -117,4 +117,28 @@ public interface TestFixture{
             ,new PartnerFindDTO.Summary(18L, "닉네임8", 27, Sex.M, "profileUrl7","bodyProfileUrl7",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
             ,new PartnerFindDTO.Summary(19L, "닉네임9", 28, Sex.M, "profileUrl8","bodyProfileUrl8",EXEC_DAY_DTO, Time.valueOf("10:00:00"), Time.valueOf("13:00:00"))
     );
+
+    PartnerFindDTO.Detail PARTNER_FIND_DETAIL_FOR_VALID_MEMBER_ID = PartnerFindDTO.Detail.builder()
+            .memberId(VALID_MEMBER_ID)
+            .nickname("VALID_MEMBER 닉네임")
+            .age(23)
+            .height(180)
+            .weight(68)
+            .mbti(MBTI.ISFJ)
+            .sex(Sex.M)
+            .execDay(EXEC_DAY_DTO)
+            .execStartTime(Time.valueOf("19:00:00"))
+            .execEndTime(Time.valueOf("20:00:00"))
+            .div(Division.THREE)
+            .execArea(1234L)
+            .placeName("삼성짐")
+            .address("서울시 중랑구 면목동 19동 삼성짐")
+            .x(674L)
+            .y(123L)
+            .spclNote("특이사항")
+            .benchPress(100)
+            .squat(200)
+            .deadlift(110)
+            .healthMotto("헬스가 인생이다.")
+            .build();
 }
