@@ -28,4 +28,10 @@ public class PartnerFindController {
     public List<PartnerFindDTO.Summary> searchPartnerCandidateList(@LoginMemberId Long loginId, @RequestBody PartnerFindDTO.Search request){
         return partnerFindService.searchPartnerCandidateList(loginId, request);
     }
+
+    @GetMapping("/detail/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    public PartnerFindDTO.Detail getPartnerCandidateDetail(@PathVariable Long memberId){
+        return partnerFindService.getPartnerCandidateDetail(memberId);
+    }
 }

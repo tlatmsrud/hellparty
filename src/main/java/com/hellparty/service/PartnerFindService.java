@@ -24,4 +24,7 @@ public class PartnerFindService {
         return partnerFindRepository.searchPartnerCandidateList(loginId, request);
     }
 
+    public PartnerFindDTO.Detail getPartnerCandidateDetail(Long memberId) {
+        return partnerFindRepository.getPartnerCandidateDetail(memberId);
+    }
 }

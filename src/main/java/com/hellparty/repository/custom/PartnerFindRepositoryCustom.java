@@ -13,4 +13,6 @@ import java.util.List;
 public interface PartnerFindRepositoryCustom {
 
     List<PartnerFindDTO.Summary> searchPartnerCandidateList(Long loginId, PartnerFindDTO.Search request);
+
+    PartnerFindDTO.Detail getPartnerCandidateDetail(Long memberId);
 }
