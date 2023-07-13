@@ -27,5 +27,5 @@ public class BigThree {
     private double squat;
 
     @Column(name = "DEADLIFT")
-    private double daedlift;
+    private double deadlift;
 }

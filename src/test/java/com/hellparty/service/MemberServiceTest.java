@@ -55,7 +55,7 @@ class MemberServiceTest {
             .execEndTime(Time.valueOf("20:00:00"))
             .bigThree(BigThree.builder()
                     .squat(100)
-                    .daedlift(110)
+                    .deadlift(110)
                     .benchPress(80)
                     .build())
             .execArea(123L)
