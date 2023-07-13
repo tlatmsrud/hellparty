@@ -9,6 +9,7 @@ import com.hellparty.repository.custom.PartnerFindRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.sql.Time;
@@ -60,15 +61,54 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
                         ,eqExecEndTime(request.getExecEndTime())
                         ,eqExecArea(request.getExecArea())
                         ,eqExecDay(request.getExecDay())
-                        ,memberEntity.findStatus.eq(PartnerFindStatus.Y)
-                        ,memberEntity.id.ne(loginId)
-                        ,memberEntity.notIn(
+                        ,eqFindStatus(PartnerFindStatus.Y)
+                        ,neMemberId(loginId)
+                        ,notInMember(
                                 JPAExpressions.select(partnerEntity.partner)
                                         .from(partnerEntity)
                                         .where(partnerEntity.member.id.eq(loginId))
                         )
                 ).fetch();
 
+
+    }
+
+    @Override
+    public PartnerFindDTO.Detail getPartnerCandidateDetail(Long memberId) {
+        return queryFactory.select(
+                Projections.constructor(PartnerFindDTO.Detail.class
+                    , memberEntity.id
+                    ,memberEntity.nickname
+                    ,memberEntity.age
+                    ,memberEntity.height
+                    ,memberEntity.weight
+                    ,memberEntity.mbti
+                    ,memberEntity.sex
+                    ,Projections.constructor(ExecDayDTO.class
+                        ,memberEntity.memberHealth.execDay.sun
+                        ,memberEntity.memberHealth.execDay.mon
+                        ,memberEntity.memberHealth.execDay.tue
+                        ,memberEntity.memberHealth.execDay.wed
+                        ,memberEntity.memberHealth.execDay.thu
+                        ,memberEntity.memberHealth.execDay.fri
+                        ,memberEntity.memberHealth.execDay.sat)
+                    ,memberEntity.memberHealth.execStartTime
+                    ,memberEntity.memberHealth.execEndTime
+                    ,memberEntity.memberHealth.div
+                    ,memberEntity.memberHealth.execArea
+                    ,memberEntity.memberHealth.gymAddress.placeName
+                    ,memberEntity.memberHealth.gymAddress.address
+                    ,memberEntity.memberHealth.gymAddress.x
+                    ,memberEntity.memberHealth.gymAddress.y
+                    ,memberEntity.memberHealth.spclNote
+                    ,memberEntity.memberHealth.bigThree.benchPress
+                    ,memberEntity.memberHealth.bigThree.squat
+                    ,memberEntity.memberHealth.bigThree.deadlift
+                    ,memberEntity.memberHealth.healthMotto))
+                .from(memberEntity)
+                .where(
+                        eqMemberId(memberId))
+                .fetchOne();
     }
 
     public BooleanExpression eqAge(Integer fromAge, Integer toAge){
@@ -95,6 +135,21 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
         return execArea == null ? null : memberHealthEntity.execArea.eq(execArea);
     }
 
+    public BooleanExpression neMemberId(Long memberId){
+        return memberId == null ? null : memberEntity.id.ne(memberId);
+    }
+
+    public BooleanExpression eqMemberId(Long memberId){
+        return memberId == null ? null : memberEntity.id.eq(memberId);
+    }
+
+    public BooleanExpression eqFindStatus(PartnerFindStatus status){
+        return status == null ? null : memberEntity.findStatus.eq(status);
+    }
+
+    public BooleanExpression notInMember(JPQLQuery query){
+        return memberEntity.notIn(query);
+    }
     public BooleanExpression eqExecDay(ExecDayDTO execDay){
         if(execDay == null){
             return null;
