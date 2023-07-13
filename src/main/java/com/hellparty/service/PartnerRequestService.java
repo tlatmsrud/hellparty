@@ -64,14 +64,14 @@ public class PartnerRequestService {
 
     /**
      * 파트너 요청 응답하기
-     * @param memberId - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param request - 파트너 요청 응답 Dto
      */
-    public void answerPartnerRequest(Long memberId, PartnerRequestDTO.Answer request){
+    public void answerPartnerRequest(Long loginId, PartnerRequestDTO.Answer request){
         PartnerRequestEntity partnerRequest = partnerRequestRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("요청 데이터를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
-        if(!isRequestForLoginMember(memberId, partnerRequest)){
+        if(!isRequestForLoginMember(loginId, partnerRequest)){
             throw new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.");
         }
 
@@ -80,12 +80,12 @@ public class PartnerRequestService {
 
     /**
      *
-     * @param memberId - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param partnerRequest - 파트너 요청 엔티티
-     * @return 해당 파트너 요청의 대상이 사용자일 경우 true
+     * @return 로그인한 사용자에게 온 요청일경우 true
      */
-    public boolean isRequestForLoginMember(Long memberId, PartnerRequestEntity partnerRequest){
-        return memberId.equals(partnerRequest.getToMember().getId());
+    public boolean isRequestForLoginMember(Long loginId, PartnerRequestEntity partnerRequest){
+        return loginId.equals(partnerRequest.getToMember().getId());
     }
 
     /**
@@ -96,5 +96,21 @@ public class PartnerRequestService {
      */
     public Page<PartnerRequestDTO.History> getPartnerRequestToMeList(Long memberId, Pageable pageable) {
         return partnerRequestRepository.findPartnerRequestToMeList(memberId, pageable);
+    }
+
+    /**
+     * 파트너 요청 쉬소
+     * @param loginId - 로그인 ID
+     * @param requestId - 파트너 요청 ID
+     */
+    public void cancelPartner(Long loginId, Long requestId) {
+        PartnerRequestEntity partnerRequest = partnerRequestRepository.findById(requestId)
+                .orElseThrow(()-> new NotFoundException("요청 정보를 찾을 수 없습니다. 관리자에게 문의해주세요."));
+
+        if(!partnerRequest.getFromMember().getId().equals(loginId)){
+            throw new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.");
+        }
+
+        partnerRequestRepository.delete(partnerRequest);
     }
 }
