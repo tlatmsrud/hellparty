@@ -26,13 +26,19 @@ public class PartnerRequestController {
 
     /**
      * 파트너 요청하기
-     * @param fromMemberId - 요청자 ID
+     * @param loginId - 요청자 ID
      * @param toMemberId - 파트너 요청 수신 ID
      */
     @PostMapping("/{toMemberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void requestPartner(@LoginMemberId Long fromMemberId, @PathVariable("toMemberId") Long toMemberId){
-        partnerRequestService.requestPartner(fromMemberId, toMemberId);
+    public void requestPartner(@LoginMemberId Long loginId, @PathVariable("toMemberId") Long toMemberId){
+        partnerRequestService.requestPartner(loginId, toMemberId);
+    }
+
+    @DeleteMapping("/{requestId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelPartner(@LoginMemberId Long loginId, @PathVariable("requestId") Long requestId){
+        partnerRequestService.cancelPartner(loginId, requestId);
     }
 
     /**
