@@ -40,5 +40,14 @@ public class PartnerFindRepositoryTest implements TestFixture {
 
     }
 
+    @Test
+    void getPartnerCandidateDetail(){
+        PartnerFindDTO.Detail result = partnerFindRepository.getPartnerCandidateDetail(LOGIN_MEMBER_ID);
+        assertThat(result.getNickname()).isEqualTo("심승경");
+        assertThat(result.getAge()).isEqualTo(28);
+        assertThat(result.getExecDay().isSat()).isFalse();
+        assertThat(result.getExecDay().isSun()).isFalse();
+    }
+
 
 }
