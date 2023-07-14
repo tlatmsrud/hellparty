@@ -1,9 +1,6 @@
 package com.hellparty.oauth;
 
-import com.hellparty.domain.MemberEntity;
-import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.OAuthType;
-import com.hellparty.enums.PartnerFindStatus;
 import lombok.Getter;
 
 import java.util.Map;
@@ -65,13 +62,5 @@ public class OAuth2Attributes {
                 (String)attributes.get("picture"));
     }
 
-    public MemberEntity toMemberEntity(){
-        return MemberEntity.builder()
-                .email(email)
-                .nickname(nickname)
-                .profileUrl(profileUrl)
-                .execStatus(ExecStatus.W)
-                .findStatus(PartnerFindStatus.N)
-                .build();
-    }
+
 }
