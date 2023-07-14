@@ -30,15 +30,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberHealthRepository memberHealthRepository;
     private final MemberMapper memberMapper;
-    /**
-     * 이메일 존재 여부 체크
-     * @param email - 이메일
-     * @return 이메일 존재 여부
-     */
-    public boolean isExistMemberByEmail(String email){
-
-        return memberRepository.existsMemberByEmail(email);
-    }
 
     /**
      * 기본 정보 조회

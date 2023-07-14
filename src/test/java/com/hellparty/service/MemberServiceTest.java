@@ -72,12 +72,6 @@ class MemberServiceTest {
     @BeforeEach
     void setUp(){
 
-        given(memberRepository.existsMemberByEmail(VALID_EMAIL))
-                .willReturn(true);
-
-        given(memberRepository.existsMemberByEmail(INVALID_EMAIL))
-                .willReturn(false);
-
         given(memberRepository.findById(VALID_ID))
                 .willReturn(Optional.of(MemberEntity.builder().id(VALID_ID).build()));
 
@@ -95,17 +89,6 @@ class MemberServiceTest {
 
         given(memberMapper.memberHealthEntityToDto(any(MemberHealthEntity.class)))
                 .willReturn(MemberHealthDTO.builder().id(VALID_ID).build());
-    }
-    @Test
-    void isExistMemberByEmailWithValidEmail() {
-
-        assertThat(memberService.isExistMemberByEmail(VALID_EMAIL)).isTrue();
-    }
-
-    @Test
-    void isExistMemberByEmailWithInvalidEmail() {
-
-        assertThat(memberService.isExistMemberByEmail(INVALID_EMAIL)).isFalse();
     }
 
     @Test
