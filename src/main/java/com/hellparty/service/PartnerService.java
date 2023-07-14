@@ -1,5 +1,6 @@
 package com.hellparty.service;
 
+import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
 import com.hellparty.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class PartnerService {
 
     public List<PartnerDTO> getPartnerList(Long memberId){
         return partnerRepository.getPartnerList(memberId);
+    }
+
+    public void deletePartner(Long loginId, Long partnerId) {
+        PartnerEntity result = partnerRepository.findByMemberIdAndPartnerId(loginId, partnerId);
+        partnerRepository.delete(result);
     }
 }
