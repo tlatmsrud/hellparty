@@ -16,7 +16,7 @@ public class PartnerRequestFactory {
         return PartnerRequestEntity.builder()
                 .fromMember(fromMember)
                 .toMember(toMember)
-                .responseStatus(PartnerResponseStatus.NO)
+                .responseStatus(PartnerResponseStatus.N)
                 .build();
     }
 }

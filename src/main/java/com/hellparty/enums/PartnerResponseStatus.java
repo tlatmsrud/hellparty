@@ -12,6 +12,6 @@ import lombok.Getter;
 @Getter
 public enum PartnerResponseStatus {
 
-    YES, NO, WAIT
+    Y, N, W
 
 }

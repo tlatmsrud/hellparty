@@ -66,15 +66,15 @@ public interface TestFixture{
             .build();
 
     List<PartnerRequestDTO.History> PARTNER_REQUEST_HISTORY_FROM_LOGIN_MEMBER = Arrays.asList(
-            new PartnerRequestDTO.History(1L, PartnerResponseStatus.NO, 30L, "테스터1", "profileUrl1")
-            ,new PartnerRequestDTO.History(22L, PartnerResponseStatus.YES, 31L, "테스터2", "profileUrl2")
-            ,new PartnerRequestDTO.History(34L, PartnerResponseStatus.NO, 32L, "테스터3", "profileUrl3")
+            new PartnerRequestDTO.History(1L, PartnerResponseStatus.N, 30L, "테스터1", "profileUrl1")
+            ,new PartnerRequestDTO.History(22L, PartnerResponseStatus.Y, 31L, "테스터2", "profileUrl2")
+            ,new PartnerRequestDTO.History(34L, PartnerResponseStatus.N, 32L, "테스터3", "profileUrl3")
     );
 
     List<PartnerRequestDTO.History> PARTNER_REQUEST_HISTORY_TO_LOGIN_MEMBER = Arrays.asList(
-            new PartnerRequestDTO.History(101L, PartnerResponseStatus.NO, 55L, "테스터55", "profileUrl1")
-            ,new PartnerRequestDTO.History(102L, PartnerResponseStatus.YES, 56L, "테스터56", "profileUrl2")
-            ,new PartnerRequestDTO.History(103L, PartnerResponseStatus.NO, 57L, "테스터57", "profileUrl3")
+            new PartnerRequestDTO.History(101L, PartnerResponseStatus.N, 55L, "테스터55", "profileUrl1")
+            ,new PartnerRequestDTO.History(102L, PartnerResponseStatus.Y, 56L, "테스터56", "profileUrl2")
+            ,new PartnerRequestDTO.History(103L, PartnerResponseStatus.N, 57L, "테스터57", "profileUrl3")
     );
 
 
@@ -82,22 +82,22 @@ public interface TestFixture{
     Long PARTNER_REQUEST_ID_FROM_LOGIN_MEMBER = 2L;
     Long INVALID_PARTNER_REQUEST_ID = 1000L;
 
-    PartnerRequestDTO.Answer VALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(PARTNER_REQUEST_ID_TO_LOGIN_MEMBER, PartnerResponseStatus.YES);
+    PartnerRequestDTO.Answer VALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(PARTNER_REQUEST_ID_TO_LOGIN_MEMBER, PartnerResponseStatus.Y);
 
-    PartnerRequestDTO.Answer INVALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(INVALID_PARTNER_REQUEST_ID, PartnerResponseStatus.YES);
+    PartnerRequestDTO.Answer INVALID_PARTNER_REQUEST_ANSWER = new PartnerRequestDTO.Answer(INVALID_PARTNER_REQUEST_ID, PartnerResponseStatus.Y);
 
     PartnerRequestEntity PARTNER_REQUEST_ENTITY_TO_LOGIN_MEMBER = PartnerRequestEntity.builder()
             .id(PARTNER_REQUEST_ID_TO_LOGIN_MEMBER)
             .toMember(LOGIN_MEMBER_ENTITY)
             .fromMember(VALID_MEMBER_ENTITY)
-            .responseStatus(PartnerResponseStatus.WAIT)
+            .responseStatus(PartnerResponseStatus.W)
             .build();
 
     PartnerRequestEntity PARTNER_REQUEST_ENTITY_FROM_LOGIN_MEMBER = PartnerRequestEntity.builder()
             .id(PARTNER_REQUEST_ID_FROM_LOGIN_MEMBER)
             .toMember(VALID_MEMBER_ENTITY)
             .fromMember(LOGIN_MEMBER_ENTITY)
-            .responseStatus(PartnerResponseStatus.WAIT)
+            .responseStatus(PartnerResponseStatus.W)
             .build();
     List<PartnerDTO> PARTNER_DTO_LIST_FOR_LOGIN_MEMBER = Arrays.asList(
             new PartnerDTO(1L, "파트너1", ExecStatus.W)
