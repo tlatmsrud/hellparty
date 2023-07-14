@@ -2,7 +2,6 @@ package com.hellparty.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.enums.Role;
-import com.hellparty.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -27,7 +26,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberRepository memberRepository;
 
     private final ObjectMapper objectMapper;
     @Override
@@ -41,10 +39,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 of 메소드.
         OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, oAuth2User.getAttributes());
-
-        if(!memberRepository.existsMemberByEmail(attributes.getEmail())){
-            memberRepository.save(attributes.toMemberEntity());
-        }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(Role.ROLE_USER.name()))
                 , objectMapper.convertValue(attributes, Map.class)
