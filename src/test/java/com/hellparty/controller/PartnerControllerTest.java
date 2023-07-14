@@ -4,6 +4,7 @@ import attributes.TestFixture;
 import attributes.TestMemberAuth;
 import com.hellparty.service.PartnerService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
@@ -15,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,10 +48,21 @@ class PartnerControllerTest implements TestFixture {
     }
     @Test
     @TestMemberAuth
+    @DisplayName("로그인 사용자의 파트너 리스트 조회")
     void getPartnerListWithValidMemberId() throws Exception {
         mockMvc.perform(
                 get("/api/partner/list")
         ).andExpect(status().isOk())
                 .andExpect(content().string(containsString("파트너1")));
+    }
+
+    @Test
+    @TestMemberAuth
+    @DisplayName("파트너 삭제")
+    void deletePartner() throws Exception{
+        mockMvc.perform(
+                delete("/api/partner/{partnerId}", VALID_MEMBER_ID)
+                .with(csrf())
+        ).andExpect(status().isNoContent());
     }
 }
