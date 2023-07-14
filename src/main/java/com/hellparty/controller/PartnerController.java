@@ -28,4 +28,10 @@ public class PartnerController {
     public List<PartnerDTO> getPartnerList(@LoginMemberId Long memberId){
         return partnerService.getPartnerList(memberId);
     }
+
+    @DeleteMapping("/{partnerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePartner(@LoginMemberId Long loginId, @PathVariable("partnerId") Long partnerId){
+        partnerService.deletePartner(loginId, partnerId);
+    }
 }
