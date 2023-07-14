@@ -1,6 +1,11 @@
 package com.hellparty.oauth;
 
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.enums.ExecStatus;
+import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.jwt.JwtProvider;
+import com.hellparty.repository.MemberRepository;
+import com.hellparty.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -27,15 +32,26 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JwtProvider jwtProvider;
 
+    private final TokenService tokenService;
+
+    private final MemberRepository memberRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         Map<String,Object> attributes = oAuth2User.getAttributes();
-
         String accessToken = jwtProvider.generateAccessToken(attributes);
         String refreshToken = jwtProvider.generateRefreshToken(attributes);
+        String email = (String) attributes.get("email");
 
+        Long memberId = memberRepository.findMemberIdByEmail(email);
+
+        if(memberId == null){
+            MemberEntity memberEntity = attributesToMemberEntity(attributes);
+            memberId = memberRepository.save(memberEntity).getId();
+        }
+        tokenService.saveRefreshToken(memberId, refreshToken);
         responseRedirectUrl(request, response, accessToken, refreshToken);
     }
 
@@ -48,4 +64,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
+
+    public MemberEntity attributesToMemberEntity(Map<String,Object> attributes){
+
+        return MemberEntity.builder()
+                    .email(attributes.get("email").toString())
+                    .nickname(attributes.get("nickname").toString())
+                    .profileUrl(attributes.get("profileUrl").toString())
+                    .execStatus(ExecStatus.W)
+                    .findStatus(PartnerFindStatus.N)
+                    .build();
+    }
+
 }
