@@ -3,6 +3,8 @@ package com.hellparty.config;
 import com.hellparty.filter.JwtAuthorizationFilter;
 import com.hellparty.jwt.JwtProvider;
 import com.hellparty.oauth.CustomSuccessHandler;
+import com.hellparty.repository.MemberRepository;
+import com.hellparty.service.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,10 @@ public class SecurityConfig{
 
     private final JwtProvider jwtProvider;
 
+    private final TokenService tokenService;
+
+    private final MemberRepository memberRepository;
+
     // HttpServletRequest에 대한 필터체인을 정의
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -44,7 +50,7 @@ public class SecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증으로 인한 Session 미생성.
                 .and()
                 .oauth2Login()
-                .successHandler(new CustomSuccessHandler(jwtProvider))
+                .successHandler(new CustomSuccessHandler(jwtProvider, tokenService, memberRepository))
                 .and()
                 .addFilterBefore(new JwtAuthorizationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
