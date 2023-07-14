@@ -2,6 +2,7 @@ package com.hellparty.repository;
 
 import attributes.TestConfig;
 import attributes.TestFixture;
+import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,5 +38,13 @@ public class PartnerRepositoryTest implements TestFixture {
         assertThat(list).hasSize(2);
         assertThat(list.get(0).getNickname()).isEqualTo("테스터1");
         assertThat(list.get(1).getNickname()).isEqualTo("테스터2");
+    }
+
+    @Test
+    @DisplayName("MemberId와 PartnerId를 통한 PartnerEntity 조회")
+    void findByMemberIdAndPartnerId(){
+        PartnerEntity result = partnerRepository.findByMemberIdAndPartnerId(LOGIN_MEMBER_ID, PARTNER_ID_OF_LOGIN_MEMBER);
+        assertThat(result.getMember().getId()).isEqualTo(LOGIN_MEMBER_ID);
+        assertThat(result.getPartner().getId()).isEqualTo(PARTNER_ID_OF_LOGIN_MEMBER);
     }
 }
