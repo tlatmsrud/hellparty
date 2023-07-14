@@ -1,6 +1,9 @@
 package com.hellparty.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * title        :
@@ -10,6 +13,9 @@ import jakarta.persistence.*;
  */
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Table(name = "TBL_PARTNER")
 public class PartnerEntity extends BaseEntity {
 
