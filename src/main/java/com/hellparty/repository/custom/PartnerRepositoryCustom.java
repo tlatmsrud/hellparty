@@ -1,5 +1,7 @@
 package com.hellparty.repository.custom;
 
+import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
 
 import java.util.List;
@@ -13,4 +15,6 @@ import java.util.List;
 public interface PartnerRepositoryCustom {
 
     List<PartnerDTO> getPartnerList(Long memberId);
+
+    PartnerEntity findByMemberIdAndPartnerId(Long loginId, Long partnerId);
 }
