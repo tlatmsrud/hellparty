@@ -27,6 +27,7 @@ public interface TestFixture{
     Pageable DEFAULT_PAGEABLE = PageRequest.of(0,10);
     MemberEntity LOGIN_MEMBER_ENTITY = MemberEntity.builder()
             .id(LOGIN_MEMBER_ID)
+            .email("tlatmsrud@naver.com")
             .age(28)
             .profileUrl("profileUrl")
             .bodyProfileUrl("bodyProfileUrl")
@@ -41,6 +42,7 @@ public interface TestFixture{
 
     MemberEntity VALID_MEMBER_ENTITY = MemberEntity.builder()
             .id(VALID_MEMBER_ID)
+            .email("test@naver.com")
             .age(23)
             .profileUrl("profileUrl")
             .bodyProfileUrl("bodyProfileUrl")
