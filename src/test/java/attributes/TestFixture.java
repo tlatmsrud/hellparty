@@ -1,6 +1,7 @@
 package attributes;
 
 import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.PartnerEntity;
 import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.dto.*;
 import com.hellparty.enums.*;
@@ -22,6 +23,7 @@ public interface TestFixture{
     Long VALID_MEMBER_ID = 2L;
     Long NOT_LOOKING_FOR_PARTNER_MEMBER_ID = 4L;
     Long INVALID_MEMBER_ID = 1000L;
+    Long PARTNER_ID_OF_LOGIN_MEMBER = 21L;
     Pageable DEFAULT_PAGEABLE = PageRequest.of(0,10);
     MemberEntity LOGIN_MEMBER_ENTITY = MemberEntity.builder()
             .id(LOGIN_MEMBER_ID)
@@ -153,4 +155,6 @@ public interface TestFixture{
             .deadlift(110)
             .healthMotto("헬스가 인생이다.")
             .build();
+
+    PartnerEntity VALID_PARTNER_ENTITY = new PartnerEntity(1L, LOGIN_MEMBER_ENTITY, VALID_MEMBER_ENTITY);
 }
