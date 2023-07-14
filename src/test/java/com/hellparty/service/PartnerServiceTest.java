@@ -36,6 +36,9 @@ class PartnerServiceTest implements TestFixture {
 
         given(partnerRepository.findByMemberIdAndPartnerId(LOGIN_MEMBER_ID, VALID_MEMBER_ID))
                 .willReturn(VALID_PARTNER_ENTITY);
+
+        given(partnerRepository.findByMemberIdAndPartnerId(LOGIN_MEMBER_ID, INVALID_MEMBER_ID))
+                .willThrow(new NotFoundException("요청 정보를 찾을 수 없습니다. 관리자에게 문의해주세요."));
     }
     @Test
     @DisplayName("로그인 사용자에 대한 파트너 리스트 조회")
