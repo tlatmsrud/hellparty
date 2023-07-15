@@ -17,6 +17,8 @@ class JwtProviderTest {
 
     private final static Map<String, Object> CLAIMS = Map.of(
             "id",1L,"email","test@naver.com","nickname","테스터");
+
+    private final static Long CLAIM_MEMBER_ID = 1L;
     private final static String VALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
             ".eyJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpZCI6MSwiaWF0IjoxNjg4MjI4NzgwLCJleHAiOjIyOTMwMjg3ODB9" +
             ".I9GzqNott_LJE7xIhhJ4ZuoARNHwoDyAgiUZ8tgVGc4";
@@ -28,7 +30,7 @@ class JwtProviderTest {
     @Test
     void generateAccessToken() {
 
-        String token = jwtProvider.generateAccessToken(CLAIMS);
+        String token = jwtProvider.generateAccessToken(CLAIM_MEMBER_ID);
         assertThat(token).contains("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9");
 
     }
@@ -36,7 +38,7 @@ class JwtProviderTest {
     @Test
     void generateRefreshToken() {
 
-        String token = jwtProvider.generateRefreshToken(CLAIMS);
+        String token = jwtProvider.generateRefreshToken(CLAIM_MEMBER_ID);
         assertThat(token).contains("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9");
 
     }

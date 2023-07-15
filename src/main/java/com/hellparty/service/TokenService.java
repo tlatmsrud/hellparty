@@ -2,6 +2,7 @@ package com.hellparty.service;
 
 import com.hellparty.dto.TokenDTO;
 import com.hellparty.jwt.JwtProvider;
+import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,13 @@ public class TokenService {
      */
     public TokenDTO renewToken(String refreshToken){
 
-        Map<String, Object> claims = jwtProvider.parseJwtToken(refreshToken);
+        Claims claims = jwtProvider.parseJwtToken(refreshToken);
+        // TODO token claim 정책 수립
+        Long memberId = Long.valueOf(claims.get("id"));
+        String renewAccessToken = jwtProvider.generateAccessToken(memberId);
+        String renewRefreshToken = jwtProvider.generateRefreshToken(memberId);
 
-        String renewAccessToken = jwtProvider.generateAccessToken(claims);
-        String renewRefreshToken = jwtProvider.generateRefreshToken(claims);
+        saveRefreshToken(memberId, renewRefreshToken);
 
         return TokenDTO.builder()
                 .accessToken(renewAccessToken)

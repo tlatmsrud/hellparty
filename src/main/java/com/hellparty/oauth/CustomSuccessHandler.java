@@ -41,8 +41,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             throws IOException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         Map<String,Object> attributes = oAuth2User.getAttributes();
-        String accessToken = jwtProvider.generateAccessToken(attributes);
-        String refreshToken = jwtProvider.generateRefreshToken(attributes);
         String email = (String) attributes.get("email");
 
         Long memberId = memberRepository.findMemberIdByEmail(email);
@@ -51,6 +49,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             MemberEntity memberEntity = attributesToMemberEntity(attributes);
             memberId = memberRepository.save(memberEntity).getId();
         }
+
+        String accessToken = jwtProvider.generateAccessToken(memberId);
+        String refreshToken = jwtProvider.generateRefreshToken(memberId);
+
         tokenService.saveRefreshToken(memberId, refreshToken);
         responseRedirectUrl(request, response, accessToken, refreshToken);
     }
