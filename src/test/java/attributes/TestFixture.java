@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * title        : Text Fixture
@@ -159,4 +160,19 @@ public interface TestFixture{
             .build();
 
     PartnerEntity VALID_PARTNER_ENTITY = new PartnerEntity(1L, LOGIN_MEMBER_ENTITY, VALID_MEMBER_ENTITY);
+
+    String JWT_SECRET_KEY = "123456789012345678901234567890";
+    Map<String, Object> CLAIMS = Map.of(
+            "id",1L,"email","test@naver.com","nickname","테스터");
+
+
+    String VALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
+            ".eyJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpZCI6MSwiaWF0IjoxNjg4MjI4NzgwLCJleHAiOjIyOTMwMjg3ODB9" +
+            ".I9GzqNott_LJE7xIhhJ4ZuoARNHwoDyAgiUZ8tgVGc4";
+
+    String INVALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
+            ".eyJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpZCI6MSwiaWF0IjoxNjg4MjI4NzgwLCJleHAiOjIyOTMwMjg3ODB9" +
+            ".I9GzqNott_LJE7xIhhJ4ZuoARNHwoDyAgiUZ8tgVGc4_INVALID";
+    String VALID_AUTHORIZATION = "Bearer "+ VALID_ACCESS_TOKEN;
+    String INVALID_AUTHORIZATION = "AUTH "+ VALID_ACCESS_TOKEN;
 }
