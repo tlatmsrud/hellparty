@@ -1,6 +1,7 @@
 package com.hellparty.jwt;
 
 
+import com.hellparty.domain.MemberEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,15 +43,15 @@ public class JwtProvider {
 
     /**
      * 액세스 토큰 생성
-     * @param memberId 사용자 ID
+     * @param claims 클레임
      * @return accessToken
      */
-    public String generateAccessToken(Long memberId){
+    public String generateAccessToken(Map<String, Object> claims){
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setSubject(accessTokenSubject)
-                .claim("id", memberId)
+                .addClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ONE_HOUR))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -58,15 +60,15 @@ public class JwtProvider {
 
     /**
      * 리프레시 토큰 생성
-     * @param memberId 사용자 ID
+     * @param claims 클레임
      * @return refreshToken
      */
-    public String generateRefreshToken(Long memberId){
+    public String generateRefreshToken(Map<String, Object> claims){
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setSubject(refreshTokenSubject)
-                .claim("id", memberId)
+                .addClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+TEN_DAY))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -106,6 +108,23 @@ public class JwtProvider {
      */
 
     public String extractAccessToken(String authorization){
+        if(!authorization.startsWith(JWT_TYPE)){
+            throw new JwtException("잘못된 인증 헤더입니다. 다시 로그인해주세요");
+        }
         return authorization.substring(JWT_TYPE.length());
+    }
+
+    /**
+     * Claims 생성
+     * @param memberEntity Member 엔티티
+     * @return Claims
+     */
+    public Map<String, Object> generateClaims(MemberEntity memberEntity){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", memberEntity.getId());
+        claims.put("email", memberEntity.getEmail());
+        claims.put("nickname", memberEntity.getNickname());
+
+        return claims;
     }
 }
