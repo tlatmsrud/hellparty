@@ -1,5 +1,7 @@
 package com.hellparty.repository.custom;
 
+import com.hellparty.domain.MemberEntity;
+
 /**
  * title        : MemberRepositoryCustom
  * author       : sim
@@ -9,4 +11,6 @@ package com.hellparty.repository.custom;
 public interface MemberRepositoryCustom {
 
     Long findMemberIdByEmail(String email);
+
+    MemberEntity findByEmail(String email);
 }

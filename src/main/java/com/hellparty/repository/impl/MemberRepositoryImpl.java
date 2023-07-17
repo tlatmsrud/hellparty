@@ -1,5 +1,6 @@
 package com.hellparty.repository.impl;
 
+import com.hellparty.domain.MemberEntity;
 import com.hellparty.repository.custom.MemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,6 +23,14 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public Long findMemberIdByEmail(String email) {
         return queryFactory.select(memberEntity.id)
                 .from(memberEntity)
+                .where(
+                        eqEmail(email)
+                ).fetchOne();
+    }
+
+    @Override
+    public MemberEntity findByEmail(String email) {
+        return queryFactory.selectFrom(memberEntity)
                 .where(
                         eqEmail(email)
                 ).fetchOne();
