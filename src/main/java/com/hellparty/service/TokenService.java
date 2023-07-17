@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,11 +32,11 @@ public class TokenService {
     public TokenDTO renewToken(String refreshToken){
 
         Claims claims = jwtProvider.parseJwtToken(refreshToken);
-        // TODO token claim 정책 수립
-        Long memberId = Long.valueOf(claims.get("id"));
-        String renewAccessToken = jwtProvider.generateAccessToken(memberId);
-        String renewRefreshToken = jwtProvider.generateRefreshToken(memberId);
 
+        String renewAccessToken = jwtProvider.generateAccessToken(claims);
+        String renewRefreshToken = jwtProvider.generateRefreshToken(claims);
+
+        Long memberId = claims.get("id", Long.class);
         saveRefreshToken(memberId, renewRefreshToken);
 
         return TokenDTO.builder()
