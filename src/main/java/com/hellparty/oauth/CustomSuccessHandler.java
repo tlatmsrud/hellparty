@@ -43,17 +43,18 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Map<String,Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
 
-        Long memberId = memberRepository.findMemberIdByEmail(email);
+        MemberEntity memberEntity = memberRepository.findByEmail(email);
 
-        if(memberId == null){
-            MemberEntity memberEntity = attributesToMemberEntity(attributes);
-            memberId = memberRepository.save(memberEntity).getId();
+        if(memberEntity == null){
+            memberEntity = joinMember(attributes);
         }
 
-        String accessToken = jwtProvider.generateAccessToken(memberId);
-        String refreshToken = jwtProvider.generateRefreshToken(memberId);
+        Map<String, Object> claims = jwtProvider.generateClaims(memberEntity);
 
-        tokenService.saveRefreshToken(memberId, refreshToken);
+        String accessToken = jwtProvider.generateAccessToken(claims);
+        String refreshToken = jwtProvider.generateRefreshToken(claims);
+
+        tokenService.saveRefreshToken(memberEntity.getId(), refreshToken);
         responseRedirectUrl(request, response, accessToken, refreshToken);
     }
 
@@ -67,15 +68,30 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    public MemberEntity attributesToMemberEntity(Map<String,Object> attributes){
+    /**
+     * Attributes To MemberEntity
+     * @param oAuth2Attributes - oAuth2를 통해 조회한 Attributes
+     * @return MemberEntity
+     */
+    public MemberEntity attributesToMemberEntity(Map<String,Object> oAuth2Attributes){
 
         return MemberEntity.builder()
-                    .email(attributes.get("email").toString())
-                    .nickname(attributes.get("nickname").toString())
-                    .profileUrl(attributes.get("profileUrl").toString())
+                    .email(oAuth2Attributes.get("email").toString())
+                    .nickname(oAuth2Attributes.get("nickname").toString())
+                    .profileUrl(oAuth2Attributes.get("profileUrl").toString())
                     .execStatus(ExecStatus.W)
                     .findStatus(PartnerFindStatus.N)
                     .build();
+    }
+
+    /**
+     * 회원가입
+     * @param oAuth2Attributes - oAuth2를 통해 조회한 Attributes
+     * @return MemberEntity
+     */
+    public MemberEntity joinMember(Map<String,Object> oAuth2Attributes){
+        MemberEntity memberEntity = attributesToMemberEntity(oAuth2Attributes);
+        return memberRepository.save(memberEntity);
     }
 
 }
