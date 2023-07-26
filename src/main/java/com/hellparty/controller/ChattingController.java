@@ -6,10 +6,7 @@ import com.hellparty.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +16,7 @@ import java.util.List;
  * date         : 2023-07-26
  * description  : 채팅 컨트롤러
  */
-@Controller
+@RestController
 @RequestMapping("/api/chatting")
 @RequiredArgsConstructor
 public class ChattingController {
@@ -33,9 +30,9 @@ public class ChattingController {
      * @return 두 사용자 ID에 매핑된 채팅방 ID를 조회한다.
      *          첫 채팅일 경우 내부 로직에 의해 채팅방 생성 후 조회한다.
      */
-    @GetMapping("/room")
+    @GetMapping("/room/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public Long getChattingRoom(@LoginMemberId Long loginId, @RequestParam Long memberId){
+    public Long getChattingRoom(@LoginMemberId Long loginId, @PathVariable("memberId") Long memberId){
         return chattingService.getChattingRoom(loginId, memberId);
     }
 
@@ -44,9 +41,9 @@ public class ChattingController {
      * @param roomId - 채팅방 ID
      * @return 채팅내역 리스트
      */
-    @GetMapping("/history")
+    @GetMapping("/history/{roomId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ChattingHistoryDTO> getChatHistory(@RequestParam Long roomId){
+    public List<ChattingHistoryDTO> getChatHistory(@PathVariable("roomId") Long roomId){
         return chattingService.getChattingHistory(roomId);
     }
 }
