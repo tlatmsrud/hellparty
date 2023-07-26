@@ -1,6 +1,11 @@
 package com.hellparty.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * title        :
@@ -10,8 +15,12 @@ import lombok.Getter;
  */
 
 @Getter
-public class ChatDTO {
+@AllArgsConstructor
+public class ChatDTO implements Serializable {
     private Long roomId;
-    private Long writerID;
-    private String chat;
+
+    private Long writerId;
+
+    private String message;
+    private LocalDateTime time = LocalDateTime.now();
 }
