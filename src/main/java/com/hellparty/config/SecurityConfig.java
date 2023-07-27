@@ -9,10 +9,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 /**
@@ -24,6 +24,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @AllArgsConstructor
+@EnableWebSecurity(debug = true)
 public class SecurityConfig{
 
     private final JwtProvider jwtProvider;
@@ -37,13 +38,13 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http
-                .authorizeHttpRequests()
-                .requestMatchers(new AntPathRequestMatcher("/api/login/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/api/token/**")).permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/login.html").permitAll()
+                        .requestMatchers("/api/token/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .headers().frameOptions().disable() // frameOptions은 기본 Deny. h2는 iframe을 사용하기에 disable 처리
                 .and()
                 .csrf().disable()// h2 UI를 통해 DB connect 시 post 통신이 발생하면서 csrf 에러가 발생. 이에따라 disable 처리
@@ -56,5 +57,4 @@ public class SecurityConfig{
 
         return http.build();
     }
-
 }
