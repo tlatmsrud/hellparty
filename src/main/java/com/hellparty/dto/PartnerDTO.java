@@ -18,7 +18,9 @@ import lombok.Getter;
 public class PartnerDTO {
 
     private Long id;
+    private Long memberId;
     private String nickname;
+    private String profileUrl;
     private ExecStatus execStatus;
 
 }

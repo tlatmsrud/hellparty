@@ -37,7 +37,9 @@ public class PartnerRepositoryImpl implements PartnerRepositoryCustom {
                 .select(Projections.constructor(
                         PartnerDTO.class
                         ,partnerEntity.id
+                        ,partnerEntity.partner.id
                         ,partnerEntity.partner.nickname
+                        ,partnerEntity.partner.profileUrl
                         ,partnerEntity.partner.execStatus))
                 .from(partnerEntity)
                 .where(
