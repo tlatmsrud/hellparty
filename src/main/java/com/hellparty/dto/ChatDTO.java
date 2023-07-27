@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatDTO implements Serializable {
     private Long roomId;
 
