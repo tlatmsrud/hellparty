@@ -1,5 +1,6 @@
 package com.hellparty.service;
 
+import attributes.TestFixture;
 import com.hellparty.domain.MemberEntity;
 import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.domain.embedded.Address;
@@ -33,16 +34,13 @@ import static org.mockito.Mockito.verify;
  * date         : 2023-07-01
  * description  :
  */
-class MemberServiceTest {
+class MemberServiceTest implements TestFixture {
 
     private final MemberHealthRepository memberHealthRepository = mock(MemberHealthRepository.class);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final MemberMapper memberMapper = mock(MemberMapper.class);
     private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository, memberMapper);
-    private final String VALID_EMAIL = "test@naver.com";
-    private final String INVALID_EMAIL = "no@naver.com";
-    private final Long VALID_ID = 1L;
-    private final Long INVALID_ID = 1000L;
+
     private final MemberDTO.Update UPDATE_REQUEST = MemberDTO.Update.builder()
             .nickname("update-nickname")
             .age(10)
@@ -50,7 +48,7 @@ class MemberServiceTest {
             .build();
 
     private final MemberHealthDTO.Update UPDATE_HEALTH_DETAIL_REQUEST = MemberHealthDTO.Update.builder()
-            .id(VALID_ID)
+            .id(LOGIN_MEMBER_ID)
             .execStartTime(Time.valueOf("19:00:00"))
             .execEndTime(Time.valueOf("20:00:00"))
             .bigThree(BigThree.builder()
@@ -72,69 +70,69 @@ class MemberServiceTest {
     @BeforeEach
     void setUp(){
 
-        given(memberRepository.findById(VALID_ID))
-                .willReturn(Optional.of(MemberEntity.builder().id(VALID_ID).build()));
+        given(memberRepository.findById(LOGIN_MEMBER_ID))
+                .willReturn(Optional.of(MemberEntity.builder().id(LOGIN_MEMBER_ID).build()));
 
-        given(memberHealthRepository.findById(VALID_ID))
-                .willReturn(Optional.of(MemberHealthEntity.builder().id(VALID_ID).build()));
+        given(memberHealthRepository.findById(LOGIN_MEMBER_ID))
+                .willReturn(Optional.of(MemberHealthEntity.builder().id(LOGIN_MEMBER_ID).build()));
 
-        given(memberHealthRepository.findById(INVALID_ID))
+        given(memberHealthRepository.findById(INVALID_MEMBER_ID))
                 .willReturn(Optional.empty());
 
         given(memberMapper.memberHealthUpdateDtoToEntity(any(MemberHealthDTO.Update.class)))
-                .willReturn(MemberHealthEntity.builder().id(VALID_ID).build());
+                .willReturn(MemberHealthEntity.builder().id(LOGIN_MEMBER_ID).build());
 
         given(memberMapper.memberEntityToDto(any(MemberEntity.class)))
-                .willReturn(MemberDTO.builder().id(VALID_ID).build());
+                .willReturn(MemberDTO.builder().id(LOGIN_MEMBER_ID).build());
 
         given(memberMapper.memberHealthEntityToDto(any(MemberHealthEntity.class)))
-                .willReturn(MemberHealthDTO.builder().id(VALID_ID).build());
+                .willReturn(MemberHealthDTO.builder().id(LOGIN_MEMBER_ID).build());
     }
 
     @Test
     void getDetail(){
-        MemberDTO memberDTO = memberService.getDetail(VALID_ID);
-        assertThat(memberDTO.getId()).isEqualTo(VALID_ID);
+        MemberDTO memberDTO = memberService.getDetail(LOGIN_MEMBER_ID);
+        assertThat(memberDTO.getId()).isEqualTo(LOGIN_MEMBER_ID);
     }
 
     @Test
     void getHealthDetailWithValidId(){
-        MemberHealthDTO memberHealthDTO = memberService.getHealthDetail(VALID_ID);
-        assertThat(memberHealthDTO.getId()).isEqualTo(VALID_ID);
+        MemberHealthDTO memberHealthDTO = memberService.getHealthDetail(LOGIN_MEMBER_ID);
+        assertThat(memberHealthDTO.getId()).isEqualTo(LOGIN_MEMBER_ID);
     }
 
     @Test
     void getHealthDetailWithInvalidId(){
-        assertThatThrownBy(()-> memberService.getHealthDetail(INVALID_ID))
+        assertThatThrownBy(()-> memberService.getHealthDetail(INVALID_MEMBER_ID))
                 .isInstanceOf(NotFoundException.class);
 
     }
     @Test
     void updateDetail(){
-        assertThatNoException().isThrownBy(() -> memberService.updateDetail(VALID_ID, UPDATE_REQUEST));
+        assertThatNoException().isThrownBy(() -> memberService.updateDetail(LOGIN_MEMBER_ID, UPDATE_REQUEST));
     }
 
     @Test
     void updateHealthDetailWithValidId(){
-        assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(VALID_ID, UPDATE_HEALTH_DETAIL_REQUEST));
+        assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(LOGIN_MEMBER_ID, UPDATE_HEALTH_DETAIL_REQUEST));
         verify(memberHealthRepository).save(any(MemberHealthEntity.class));
     }
 
     @Test
     void updateHealthDetailWithInvalidId(){
-        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_ID, UPDATE_HEALTH_DETAIL_REQUEST))
+        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_MEMBER_ID, UPDATE_HEALTH_DETAIL_REQUEST))
                 .isInstanceOf(BadRequestException.class);
     }
 
     @Test
     void updateExecStatusToW(){
-        memberService.updateExecStatus(VALID_ID, ExecStatus.W);
-        verify(memberRepository).findById(VALID_ID);
+        memberService.updateExecStatus(LOGIN_MEMBER_ID, ExecStatus.W);
+        verify(memberRepository).findById(LOGIN_MEMBER_ID);
     }
 
     @Test
     void updatePartnerFindStatusToY(){
-        memberService.updatePartnerFindStatus(VALID_ID, PartnerFindStatus.Y);
-        verify(memberRepository).findById(VALID_ID);
+        memberService.updatePartnerFindStatus(LOGIN_MEMBER_ID, PartnerFindStatus.Y);
+        verify(memberRepository).findById(LOGIN_MEMBER_ID);
     }
 }
