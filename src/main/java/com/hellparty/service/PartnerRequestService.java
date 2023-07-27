@@ -8,6 +8,7 @@ import com.hellparty.exception.NotFoundException;
 import com.hellparty.factory.PartnerRequestFactory;
 import com.hellparty.repository.MemberRepository;
 import com.hellparty.repository.PartnerRequestRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PartnerRequestService {
 
     private final PartnerRequestRepository partnerRequestRepository;

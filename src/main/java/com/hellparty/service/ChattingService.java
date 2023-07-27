@@ -4,6 +4,7 @@ import com.hellparty.domain.ChattingRoomEntity;
 import com.hellparty.dto.ChattingHistoryDTO;
 import com.hellparty.repository.ChattingRepository;
 import com.hellparty.repository.ChattingRoomRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ChattingService {
 
     private final ChattingRoomRepository chattingRoomRepository;

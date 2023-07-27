@@ -2,6 +2,7 @@ package com.hellparty.service;
 
 import com.hellparty.dto.PartnerFindDTO;
 import com.hellparty.repository.PartnerFindRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class PartnerFindService {
 
     private final PartnerFindRepository partnerFindRepository;

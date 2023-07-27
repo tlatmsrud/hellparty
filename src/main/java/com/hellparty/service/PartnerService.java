@@ -3,6 +3,7 @@ package com.hellparty.service;
 import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
 import com.hellparty.repository.PartnerRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class PartnerService {
 
     private final PartnerRepository partnerRepository;
