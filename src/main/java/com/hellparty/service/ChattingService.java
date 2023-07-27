@@ -1,18 +1,14 @@
 package com.hellparty.service;
 
 import com.hellparty.domain.ChattingRoomEntity;
-import com.hellparty.dto.ChatDTO;
 import com.hellparty.dto.ChattingHistoryDTO;
 import com.hellparty.repository.ChattingRepository;
 import com.hellparty.repository.ChattingRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * title        : 채팅 서비스
@@ -27,9 +23,8 @@ import java.util.stream.Collectors;
 public class ChattingService {
 
     private final ChattingRoomRepository chattingRoomRepository;
-    private final RedisTemplate<String, ChatDTO> redisTemplate;
     private final ChattingRepository chattingRepository;
-
+    private final RedisService redisService;
     /**
      * 채팅방 ID 조회하기
      * @param loginId - 로그인 ID
@@ -51,27 +46,11 @@ public class ChattingService {
 
 
     public List<ChattingHistoryDTO> getChattingHistory(Long roomId) {
-        List<ChattingHistoryDTO> dbList = getChatHistoryForDB(roomId);
-        List<ChattingHistoryDTO> cachingList = getChatHistoryForRedis(roomId);
+        List<ChattingHistoryDTO> dbList = chattingRepository.findByChattingRoomId(roomId);
+        List<ChattingHistoryDTO> cachingList = redisService.getChattingHistory(roomId.toString());
 
         dbList.addAll(cachingList);
         return dbList;
     }
 
-    public List<ChattingHistoryDTO> getChatHistoryForDB(Long roomId){
-        return chattingRepository.findByChattingRoomId(roomId);
-    }
-
-    public List<ChattingHistoryDTO> getChatHistoryForRedis(Long roomId){
-        ListOperations<String, ChatDTO> listOperations = redisTemplate.opsForList();
-        List<ChatDTO> list = listOperations.range(String.valueOf(roomId), 0, -1);
-
-
-        return list.stream().
-                map(chatDTO -> new ChattingHistoryDTO(
-                        chatDTO.getWriterId()
-                        ,chatDTO.getMessage()
-                        ,chatDTO.getTime()))
-                .collect(Collectors.toList());
-    }
 }
