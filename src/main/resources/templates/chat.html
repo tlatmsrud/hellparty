@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<script>
+    var stompClient = null;
+    var loginId = null;
+    var roomId = null;
+    function setConnected(connected) {
+        $("#disconnect").prop("disabled", !connected);
+        if (connected) {
+            $("#conversation").show();
+        }
+        else {
+            $("#conversation").hide();
+        }
+    }
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/queue/'+roomId, function (greeting) {
+                showGreeting(greeting.body);
+            });
+        });
+    }
+
+    function disconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendMessage() {
+        var messageObj = new Object();
+
+        messageObj.roomId = roomId
+        messageObj.writerId = loginId
+        messageObj.message = $("#message").val();
+        alert(messageObj);
+        stompClient.send("/app/send" ,{}, JSON.stringify(messageObj));
+    }
+
+    function getRoomId(){
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        // query string에서 'userId' 파라미터 값을 가져옵니다.
+        return urlParams.get('roomId');
+    }
+
+    function showGreeting(message) {
+        $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    }
+
+    function getChattingHistory(){
+        $.ajax({
+            url: "/api/chatting/history/"+roomId,
+            method: 'GET',
+            success: function (data) {
+                for (const object of data) {
+                    showGreeting(object.message)
+                }
+            },error: function() {
+                alert('채팅방 정보를 가져오는데 실패했습니다.');
+            }
+        });
+    }
+
+    $(function () {
+        loginId = $("#login-id").text();
+        roomId = $("#room-id").text();
+        $("form").on('submit', function (e) {
+            e.preventDefault();
+        });
+        connect();
+        getChattingHistory();
+        $( "#disconnect" ).click(function() { disconnect(); });
+        $( "#send" ).click(function() { sendMessage(); });
+    });
+</script>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<h1 id = "login-id" th:text="${loginId}"></h1>
+<h1 id = "room-id" th:text="${roomId}"></h1>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="message">Input send Message !!</label>
+                    <input type="text" id="message" class="form-control" placeholder="input message...">
+                </div>
+                <button id="send" class="btn btn-default" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Greetings</th>
+                </tr>
+                </thead>
+                <tbody id="greetings">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
