@@ -2,18 +2,13 @@ package com.hellparty.service;
 
 import attributes.TestFixture;
 import com.hellparty.domain.ChattingRoomEntity;
-import com.hellparty.dto.ChatDTO;
-import com.hellparty.exception.NotFoundException;
 import com.hellparty.repository.ChattingRepository;
 import com.hellparty.repository.ChattingRoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -27,9 +22,9 @@ import static org.mockito.Mockito.*;
 class ChattingServiceTest implements TestFixture {
 
     private ChattingRoomRepository chattingRoomRepository = mock(ChattingRoomRepository.class);
-    private RedisTemplate<String, ChatDTO> redisTemplate = mock(RedisTemplate.class);
+    private RedisService redisService = mock(RedisService.class);
     private ChattingRepository chattingRepository = mock(ChattingRepository.class);
-    private final ChattingService chattingService = new ChattingService(chattingRoomRepository, redisTemplate, chattingRepository);
+    private final ChattingService chattingService = new ChattingService(chattingRoomRepository, chattingRepository, redisService);
 
     @BeforeEach
     void setUp(){
@@ -47,6 +42,10 @@ class ChattingServiceTest implements TestFixture {
                             .toMemberId(source.getToMemberId())
                             .build();
                 });
+
+        given(redisService.getChattingHistory(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER.toString())).willReturn(
+                CHATTING_HISTORY_DTO_LIST
+        );
     }
     @Test
     @DisplayName("채팅방이 있는 유저에 대한 채팅룸 조회")
@@ -71,23 +70,10 @@ class ChattingServiceTest implements TestFixture {
     }
 
     @Test
-    @DisplayName("유효 채팅방 ID에 대한 채팅내역 조회")
-    void getChattingHistoryWithValidChattingRoomId() {
+    @DisplayName("채팅방 ID에 대한 채팅내역 조회")
+    void getChattingHistory() {
         assertThat(chattingService.getChattingHistory(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER))
-                .isEqualTo("hi");
+                .isEqualTo(CHATTING_HISTORY_DTO_LIST);
     }
 
-    @Test
-    @DisplayName("유효하지 않은 채팅방 ID에 대한 채팅내역 조회 - 예외발생")
-    void getChattingHistoryWithInvalidChattingRoomId() {
-        assertThatThrownBy(() -> chattingService.getChattingHistory(INVALID_CHATTING_ROOM_ID))
-                .isInstanceOf(NotFoundException.class);
-    }
-    @Test
-    void getChatHistoryForDB() {
-    }
-
-    @Test
-    void getChatHistoryForRedis() {
-    }
 }

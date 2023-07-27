@@ -49,7 +49,7 @@ class ChattingControllerTest implements TestFixture {
                 .willReturn(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER);
 
         given(chattingService.getChattingHistory(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER))
-                .willReturn(CHATTING_HISTORY_DTO);
+                .willReturn(CHATTING_HISTORY_DTO_LIST);
     }
 
     void setObjectMapper(){
@@ -74,6 +74,6 @@ class ChattingControllerTest implements TestFixture {
         mockMvc.perform(
                         get("/api/chatting/history/{roomId}",CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(CHATTING_HISTORY_DTO)));
+                .andExpect(content().string(objectMapper.writeValueAsString(CHATTING_HISTORY_DTO_LIST)));
     }
 }
