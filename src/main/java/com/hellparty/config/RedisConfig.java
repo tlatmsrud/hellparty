@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.hellparty.dto.ChatDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ?> redisTemplate(){
+    public RedisTemplate<String, ChatDTO> chatRedisTemplate(){
 
         PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
                 .allowIfSubType(Object.class)
@@ -49,10 +50,21 @@ public class RedisConfig {
         objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
         GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
 
-        RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, ChatDTO> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(valueSerializer);
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, String> tokenRedisTemplate(){
+
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
 
         return redisTemplate;
     }
