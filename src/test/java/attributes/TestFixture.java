@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +20,13 @@ import java.util.Map;
  * date         : 2023-07-07
  * description  : 테스트 픽스처 관리 인터페이스
  */
-public interface TestFixture{
+public interface TestFixture {
     Long LOGIN_MEMBER_ID = 1L;
     Long VALID_MEMBER_ID = 2L;
     Long NOT_LOOKING_FOR_PARTNER_MEMBER_ID = 4L;
     Long INVALID_MEMBER_ID = 1000L;
     Long PARTNER_ID_OF_LOGIN_MEMBER = 21L;
-    Pageable DEFAULT_PAGEABLE = PageRequest.of(0,10);
+    Pageable DEFAULT_PAGEABLE = PageRequest.of(0, 10);
     MemberEntity LOGIN_MEMBER_ENTITY = MemberEntity.builder()
             .id(LOGIN_MEMBER_ID)
             .email("tlatmsrud@naver.com")
@@ -72,14 +73,14 @@ public interface TestFixture{
 
     List<PartnerRequestDTO.History> PARTNER_REQUEST_HISTORY_FROM_LOGIN_MEMBER = Arrays.asList(
             new PartnerRequestDTO.History(1L, PartnerResponseStatus.N, 30L, "테스터1", "profileUrl1")
-            ,new PartnerRequestDTO.History(22L, PartnerResponseStatus.Y, 31L, "테스터2", "profileUrl2")
-            ,new PartnerRequestDTO.History(34L, PartnerResponseStatus.N, 32L, "테스터3", "profileUrl3")
+            , new PartnerRequestDTO.History(22L, PartnerResponseStatus.Y, 31L, "테스터2", "profileUrl2")
+            , new PartnerRequestDTO.History(34L, PartnerResponseStatus.N, 32L, "테스터3", "profileUrl3")
     );
 
     List<PartnerRequestDTO.History> PARTNER_REQUEST_HISTORY_TO_LOGIN_MEMBER = Arrays.asList(
             new PartnerRequestDTO.History(101L, PartnerResponseStatus.N, 55L, "테스터55", "profileUrl1")
-            ,new PartnerRequestDTO.History(102L, PartnerResponseStatus.Y, 56L, "테스터56", "profileUrl2")
-            ,new PartnerRequestDTO.History(103L, PartnerResponseStatus.N, 57L, "테스터57", "profileUrl3")
+            , new PartnerRequestDTO.History(102L, PartnerResponseStatus.Y, 56L, "테스터56", "profileUrl2")
+            , new PartnerRequestDTO.History(103L, PartnerResponseStatus.N, 57L, "테스터57", "profileUrl3")
     );
 
 
@@ -105,9 +106,9 @@ public interface TestFixture{
             .responseStatus(PartnerResponseStatus.W)
             .build();
     List<PartnerDTO> PARTNER_DTO_LIST_FOR_LOGIN_MEMBER = Arrays.asList(
-            new PartnerDTO(1L, "파트너1", ExecStatus.W)
-            ,new PartnerDTO(2L, "파트너2", ExecStatus.I)
-            ,new PartnerDTO(3L, "파트너3", ExecStatus.H)
+            new PartnerDTO(1L,  2L,"파트너1","profileURl",ExecStatus.W)
+            , new PartnerDTO(2L, 3L,"파트너2", "profileURl",ExecStatus.I)
+            , new PartnerDTO(3L, 4L,"파트너3", "profileURl",ExecStatus.H)
     );
     ExecDayDTO EXEC_DAY_DTO = new ExecDayDTO(false, true, true, true, true, true, false);
     PartnerFindDTO.Search PARTNER_FIND_SEARCH_REQUEST = PartnerFindDTO.Search.builder()
@@ -122,17 +123,16 @@ public interface TestFixture{
             .build();
 
 
-
     List<PartnerFindDTO.Summary> PARTNER_FIND_DTO_SUMMARY_LIST = Arrays.asList(
-            new PartnerFindDTO.Summary(11L, "닉네임1", 20, Sex.M, "profileUrl1","bodyProfileUrl1",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            ,new PartnerFindDTO.Summary(12L, "닉네임2", 21, Sex.M, "profileUrl2","bodyProfileUrl2",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
-            ,new PartnerFindDTO.Summary(13L, "닉네임3", 22, Sex.W, "defaultProfileUrl","defaultBodyProfileUrl",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
-            ,new PartnerFindDTO.Summary(14L, "닉네임4", 23, Sex.W, "profileUrl3","bodyProfileUrl3",EXEC_DAY_DTO, Time.valueOf("13:00:00"), Time.valueOf("15:00:00"))
-            ,new PartnerFindDTO.Summary(15L, "닉네임5", 24, Sex.W, "profileUrl4","bodyProfileUrl4",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            ,new PartnerFindDTO.Summary(16L, "닉네임6", 25, Sex.W, "profileUrl5","bodyProfileUrl5",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            ,new PartnerFindDTO.Summary(17L, "닉네임7", 26, Sex.M, "profileUrl6","bodyProfileUrl6",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            ,new PartnerFindDTO.Summary(18L, "닉네임8", 27, Sex.M, "profileUrl7","bodyProfileUrl7",EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            ,new PartnerFindDTO.Summary(19L, "닉네임9", 28, Sex.M, "profileUrl8","bodyProfileUrl8",EXEC_DAY_DTO, Time.valueOf("10:00:00"), Time.valueOf("13:00:00"))
+            new PartnerFindDTO.Summary(11L, "닉네임1", 20, Sex.M, "profileUrl1", "bodyProfileUrl1", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new PartnerFindDTO.Summary(12L, "닉네임2", 21, Sex.M, "profileUrl2", "bodyProfileUrl2", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
+            , new PartnerFindDTO.Summary(13L, "닉네임3", 22, Sex.W, "defaultProfileUrl", "defaultBodyProfileUrl", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
+            , new PartnerFindDTO.Summary(14L, "닉네임4", 23, Sex.W, "profileUrl3", "bodyProfileUrl3", EXEC_DAY_DTO, Time.valueOf("13:00:00"), Time.valueOf("15:00:00"))
+            , new PartnerFindDTO.Summary(15L, "닉네임5", 24, Sex.W, "profileUrl4", "bodyProfileUrl4", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new PartnerFindDTO.Summary(16L, "닉네임6", 25, Sex.W, "profileUrl5", "bodyProfileUrl5", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new PartnerFindDTO.Summary(17L, "닉네임7", 26, Sex.M, "profileUrl6", "bodyProfileUrl6", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new PartnerFindDTO.Summary(18L, "닉네임8", 27, Sex.M, "profileUrl7", "bodyProfileUrl7", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new PartnerFindDTO.Summary(19L, "닉네임9", 28, Sex.M, "profileUrl8", "bodyProfileUrl8", EXEC_DAY_DTO, Time.valueOf("10:00:00"), Time.valueOf("13:00:00"))
     );
 
     PartnerFindDTO.Detail PARTNER_FIND_DETAIL_FOR_VALID_MEMBER_ID = PartnerFindDTO.Detail.builder()
@@ -163,7 +163,7 @@ public interface TestFixture{
 
     String JWT_SECRET_KEY = "123456789012345678901234567890";
     Map<String, Object> CLAIMS = Map.of(
-            "id",1L,"email","test@naver.com","nickname","테스터");
+            "id", 1L, "email", "test@naver.com", "nickname", "테스터");
 
 
     String VALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
@@ -173,6 +173,19 @@ public interface TestFixture{
     String INVALID_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
             ".eyJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpZCI6MSwiaWF0IjoxNjg4MjI4NzgwLCJleHAiOjIyOTMwMjg3ODB9" +
             ".I9GzqNott_LJE7xIhhJ4ZuoARNHwoDyAgiUZ8tgVGc4_INVALID";
-    String VALID_AUTHORIZATION = "Bearer "+ VALID_ACCESS_TOKEN;
-    String INVALID_AUTHORIZATION = "AUTH "+ VALID_ACCESS_TOKEN;
+    String VALID_AUTHORIZATION = "Bearer " + VALID_ACCESS_TOKEN;
+    String INVALID_AUTHORIZATION = "AUTH " + VALID_ACCESS_TOKEN;
+
+    Long CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER = 1L;
+
+    Long NEVER_CHATTING_MEMBER_ID = 5L;
+    Long CREATED_CHATTING_ROOM_ID = 5L;
+
+    List<ChattingHistoryDTO> CHATTING_HISTORY_DTO_LIST = Arrays.asList(
+            new ChattingHistoryDTO(LOGIN_MEMBER_ID, "안녕하세요", LocalDateTime.now())
+            , new ChattingHistoryDTO(VALID_MEMBER_ID, "저도 안녕하세요~", LocalDateTime.now())
+            , new ChattingHistoryDTO(LOGIN_MEMBER_ID, "다니시는 헬스장이 어디세요?", LocalDateTime.now())
+            , new ChattingHistoryDTO(VALID_MEMBER_ID, "용마산에 있는 중곡 스포렉스요!", LocalDateTime.now())
+            , new ChattingHistoryDTO(LOGIN_MEMBER_ID, "앗 그럼 같이해요!", LocalDateTime.now())
+    );
 }
