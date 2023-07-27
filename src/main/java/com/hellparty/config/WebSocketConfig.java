@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 스프링에서 제공하는 Simple 브로커를 사용하겠다. 그리고 prefix에 해당하는 url로 요청이 올 경우 이 메시지를 Simple 브로커가 처리하겠다.
         // 관습 : queue 라는 prefix는 메시지가 1:1라 송신될때, topic 이라는 prefix는 메시지가 1:N 으로 송신될때 사용한다.
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/queue");
 
         // 상황에 따라 바로 브로커로 가는 게 아니라 메시지의 처리가 가공이 필요할 때 핸들러를 타게 할 수 있다.
         // /app 이 붙어있는 경로로 발신되면 해당 경로를 처리하고 있는 핸들러로 전송된다.
