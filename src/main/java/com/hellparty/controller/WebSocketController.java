@@ -1,19 +1,18 @@
 package com.hellparty.controller;
 
 import com.hellparty.dto.ChatDTO;
+import com.hellparty.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * title        :
+ * title        : 웹 소켓 컨트롤러
  * author       : sim
  * date         : 2023-07-19
- * description  :
+ * description  : 채팅에 사용되는 웹 소켓에 대한 컨트롤러 클래스
  */
 
 @Controller
@@ -21,17 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class WebSocketController {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final WebSocketService webSocketService;
 
-    @GetMapping("/chat-page")
-    public String getChattingRoom(){
-        return "chat.html";
-    }
-
+    /**
+     * 채팅 보내기
+     * @param chatDto - 채팅 DTO
+     */
     @MessageMapping("/send")
-    public void send(@RequestBody ChatDTO chatDTO){
-        simpMessagingTemplate.convertAndSend("/topic/"+ chatDTO.getRoomId(), chatDTO.getChat());
+    public void send(@RequestBody ChatDTO chatDto){
+        webSocketService.send(chatDto);
     }
+
 }
 
 
