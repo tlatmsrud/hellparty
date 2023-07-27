@@ -23,11 +23,11 @@ public class PartnerEntity extends BaseEntity {
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private MemberEntity member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARTNER_ID")
     private MemberEntity partner;
 }
