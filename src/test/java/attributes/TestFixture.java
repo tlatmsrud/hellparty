@@ -178,6 +178,7 @@ public interface TestFixture {
 
     Long CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER = 1L;
 
+    Long INVALID_CHATTING_ROOM_ID = 1000L;
     Long NEVER_CHATTING_MEMBER_ID = 5L;
     Long CREATED_CHATTING_ROOM_ID = 5L;
 
@@ -188,4 +189,9 @@ public interface TestFixture {
             , new ChattingHistoryDTO(VALID_MEMBER_ID, "용마산에 있는 중곡 스포렉스요!", LocalDateTime.now())
             , new ChattingHistoryDTO(LOGIN_MEMBER_ID, "앗 그럼 같이해요!", LocalDateTime.now())
     );
+
+    List<ChatDTO> ADD_CHAT_DTO_LIST = Arrays.asList(
+            new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, PARTNER_ID_OF_LOGIN_MEMBER, "조금 늦을것 같습니다.", LocalDateTime.now())
+            ,new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, LOGIN_MEMBER_ID, "괜찮습니다. 천천히 오세요~", LocalDateTime.now())
+    ) ;
 }
