@@ -4,10 +4,8 @@ import com.hellparty.dto.TokenDTO;
 import com.hellparty.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * title        : 토큰 서비스
@@ -22,7 +20,8 @@ public class TokenService {
 
     private final JwtProvider jwtProvider;
 
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisService redisService;
+
 
     /**
      * 리프레시 토큰 갱신
@@ -51,6 +50,6 @@ public class TokenService {
      * @param refreshToken - 리프레시 토큰 (value)
      */
     public void saveRefreshToken(Long memberId, String refreshToken){
-        redisTemplate.opsForValue().set(memberId.toString(), refreshToken,7, TimeUnit.DAYS);
+        redisService.saveRefreshToken(memberId.toString(), refreshToken);
     }
 }
