@@ -3,6 +3,7 @@ package com.hellparty.exception;
 import com.hellparty.dto.ErrorResponseDTO;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,6 +38,12 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO BadRequestExceptionHandler(BadRequestException e){
         e.printStackTrace();
+        return new ErrorResponseDTO(e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
         return new ErrorResponseDTO(e.getMessage());
     }
 
