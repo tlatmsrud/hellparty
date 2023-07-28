@@ -49,8 +49,8 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "WEIGHT")
     private double weight;
 
-    @Column(name = "AGE")
-    private int age;
+    @Column(name = "BIRTH_YEAR")
+    private int birthYear;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "SEX")
@@ -74,13 +74,12 @@ public class MemberEntity extends BaseEntity {
     @Column(name = "PARTNER_FIND_STATUS")
     private PartnerFindStatus findStatus = PartnerFindStatus.N;
 
-    public void updateMember(String nickname, String email, double height, double weight
-            , int age, Sex sex, MBTI mbti, String profileUrl){
+    public void updateMember(String nickname, double height, double weight
+            , int birthYear, Sex sex, MBTI mbti, String profileUrl){
         this.nickname = nickname;
-        this.email = email;
         this.height = height;
         this.weight = weight;
-        this.age = age;
+        this.birthYear = birthYear;
         this.sex = sex;
         this.mbti = mbti;
         this.profileUrl = profileUrl;
