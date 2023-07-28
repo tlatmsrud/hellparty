@@ -6,8 +6,8 @@ import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
-import com.hellparty.exception.BadRequestException;
 import com.hellparty.exception.NotFoundException;
+import com.hellparty.mapper.ExecDayMapper;
 import com.hellparty.mapper.MemberMapper;
 import com.hellparty.repository.MemberHealthRepository;
 import com.hellparty.repository.MemberRepository;
@@ -38,19 +38,18 @@ public class MemberService {
      */
     public MemberDTO getDetail(Long id){
         MemberEntity findMember = memberRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("사용자를 찾을 수 없습니다.")
-        );
+                () -> new NotFoundException("사용자를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
         return memberMapper.memberEntityToDto(findMember);
     }
 
     /**
      * 사용자 헬스정보 조회
-     * @param id - 사용자 ID
+     * @param loginId - 로그인 ID
      * @return 사용자 헬스정보
      */
-    public MemberHealthDTO getHealthDetail(Long id){
-        MemberHealthEntity findMemberHealth = memberHealthRepository.findById(id)
+    public MemberHealthDTO getHealthDetail(Long loginId){
+        MemberHealthEntity findMemberHealth = memberHealthRepository.findByMemberId(loginId)
                 .orElseThrow(() -> new NotFoundException("입력된 헬스 정보가 없습니다. 헬스 정보를 입력해주세요."));
 
         return memberMapper.memberHealthEntityToDto(findMemberHealth);
@@ -58,19 +57,19 @@ public class MemberService {
 
     /**
      * 사용자 기본정보 수정
-     * @param id - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param request - 수정 데이터 DTO
      */
-    public void updateDetail(Long id, MemberDTO.Update request){
+    public void updateDetail(Long loginId, MemberDTO.Update request){
 
-        MemberEntity findMember = memberRepository.findById(id).get();
+        MemberEntity findMember = memberRepository.findById(loginId).orElseThrow(
+                ()-> new NotFoundException("사용자를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
         findMember.updateMember(
                 request.getNickname()
-                ,request.getEmail()
                 ,request.getHeight()
                 ,request.getWeight()
-                ,request.getAge()
+                ,request.getBirthYear()
                 ,request.getSex()
                 ,request.getMbti()
                 ,request.getProfileUrl()
@@ -79,17 +78,28 @@ public class MemberService {
 
     /**
      * 사용자 헬스정보 수정
-     * @param id - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param request - 수정 데이터 DTO
      */
-    public void updateHealthDetail(Long id, MemberHealthDTO.Update request){
+    public void updateHealthDetail(Long loginId, MemberHealthDTO.Update request){
 
-        if(!id.equals(request.getId())){
-            throw new BadRequestException("잘못된 요청입니다. 다시 시도해주세요.");
-        }
+        MemberHealthEntity memberHealth = memberHealthRepository.findByMemberId(loginId).orElseThrow(
+                () -> new NotFoundException("사용자의 헬스 정보를 찾을 수 없습니다. 다시 요청해주세요"));
 
-        MemberHealthEntity memberHealth = memberMapper.memberHealthUpdateDtoToEntity(request);
-        memberHealthRepository.save(memberHealth);
+        memberHealth.UpdateMemberHealth(
+                request.getExecStartTime()
+                ,request.getExecEndTime()
+                ,request.getDiv()
+                ,request.getExecArea()
+                ,request.getGymAddress()
+                ,request.getSpclNote()
+                ,request.getBigThree()
+                ,request.getHealthMotto()
+                ,ExecDayMapper.dtoToEntity(request.getExecDay())
+        );
+
+
+
     }
 
     /**

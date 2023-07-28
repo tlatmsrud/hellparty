@@ -62,4 +62,16 @@ public class MemberHealthEntity {
     @Embedded
     private ExecDay execDay;
 
+    public void UpdateMemberHealth(Time execStartTime , Time execEndTime, Division div, Long execArea, Address gymAddress
+            , String spclNote, BigThree bigThree, String healthMotto, ExecDay execDay){
+        this.execStartTime = execStartTime;
+        this.execEndTime = execEndTime;
+        this.div = div;
+        this.execArea = execArea;
+        this.gymAddress = gymAddress;
+        this.spclNote = spclNote;
+        this.bigThree = bigThree;
+        this.healthMotto = healthMotto;
+        this.execDay = execDay;
+    }
 }
