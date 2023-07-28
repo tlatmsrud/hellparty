@@ -13,6 +13,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.hellparty.domain.QMemberEntity.memberEntity;
@@ -38,7 +39,7 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
                 Projections.constructor(PartnerFindDTO.Summary.class
                     ,memberEntity.id
                     ,memberEntity.nickname
-                    ,memberEntity.age
+                    ,memberEntity.birthYear
                     ,memberEntity.sex
                     ,memberEntity.profileUrl
                     ,memberEntity.bodyProfileUrl
@@ -79,7 +80,7 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
                 Projections.constructor(PartnerFindDTO.Detail.class
                     , memberEntity.id
                     ,memberEntity.nickname
-                    ,memberEntity.age
+                    ,memberEntity.birthYear
                     ,memberEntity.height
                     ,memberEntity.weight
                     ,memberEntity.mbti
@@ -112,7 +113,7 @@ public class PartnerFindRepositoryImpl implements PartnerFindRepositoryCustom {
     }
 
     public BooleanExpression eqAge(Integer fromAge, Integer toAge){
-        return memberEntity.age.between(fromAge, toAge);
+        return memberEntity.birthYear.between(LocalDate.now().getYear() - fromAge, LocalDate.now().getYear() - toAge);
     }
 
     public BooleanExpression eqSex(Sex sex){
