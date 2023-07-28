@@ -2,6 +2,7 @@ package com.hellparty.controller;
 
 import attributes.TestFixture;
 import attributes.TestMemberAuth;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.service.PartnerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +15,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,6 +42,8 @@ class PartnerControllerTest implements TestFixture {
     @Autowired
     private MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @BeforeEach
     void setUp(){
         given(partnerService.getPartnerList(LOGIN_MEMBER_ID))
@@ -53,7 +56,7 @@ class PartnerControllerTest implements TestFixture {
         mockMvc.perform(
                 get("/api/partner/list")
         ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("파트너1")));
+                .andExpect(content().string(objectMapper.writeValueAsString(PARTNER_DTO_LIST_FOR_LOGIN_MEMBER)));
     }
 
     @Test
@@ -64,5 +67,7 @@ class PartnerControllerTest implements TestFixture {
                 delete("/api/partner/{partnerId}", VALID_MEMBER_ID)
                 .with(csrf())
         ).andExpect(status().isNoContent());
+
+        verify(partnerService).deletePartner(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
     }
 }
