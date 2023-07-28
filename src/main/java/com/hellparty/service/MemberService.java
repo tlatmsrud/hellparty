@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * title        : Member Service
  * author       : sim
@@ -83,33 +85,46 @@ public class MemberService {
      */
     public void updateHealthDetail(Long loginId, MemberHealthDTO.Update request){
 
-        MemberHealthEntity memberHealth = memberHealthRepository.findByMemberId(loginId).orElseThrow(
-                () -> new NotFoundException("사용자의 헬스 정보를 찾을 수 없습니다. 다시 요청해주세요"));
+        Optional<MemberHealthEntity> result = memberHealthRepository.findByMemberId(loginId);
 
-        memberHealth.UpdateMemberHealth(
-                request.getExecStartTime()
-                ,request.getExecEndTime()
-                ,request.getDiv()
-                ,request.getExecArea()
-                ,request.getGymAddress()
-                ,request.getSpclNote()
-                ,request.getBigThree()
-                ,request.getHealthMotto()
-                ,ExecDayMapper.dtoToEntity(request.getExecDay())
-        );
+        if(result.isPresent()){
+            result.get().UpdateMemberHealth(
+                    request.getExecStartTime()
+                    ,request.getExecEndTime()
+                    ,request.getDiv()
+                    ,request.getExecArea()
+                    ,request.getGymAddress()
+                    ,request.getSpclNote()
+                    ,request.getBigThree()
+                    ,request.getHealthMotto()
+                    ,ExecDayMapper.dtoToEntity(request.getExecDay())
+            );
+        }else{
+            MemberHealthEntity entity = MemberHealthEntity.builder()
+                    .execStartTime(request.getExecStartTime())
+                    .execEndTime(request.getExecEndTime())
+                    .div(request.getDiv())
+                    .execArea(request.getExecArea())
+                    .gymAddress(request.getGymAddress())
+                    .spclNote(request.getSpclNote())
+                    .bigThree(request.getBigThree())
+                    .healthMotto(request.getHealthMotto())
+                    .execDay(ExecDayMapper.dtoToEntity(request.getExecDay()))
+                    .build();
 
-
+            memberHealthRepository.save(entity);
+        }
 
     }
 
     /**
      * 사용자 상태 수정
-     * @param id - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param status - 사용자 상태
      */
-    public void updateExecStatus(Long id, ExecStatus status) {
+    public void updateExecStatus(Long loginId, ExecStatus status) {
 
-        MemberEntity findMember = memberRepository.findById(id)
+        MemberEntity findMember = memberRepository.findById(loginId)
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updateExecStatus(status);
@@ -118,12 +133,12 @@ public class MemberService {
 
     /**
      * 사용자 파트너 구함 상태 수정
-     * @param id - 사용자 ID
+     * @param loginId - 로그인 ID
      * @param status - 파트너 구함 상태
      */
-    public void updatePartnerFindStatus(Long id, PartnerFindStatus status){
+    public void updatePartnerFindStatus(Long loginId, PartnerFindStatus status){
 
-        MemberEntity findMember = memberRepository.findById(id)
+        MemberEntity findMember = memberRepository.findById(loginId)
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updatePartnerFindStatus(status);
