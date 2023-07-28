@@ -21,7 +21,6 @@ import java.sql.Time;
 @Getter
 public class MemberHealthDTO {
 
-    private Long id;
     private Time execStartTime;
     private Time execEndTime;
     private Division div;
@@ -37,7 +36,6 @@ public class MemberHealthDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update{
-        private Long id;
         private Time execStartTime;
         private Time execEndTime;
         private Division div;
