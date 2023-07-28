@@ -27,7 +27,7 @@ public class MemberMapper {
     public MemberDTO memberEntityToDto(MemberEntity member){
         return MemberDTO.builder()
                 .id(member.getId())
-                .age(member.getAge())
+                .birthYear(member.getBirthYear())
                 .bodyProfileUrl(member.getBodyProfileUrl())
                 .sex(member.getSex())
                 .profileUrl(member.getProfileUrl())
@@ -43,7 +43,6 @@ public class MemberMapper {
     public MemberHealthDTO memberHealthEntityToDto(MemberHealthEntity memberHealth){
 
         return MemberHealthDTO.builder()
-                .id(memberHealth.getId())
                 .execStartTime(memberHealth.getExecStartTime())
                 .execEndTime(memberHealth.getExecEndTime())
                 .div(memberHealth.getDiv())
@@ -55,9 +54,9 @@ public class MemberMapper {
                 .build();
     }
 
-    public MemberHealthEntity memberHealthUpdateDtoToEntity(MemberHealthDTO.Update dto){
+    public MemberHealthEntity memberHealthUpdateDtoToEntity(Long memberId, MemberHealthDTO.Update dto){
 
-        MemberEntity findMember = memberRepository.findById(dto.getId())
+        MemberEntity findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
         return MemberHealthEntity.builder()
