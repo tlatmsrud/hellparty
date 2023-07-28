@@ -1,8 +1,12 @@
 package attributes;
 
 import com.hellparty.domain.MemberEntity;
+import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.domain.PartnerEntity;
 import com.hellparty.domain.PartnerRequestEntity;
+import com.hellparty.domain.embedded.Address;
+import com.hellparty.domain.embedded.BigThree;
+import com.hellparty.domain.embedded.ExecDay;
 import com.hellparty.dto.*;
 import com.hellparty.enums.*;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +27,7 @@ import java.util.Map;
 public interface TestFixture {
     Long LOGIN_MEMBER_ID = 1L;
     Long VALID_MEMBER_ID = 2L;
+    Long NO_REG_HEALTH_MEMBER_ID = 3L;
     Long NOT_LOOKING_FOR_PARTNER_MEMBER_ID = 4L;
     Long INVALID_MEMBER_ID = 1000L;
     Long PARTNER_ID_OF_LOGIN_MEMBER = 21L;
@@ -30,7 +35,7 @@ public interface TestFixture {
     MemberEntity LOGIN_MEMBER_ENTITY = MemberEntity.builder()
             .id(LOGIN_MEMBER_ID)
             .email("tlatmsrud@naver.com")
-            .age(28)
+            .birthYear(1995)
             .profileUrl("profileUrl")
             .bodyProfileUrl("bodyProfileUrl")
             .nickname("테스트 닉네임")
@@ -42,10 +47,48 @@ public interface TestFixture {
             .findStatus(PartnerFindStatus.Y)
             .build();
 
+    MemberDTO LOGIN_MEMBER_DTO = MemberDTO.builder()
+            .id(LOGIN_MEMBER_ID)
+            .email(LOGIN_MEMBER_ENTITY.getEmail())
+            .birthYear(LOGIN_MEMBER_ENTITY.getBirthYear())
+            .profileUrl(LOGIN_MEMBER_ENTITY.getProfileUrl())
+            .bodyProfileUrl(LOGIN_MEMBER_ENTITY.getBodyProfileUrl())
+            .nickname(LOGIN_MEMBER_ENTITY.getNickname())
+            .height(LOGIN_MEMBER_ENTITY.getHeight())
+            .weight(LOGIN_MEMBER_ENTITY.getWeight())
+            .sex(LOGIN_MEMBER_ENTITY.getSex())
+            .mbti(LOGIN_MEMBER_ENTITY.getMbti())
+            .build();
+
+    MemberHealthEntity LOGIN_MEMBER_HEALTH_ENTITY = MemberHealthEntity.builder()
+            .id(1L)
+            .member(LOGIN_MEMBER_ENTITY)
+            .execStartTime(Time.valueOf("20:00:00"))
+            .execEndTime(Time.valueOf("21:00:00"))
+            .div(Division.THREE)
+            .execArea(123L)
+            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
+            .spclNote("특이사항")
+            .bigThree(new BigThree(100,100,100))
+            .healthMotto("헬스 좌우명")
+            .execDay(new ExecDay(false, true, true, true, true,true,false))
+            .build();
+
+    MemberHealthDTO LOGIN_MEMBER_HEALTH_DTO = MemberHealthDTO.builder()
+            .execStartTime(LOGIN_MEMBER_HEALTH_ENTITY.getExecStartTime())
+            .execEndTime(LOGIN_MEMBER_HEALTH_ENTITY.getExecEndTime())
+            .div(LOGIN_MEMBER_HEALTH_ENTITY.getDiv())
+            .execArea(LOGIN_MEMBER_HEALTH_ENTITY.getExecArea())
+            .gymAddress(LOGIN_MEMBER_HEALTH_ENTITY.getGymAddress())
+            .spclNote(LOGIN_MEMBER_HEALTH_ENTITY.getSpclNote())
+            .bigThree(LOGIN_MEMBER_HEALTH_ENTITY.getBigThree())
+            .healthMotto(LOGIN_MEMBER_HEALTH_ENTITY.getHealthMotto())
+            .build();
+
     MemberEntity VALID_MEMBER_ENTITY = MemberEntity.builder()
             .id(VALID_MEMBER_ID)
             .email("test@naver.com")
-            .age(23)
+            .birthYear(2000)
             .profileUrl("profileUrl")
             .bodyProfileUrl("bodyProfileUrl")
             .nickname("VALID_MEMBER 닉네임")
@@ -57,9 +100,45 @@ public interface TestFixture {
             .findStatus(PartnerFindStatus.Y)
             .build();
 
+    MemberDTO VALID_MEMBER_DTO = MemberDTO.builder()
+            .id(VALID_MEMBER_ID)
+            .email(VALID_MEMBER_ENTITY.getEmail())
+            .birthYear(VALID_MEMBER_ENTITY.getBirthYear())
+            .profileUrl(VALID_MEMBER_ENTITY.getProfileUrl())
+            .bodyProfileUrl(VALID_MEMBER_ENTITY.getBodyProfileUrl())
+            .nickname(VALID_MEMBER_ENTITY.getNickname())
+            .height(VALID_MEMBER_ENTITY.getHeight())
+            .weight(VALID_MEMBER_ENTITY.getWeight())
+            .sex(VALID_MEMBER_ENTITY.getSex())
+            .mbti(VALID_MEMBER_ENTITY.getMbti())
+            .build();
+
+    MemberHealthDTO VALID_MEMBER_HEALTH_DTO = MemberHealthDTO.builder()
+            .execStartTime(Time.valueOf("19:00:00"))
+            .execEndTime(Time.valueOf("20:00:00"))
+            .div(Division.THREE)
+            .execArea(123L)
+            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
+            .spclNote("특이사항")
+            .bigThree(new BigThree(100,100,120))
+            .healthMotto("헬스 좌우명")
+            .build();
+
+    MemberHealthDTO VALID_MEMBER_HEALTH_UPDATE_DTO = MemberHealthDTO.builder()
+            .execStartTime(Time.valueOf("20:00:00"))
+            .execEndTime(Time.valueOf("21:00:00"))
+            .div(Division.THREE)
+            .execArea(123L)
+            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
+            .spclNote("변경된 특이사항")
+            .bigThree(null)
+            .healthMotto("변경된 헬스 좌우명")
+            .build();
+
+
     MemberEntity NOT_LOOKING_FOR_PARTNER_MEMBER_ENTITY = MemberEntity.builder()
             .id(NOT_LOOKING_FOR_PARTNER_MEMBER_ID)
-            .age(30)
+            .birthYear(1993)
             .profileUrl("profileUrl")
             .bodyProfileUrl("bodyProfileUrl")
             .nickname("파트너 안찾아요 닉네임")
@@ -83,6 +162,32 @@ public interface TestFixture {
             , new PartnerRequestDTO.History(103L, PartnerResponseStatus.N, 57L, "테스터57", "profileUrl3")
     );
 
+    MemberDTO.Update UPDATE_MEMBER_DETAIL_REQUEST = MemberDTO.Update.builder()
+            .birthYear(1995).height(170).weight(50.1).sex(Sex.M)
+            .nickname("nickname").profileUrl("test.url")
+            .build();
+
+    MemberDTO.Update UPDATE_MEMBER_DETAIL_REQUEST_WITHOUT_NICKNAME = MemberDTO.Update.builder()
+            .birthYear(1995).height(170).weight(50.1).sex(Sex.M)
+            .profileUrl("test.url")
+            .build();
+
+    MemberHealthDTO.Update UPDATE_HEALTH_DETAIL_REQUEST = MemberHealthDTO.Update.builder()
+            .execStartTime(Time.valueOf("19:00:00"))
+            .execEndTime(Time.valueOf("20:00:00"))
+            .bigThree(new BigThree(100,110,80))
+            .execArea(123L)
+            .healthMotto("뇌는 근육으로 이루어져있다.")
+            .gymAddress(Address.builder()
+                    .y(1L)
+                    .x(2L)
+                    .address("서울시 중랑구")
+                    .placeName("중랑헬스장")
+                    .build())
+            .spclNote("특이사항")
+            .div(Division.THREE)
+            .execDay(new ExecDayDTO(false, true, true, true, true,true,false))
+            .build();
 
     Long PARTNER_REQUEST_ID_TO_LOGIN_MEMBER = 1L;
     Long PARTNER_REQUEST_ID_FROM_LOGIN_MEMBER = 2L;
