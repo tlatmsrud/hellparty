@@ -27,7 +27,6 @@ import java.util.Map;
 public interface TestFixture {
     Long LOGIN_MEMBER_ID = 1L;
     Long VALID_MEMBER_ID = 2L;
-    Long NO_REG_HEALTH_MEMBER_ID = 3L;
     Long NOT_LOOKING_FOR_PARTNER_MEMBER_ID = 4L;
     Long INVALID_MEMBER_ID = 1000L;
     Long PARTNER_ID_OF_LOGIN_MEMBER = 21L;

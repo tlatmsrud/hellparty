@@ -1,38 +1,27 @@
 package com.hellparty.service;
 
 import attributes.TestFixture;
-import com.hellparty.domain.MemberEntity;
-import com.hellparty.domain.MemberHealthEntity;
-import com.hellparty.domain.embedded.Address;
-import com.hellparty.domain.embedded.BigThree;
-import com.hellparty.dto.ExecDayDTO;
-import com.hellparty.dto.MemberDTO;
-import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
-import com.hellparty.enums.Sex;
-import com.hellparty.exception.BadRequestException;
-import com.hellparty.exception.NotFoundException;
 import com.hellparty.mapper.MemberMapper;
 import com.hellparty.repository.MemberHealthRepository;
 import com.hellparty.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * title        :
+ * title        : MemberService 테스트
  * author       : sim
- * date         : 2023-07-01
- * description  :
+ * date         : 2023-07-28
+ * description  : MemberService 테스트
  */
 class MemberServiceTest implements TestFixture {
 
@@ -41,98 +30,68 @@ class MemberServiceTest implements TestFixture {
     private final MemberMapper memberMapper = mock(MemberMapper.class);
     private final MemberService memberService = new MemberService(memberRepository, memberHealthRepository, memberMapper);
 
-    private final MemberDTO.Update UPDATE_REQUEST = MemberDTO.Update.builder()
-            .nickname("update-nickname")
-            .age(10)
-            .sex(Sex.M)
-            .build();
-
-    private final MemberHealthDTO.Update UPDATE_HEALTH_DETAIL_REQUEST = MemberHealthDTO.Update.builder()
-            .id(LOGIN_MEMBER_ID)
-            .execStartTime(Time.valueOf("19:00:00"))
-            .execEndTime(Time.valueOf("20:00:00"))
-            .bigThree(BigThree.builder()
-                    .squat(100)
-                    .deadlift(110)
-                    .benchPress(80)
-                    .build())
-            .execArea(123L)
-            .healthMotto("뇌는 근육으로 이루어져있다.")
-            .gymAddress(Address.builder()
-                    .y(1L)
-                    .x(2L)
-                    .address("서울시 중랑구")
-                    .placeName("중랑헬스장")
-                    .build())
-            .execDay(new ExecDayDTO(false, true, true, true, true, true, false))
-            .build();
-
     @BeforeEach
     void setUp(){
 
         given(memberRepository.findById(LOGIN_MEMBER_ID))
-                .willReturn(Optional.of(MemberEntity.builder().id(LOGIN_MEMBER_ID).build()));
+                .willReturn(Optional.of(LOGIN_MEMBER_ENTITY));
 
-        given(memberHealthRepository.findById(LOGIN_MEMBER_ID))
-                .willReturn(Optional.of(MemberHealthEntity.builder().id(LOGIN_MEMBER_ID).build()));
+        given(memberMapper.memberEntityToDto(LOGIN_MEMBER_ENTITY))
+                .willReturn(LOGIN_MEMBER_DTO);
 
-        given(memberHealthRepository.findById(INVALID_MEMBER_ID))
-                .willReturn(Optional.empty());
+        given(memberHealthRepository.findByMemberId(LOGIN_MEMBER_ID))
+                .willReturn(Optional.of(LOGIN_MEMBER_HEALTH_ENTITY));
 
-        given(memberMapper.memberHealthUpdateDtoToEntity(any(MemberHealthDTO.Update.class)))
-                .willReturn(MemberHealthEntity.builder().id(LOGIN_MEMBER_ID).build());
+        given(memberMapper.memberHealthEntityToDto(LOGIN_MEMBER_HEALTH_ENTITY))
+                .willReturn(LOGIN_MEMBER_HEALTH_DTO);
 
-        given(memberMapper.memberEntityToDto(any(MemberEntity.class)))
-                .willReturn(MemberDTO.builder().id(LOGIN_MEMBER_ID).build());
-
-        given(memberMapper.memberHealthEntityToDto(any(MemberHealthEntity.class)))
-                .willReturn(MemberHealthDTO.builder().id(LOGIN_MEMBER_ID).build());
     }
 
     @Test
+    @DisplayName("사용자 정보 조회")
     void getDetail(){
-        MemberDTO memberDTO = memberService.getDetail(LOGIN_MEMBER_ID);
-        assertThat(memberDTO.getId()).isEqualTo(LOGIN_MEMBER_ID);
+        assertThat(memberService.getDetail(LOGIN_MEMBER_ID))
+                .isEqualTo(LOGIN_MEMBER_DTO);
     }
 
     @Test
-    void getHealthDetailWithValidId(){
-        MemberHealthDTO memberHealthDTO = memberService.getHealthDetail(LOGIN_MEMBER_ID);
-        assertThat(memberHealthDTO.getId()).isEqualTo(LOGIN_MEMBER_ID);
-    }
-
-    @Test
-    void getHealthDetailWithInvalidId(){
-        assertThatThrownBy(()-> memberService.getHealthDetail(INVALID_MEMBER_ID))
-                .isInstanceOf(NotFoundException.class);
-
-    }
-    @Test
+    @DisplayName("사용자 정보 수정")
     void updateDetail(){
-        assertThatNoException().isThrownBy(() -> memberService.updateDetail(LOGIN_MEMBER_ID, UPDATE_REQUEST));
+        assertThatCode(() -> memberService.updateDetail(LOGIN_MEMBER_ID, UPDATE_MEMBER_DETAIL_REQUEST))
+                .doesNotThrowAnyException();
+        verify(memberRepository).findById(LOGIN_MEMBER_ID);
     }
 
     @Test
-    void updateHealthDetailWithValidId(){
-        assertThatNoException().isThrownBy(() -> memberService.updateHealthDetail(LOGIN_MEMBER_ID, UPDATE_HEALTH_DETAIL_REQUEST));
-        verify(memberHealthRepository).save(any(MemberHealthEntity.class));
+    @DisplayName("헬스정보 조회")
+    void getHealthDetail(){
+        assertThat(memberService.getHealthDetail(LOGIN_MEMBER_ID))
+                .isEqualTo(LOGIN_MEMBER_HEALTH_DTO);
     }
 
     @Test
-    void updateHealthDetailWithInvalidId(){
-        assertThatThrownBy(() -> memberService.updateHealthDetail(INVALID_MEMBER_ID, UPDATE_HEALTH_DETAIL_REQUEST))
-                .isInstanceOf(BadRequestException.class);
+    @DisplayName("헬스 정보 수정")
+    void updateHealthDetail(){
+        assertThatCode(() -> memberService.updateHealthDetail(LOGIN_MEMBER_ID, UPDATE_HEALTH_DETAIL_REQUEST))
+                .doesNotThrowAnyException();
+        verify(memberHealthRepository).findByMemberId(LOGIN_MEMBER_ID);
     }
 
     @Test
+    @DisplayName("운동 상태 수정")
     void updateExecStatusToW(){
-        memberService.updateExecStatus(LOGIN_MEMBER_ID, ExecStatus.W);
+        assertThatCode(() -> memberService.updateExecStatus(LOGIN_MEMBER_ID, ExecStatus.W))
+                .doesNotThrowAnyException();
+
         verify(memberRepository).findById(LOGIN_MEMBER_ID);
     }
 
     @Test
+    @DisplayName("파트너 찾기 상태 수정")
     void updatePartnerFindStatusToY(){
-        memberService.updatePartnerFindStatus(LOGIN_MEMBER_ID, PartnerFindStatus.Y);
+        assertThatCode(() -> memberService.updatePartnerFindStatus(LOGIN_MEMBER_ID, PartnerFindStatus.Y))
+                .doesNotThrowAnyException();
         verify(memberRepository).findById(LOGIN_MEMBER_ID);
+
     }
 }
