@@ -99,42 +99,6 @@ public interface TestFixture {
             .findStatus(PartnerFindStatus.Y)
             .build();
 
-    MemberDTO VALID_MEMBER_DTO = MemberDTO.builder()
-            .id(VALID_MEMBER_ID)
-            .email(VALID_MEMBER_ENTITY.getEmail())
-            .birthYear(VALID_MEMBER_ENTITY.getBirthYear())
-            .profileUrl(VALID_MEMBER_ENTITY.getProfileUrl())
-            .bodyProfileUrl(VALID_MEMBER_ENTITY.getBodyProfileUrl())
-            .nickname(VALID_MEMBER_ENTITY.getNickname())
-            .height(VALID_MEMBER_ENTITY.getHeight())
-            .weight(VALID_MEMBER_ENTITY.getWeight())
-            .sex(VALID_MEMBER_ENTITY.getSex())
-            .mbti(VALID_MEMBER_ENTITY.getMbti())
-            .build();
-
-    MemberHealthDTO VALID_MEMBER_HEALTH_DTO = MemberHealthDTO.builder()
-            .execStartTime(Time.valueOf("19:00:00"))
-            .execEndTime(Time.valueOf("20:00:00"))
-            .div(Division.THREE)
-            .execArea(123L)
-            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
-            .spclNote("특이사항")
-            .bigThree(new BigThree(100,100,120))
-            .healthMotto("헬스 좌우명")
-            .build();
-
-    MemberHealthDTO VALID_MEMBER_HEALTH_UPDATE_DTO = MemberHealthDTO.builder()
-            .execStartTime(Time.valueOf("20:00:00"))
-            .execEndTime(Time.valueOf("21:00:00"))
-            .div(Division.THREE)
-            .execArea(123L)
-            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
-            .spclNote("변경된 특이사항")
-            .bigThree(null)
-            .healthMotto("변경된 헬스 좌우명")
-            .build();
-
-
     MemberEntity NOT_LOOKING_FOR_PARTNER_MEMBER_ENTITY = MemberEntity.builder()
             .id(NOT_LOOKING_FOR_PARTNER_MEMBER_ID)
             .birthYear(1993)
