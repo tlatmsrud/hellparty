@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * description  :
  */
 public interface PartnerRepository extends JpaRepository<PartnerEntity, Long>, PartnerRepositoryCustom {
+    void deleteByMemberIdAndPartnerId(Long loginId, Long partnerId);
 }
