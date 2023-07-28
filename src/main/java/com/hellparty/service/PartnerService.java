@@ -1,6 +1,5 @@
 package com.hellparty.service;
 
-import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
 import com.hellparty.repository.PartnerRepository;
 import jakarta.transaction.Transactional;
@@ -29,8 +28,12 @@ public class PartnerService {
         return partnerRepository.getPartnerList(memberId);
     }
 
+    /**
+     * 파트너 삭제
+     * @param loginId - 로그인 ID
+     * @param partnerId - 파트너 ID
+     */
     public void deletePartner(Long loginId, Long partnerId) {
-        PartnerEntity result = partnerRepository.findByMemberIdAndPartnerId(loginId, partnerId);
-        partnerRepository.delete(result);
+        partnerRepository.deleteByMemberIdAndPartnerId(loginId, partnerId);
     }
 }
