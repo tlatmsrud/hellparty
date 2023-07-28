@@ -2,6 +2,7 @@ package com.hellparty.dto;
 
 import com.hellparty.enums.MBTI;
 import com.hellparty.enums.Sex;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 /**
@@ -19,7 +20,7 @@ public class MemberDTO {
     private String email;
     private String profileUrl;
     private String bodyProfileUrl;
-    private int age;
+    private int birthYear;
     private double height;
     private double weight;
     private MBTI mbti;
@@ -30,14 +31,17 @@ public class MemberDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update{
+
+        @NotBlank(message = "닉네임을 입력해주세요.")
         private String nickname;
-        private String email;
         private String profileUrl;
         private String bodyProfileUrl;
-        private int age;
+        @NotBlank(message = "출생년도를 입력해주세요.")
+        private int birthYear;
         private double height;
         private double weight;
         private MBTI mbti;
+        @NotBlank(message = "성별을 입력해주세요.")
         private Sex sex;
     }
 
