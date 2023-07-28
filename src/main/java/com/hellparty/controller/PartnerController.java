@@ -23,12 +23,22 @@ public class PartnerController {
 
     private final PartnerService partnerService;
 
+    /**
+     * 사용자의 파트너 리스트 조회
+     * @param loginId - 로그인 ID
+     * @return 사용자의 파트너 리스트
+     */
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public List<PartnerDTO> getPartnerList(@LoginMemberId Long memberId){
-        return partnerService.getPartnerList(memberId);
+    public List<PartnerDTO> getPartnerList(@LoginMemberId Long loginId){
+        return partnerService.getPartnerList(loginId);
     }
 
+    /**
+     * 사용자의 파트너 삭제
+     * @param loginId - 로그인 ID
+     * @param partnerId - 파트너 ID
+     */
     @DeleteMapping("/{partnerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePartner(@LoginMemberId Long loginId, @PathVariable("partnerId") Long partnerId){
