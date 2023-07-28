@@ -6,6 +6,7 @@ import com.hellparty.dto.MemberHealthDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public class MemberController {
      */
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateDetail(@LoginMemberId Long id, @RequestBody MemberDTO.Update request){
+    public void updateDetail(@LoginMemberId Long id, @Valid @RequestBody MemberDTO.Update request){
 
         memberService.updateDetail(id, request);
     }
