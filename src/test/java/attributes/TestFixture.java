@@ -2,7 +2,6 @@ package attributes;
 
 import com.hellparty.domain.MemberEntity;
 import com.hellparty.domain.MemberHealthEntity;
-import com.hellparty.domain.PartnerEntity;
 import com.hellparty.domain.PartnerRequestEntity;
 import com.hellparty.domain.embedded.Address;
 import com.hellparty.domain.embedded.BigThree;
@@ -179,34 +178,34 @@ public interface TestFixture {
             , new PartnerDTO(3L, 4L,"파트너3", "profileURl",ExecStatus.H)
     );
     ExecDayDTO EXEC_DAY_DTO = new ExecDayDTO(false, true, true, true, true, true, false);
-    PartnerFindDTO.Search PARTNER_FIND_SEARCH_REQUEST = PartnerFindDTO.Search.builder()
+    SearchMemberDTO.Request SEARCH_MEMBER_REQUEST_DTO = SearchMemberDTO.Request.builder()
             .fromAge(20)
             .toAge(30)
             .sex(null)
             .mbti(null)
             .execArea(null)
-            .execDay(EXEC_DAY_DTO)
+            .execDay(null)
             .execStartTime(null)
             .execEndTime(null)
             .build();
 
 
-    List<PartnerFindDTO.Summary> PARTNER_FIND_DTO_SUMMARY_LIST = Arrays.asList(
-            new PartnerFindDTO.Summary(11L, "닉네임1", 20, Sex.M, "profileUrl1", "bodyProfileUrl1", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            , new PartnerFindDTO.Summary(12L, "닉네임2", 21, Sex.M, "profileUrl2", "bodyProfileUrl2", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
-            , new PartnerFindDTO.Summary(13L, "닉네임3", 22, Sex.W, "defaultProfileUrl", "defaultBodyProfileUrl", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
-            , new PartnerFindDTO.Summary(14L, "닉네임4", 23, Sex.W, "profileUrl3", "bodyProfileUrl3", EXEC_DAY_DTO, Time.valueOf("13:00:00"), Time.valueOf("15:00:00"))
-            , new PartnerFindDTO.Summary(15L, "닉네임5", 24, Sex.W, "profileUrl4", "bodyProfileUrl4", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            , new PartnerFindDTO.Summary(16L, "닉네임6", 25, Sex.W, "profileUrl5", "bodyProfileUrl5", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            , new PartnerFindDTO.Summary(17L, "닉네임7", 26, Sex.M, "profileUrl6", "bodyProfileUrl6", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            , new PartnerFindDTO.Summary(18L, "닉네임8", 27, Sex.M, "profileUrl7", "bodyProfileUrl7", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
-            , new PartnerFindDTO.Summary(19L, "닉네임9", 28, Sex.M, "profileUrl8", "bodyProfileUrl8", EXEC_DAY_DTO, Time.valueOf("10:00:00"), Time.valueOf("13:00:00"))
+    List<SearchMemberDTO.Summary> SEARCH_MEMBER_SUMMARY_DTO = Arrays.asList(
+            new SearchMemberDTO.Summary(11L, "닉네임1", 20, Sex.M, "profileUrl1", "bodyProfileUrl1", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new SearchMemberDTO.Summary(12L, "닉네임2", 21, Sex.M, "profileUrl2", "bodyProfileUrl2", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
+            , new SearchMemberDTO.Summary(13L, "닉네임3", 22, Sex.W, "defaultProfileUrl", "defaultBodyProfileUrl", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("20:00:00"))
+            , new SearchMemberDTO.Summary(14L, "닉네임4", 23, Sex.W, "profileUrl3", "bodyProfileUrl3", EXEC_DAY_DTO, Time.valueOf("13:00:00"), Time.valueOf("15:00:00"))
+            , new SearchMemberDTO.Summary(15L, "닉네임5", 24, Sex.W, "profileUrl4", "bodyProfileUrl4", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new SearchMemberDTO.Summary(16L, "닉네임6", 25, Sex.W, "profileUrl5", "bodyProfileUrl5", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new SearchMemberDTO.Summary(17L, "닉네임7", 26, Sex.M, "profileUrl6", "bodyProfileUrl6", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new SearchMemberDTO.Summary(18L, "닉네임8", 27, Sex.M, "profileUrl7", "bodyProfileUrl7", EXEC_DAY_DTO, Time.valueOf("19:00:00"), Time.valueOf("21:00:00"))
+            , new SearchMemberDTO.Summary(19L, "닉네임9", 28, Sex.M, "profileUrl8", "bodyProfileUrl8", EXEC_DAY_DTO, Time.valueOf("10:00:00"), Time.valueOf("13:00:00"))
     );
 
-    PartnerFindDTO.Detail PARTNER_FIND_DETAIL_FOR_VALID_MEMBER_ID = PartnerFindDTO.Detail.builder()
+    SearchMemberDTO.Detail SEARCH_MEMBER_DETAIL_DTO = SearchMemberDTO.Detail.builder()
             .memberId(VALID_MEMBER_ID)
             .nickname("VALID_MEMBER 닉네임")
-            .age(23)
+            .birthYear(2000)
             .height(180)
             .weight(68)
             .mbti(MBTI.ISFJ)
@@ -227,7 +226,29 @@ public interface TestFixture {
             .healthMotto("헬스가 인생이다.")
             .build();
 
-    PartnerEntity VALID_PARTNER_ENTITY = new PartnerEntity(1L, LOGIN_MEMBER_ENTITY, VALID_MEMBER_ENTITY);
+   SearchMemberDTO.Detail SEARCH_LOGIN_MEMBER_DETAIL_DTO = SearchMemberDTO.Detail.builder()
+            .memberId(LOGIN_MEMBER_ID)
+            .nickname("심승경")
+            .birthYear(1995)
+            .height(170.5)
+            .weight(65)
+            .mbti(MBTI.ISFJ)
+            .sex(Sex.M)
+            .execDay(EXEC_DAY_DTO)
+            .execStartTime(Time.valueOf("19:00:00"))
+            .execEndTime(Time.valueOf("20:30:00"))
+            .div(Division.THREE)
+            .execArea(null)
+            .placeName(null)
+            .address(null)
+            .x(null)
+            .y(null)
+            .spclNote("데드 리프트는 못합니다.")
+            .benchPress(96)
+            .squat(100)
+            .deadlift(0)
+            .healthMotto("안다치게 하자")
+            .build();
 
     String JWT_SECRET_KEY = "123456789012345678901234567890";
     Map<String, Object> CLAIMS = Map.of(
