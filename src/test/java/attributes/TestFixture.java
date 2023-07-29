@@ -181,12 +181,12 @@ public interface TestFixture {
     SearchMemberDTO.Request SEARCH_MEMBER_REQUEST_DTO = SearchMemberDTO.Request.builder()
             .fromAge(20)
             .toAge(30)
-            .sex(null)
+            .sex(Sex.M)
             .mbti(null)
             .execArea(null)
-            .execDay(null)
-            .execStartTime(null)
-            .execEndTime(null)
+            .execDay(EXEC_DAY_DTO)
+            .execStartTime(Time.valueOf("15:00:00"))
+            .execEndTime(Time.valueOf("20:00:00"))
             .build();
 
 
