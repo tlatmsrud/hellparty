@@ -109,7 +109,7 @@ include::{snippets}/updateExecStatus/http-response.adoc[]
 ==== Request Header
 include::{snippets}/updateExecStatus/request-headers.adoc[]
 
-==== Request Paramters
+==== Request Parameters
 include::{snippets}/updateExecStatus/form-parameters.adoc[]
 
 
@@ -124,10 +124,38 @@ include::{snippets}/updatePartnerFindStatus/http-response.adoc[]
 ==== Request Header
 include::{snippets}/updatePartnerFindStatus/request-headers.adoc[]
 
-==== Request Paramters
+==== Request Parameters
 include::{snippets}/updatePartnerFindStatus/form-parameters.adoc[]
 
 
+=== 사용자 검색 - 리스트
+
+==== Http Request
+include::{snippets}/searchMemberList/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/searchMemberList/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/searchMemberList/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/searchMemberList/request-fields.adoc[]
+
+
+=== 사용자 검색 - 상세
+
+==== Http Request
+include::{snippets}/searchMemberDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/searchMemberDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/searchMemberDetail/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/searchMemberDetail/path-parameters.adoc[]
 
 
 
