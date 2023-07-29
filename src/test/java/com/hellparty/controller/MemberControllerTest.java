@@ -20,6 +20,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,8 +33,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.formParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -290,7 +290,48 @@ class MemberControllerTest implements TestFixture {
                         .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(SEARCH_MEMBER_REQUEST_DTO)))
-                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_SUMMARY_DTO)));
+                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_SUMMARY_DTO)))
+                .andDo(print())
+                .andDo(document(
+                        "searchMemberList"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , requestFields(
+                                fieldWithPath("fromAge").description("최소 나이")
+                                , fieldWithPath("toAge").description("최대 나이")
+                                , fieldWithPath("sex").description("성별 (남 : M, 여 : W)")
+                                , fieldWithPath("mbti").description("MBTI")
+                                , fieldWithPath("execStartTime").description("헬스 시작시간 (HH:MM:SS)")
+                                , fieldWithPath("execEndTime").description("헬스 종료시간 (HH:MM:SS)")
+                                , fieldWithPath("execArea").description("헬스 지역")
+                                , fieldWithPath("execDay").description("헬스 요일")
+                                , fieldWithPath("execDay.sun").description("월요일")
+                                , fieldWithPath("execDay.mon").description("화요일")
+                                , fieldWithPath("execDay.tue").description("수요일")
+                                , fieldWithPath("execDay.wed").description("목요일")
+                                , fieldWithPath("execDay.thu").description("금요일")
+                                , fieldWithPath("execDay.fri").description("토요일")
+                                , fieldWithPath("execDay.sat").description("일요일")
+                        ) , responseFields(
+                                fieldWithPath("[].memberId").description("사용자 ID")
+                                , fieldWithPath("[].nickname").description("닉네임")
+                                , fieldWithPath("[].birthYear").description("출생 연도")
+                                , fieldWithPath("[].sex").description("성별 (남 : M, 여 : W)")
+                                , fieldWithPath("[].profileUrl").description("프로필 이미지 URL")
+                                , fieldWithPath("[].bodyProfileUrl").description("바디 프로필 이미지 URL")
+                                , fieldWithPath("[].execDay").description("헬스 요일")
+                                , fieldWithPath("[].execDay.sun").description("일요일")
+                                , fieldWithPath("[].execDay.mon").description("월요일")
+                                , fieldWithPath("[].execDay.tue").description("화요일")
+                                , fieldWithPath("[].execDay.wed").description("수요일")
+                                , fieldWithPath("[].execDay.thu").description("목요일")
+                                , fieldWithPath("[].execDay.fri").description("금요일")
+                                , fieldWithPath("[].execDay.sat").description("토요일")
+                                , fieldWithPath("[].execStartTime").description("헬스 시작 시간 (HH:MM:SS)")
+                                , fieldWithPath("[].execEndTime").description("헬스 종료 시간 (HH:MM:SS)")
+                        )
+                ));
+
     }
 
     @Test
@@ -298,7 +339,46 @@ class MemberControllerTest implements TestFixture {
     @DisplayName("사용자 검색 - 상세")
     void searchMemberDetail() throws Exception{
         mockMvc.perform(
-                        get("/api/member/search-detail/{memberId}", VALID_MEMBER_ID))
-                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_DETAIL_DTO)));
+                        RestDocumentationRequestBuilders.get("/api/member/search-detail/{memberId}", VALID_MEMBER_ID)
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN"))
+                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_DETAIL_DTO)))
+                .andDo(print())
+                .andDo(document(
+                        "searchMemberDetail"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , pathParameters(
+                                parameterWithName("memberId").description("사용자 ID")
+                        ) , responseFields(
+                                fieldWithPath("memberId").description("사용자 ID")
+                                , fieldWithPath("nickname").description("닉네임")
+                                , fieldWithPath("birthYear").description("출생 연도")
+                                , fieldWithPath("height").description("출생 연도")
+                                , fieldWithPath("weight").description("출생 연도")
+                                , fieldWithPath("mbti").description("출생 연도")
+                                , fieldWithPath("sex").description("성별 (남 : M, 여 : W)")
+                                , fieldWithPath("execDay").description("헬스 요일")
+                                , fieldWithPath("execDay.sun").description("일요일")
+                                , fieldWithPath("execDay.mon").description("월요일")
+                                , fieldWithPath("execDay.tue").description("화요일")
+                                , fieldWithPath("execDay.wed").description("수요일")
+                                , fieldWithPath("execDay.thu").description("목요일")
+                                , fieldWithPath("execDay.fri").description("금요일")
+                                , fieldWithPath("execDay.sat").description("토요일")
+                                , fieldWithPath("execStartTime").description("헬스 시작 시간 (HH:MM:SS)")
+                                , fieldWithPath("execEndTime").description("헬스 종료 시간 (HH:MM:SS)")
+                                , fieldWithPath("div").description("분할 방식")
+                                , fieldWithPath("execArea").description("헬스 지역")
+                                , fieldWithPath("placeName").description("헬스장 이름")
+                                , fieldWithPath("address").description("헬스장 주소")
+                                , fieldWithPath("x").description("헬스장 x 좌표")
+                                , fieldWithPath("y").description("헬스장 y 좌표")
+                                , fieldWithPath("spclNote").description("특이사항")
+                                , fieldWithPath("benchPress").description("3대 벤치프레스 무게")
+                                , fieldWithPath("squat").description("3대 스쿼트 무게")
+                                , fieldWithPath("deadlift").description("3대 데드리프트 무게")
+                                , fieldWithPath("healthMotto").description("헬스 좌우명")
+                        )
+                ));
     }
 }
