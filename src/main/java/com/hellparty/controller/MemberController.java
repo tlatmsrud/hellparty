@@ -3,6 +3,7 @@ package com.hellparty.controller;
 import com.hellparty.annotation.LoginMemberId;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
+import com.hellparty.dto.SearchMemberDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.service.MemberService;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * title        : MemberController
@@ -97,5 +100,30 @@ public class MemberController {
     public void updatePartnerFindStatus(@LoginMemberId Long loginId, @RequestParam PartnerFindStatus status){
 
         memberService.updatePartnerFindStatus(loginId,status);
+    }
+
+    /**
+     * 사용자 검색 - 리스트
+     * @param loginId - 로그인 ID
+     * @param request - 사용자 검색 Dto
+     * @return 검색된 사용자 리스트
+     */
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SearchMemberDTO.Summary> searchMemberList(@LoginMemberId Long loginId
+            , @RequestBody SearchMemberDTO.Request request){
+
+        return memberService.searchMemberList(loginId, request);
+    }
+
+    /**
+     * 사용자 검색 - 상세조회
+     * @param memberId - 상세조회할 사용자 ID
+     * @return 사용자 검색에 대한 상세조회 정보
+     */
+    @GetMapping("/search-detail/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    public SearchMemberDTO.Detail searchMemberDetail(@PathVariable("memberId") Long memberId){
+        return memberService.searchMemberDetail(memberId);
     }
 }

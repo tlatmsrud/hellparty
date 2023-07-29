@@ -4,6 +4,7 @@ import com.hellparty.domain.MemberEntity;
 import com.hellparty.domain.MemberHealthEntity;
 import com.hellparty.dto.MemberDTO;
 import com.hellparty.dto.MemberHealthDTO;
+import com.hellparty.dto.SearchMemberDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.exception.NotFoundException;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -142,5 +144,26 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundException("사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요."));
 
         findMember.updatePartnerFindStatus(status);
+    }
+
+    /**
+     * 사용자 검색 - 리스트
+     * @param loginId - 사용자 ID
+     * @param request - 검색 Dto
+     * @return 사용자 리스트
+     */
+    public List<SearchMemberDTO.Summary> searchMemberList(Long loginId, SearchMemberDTO.Request request) {
+
+        return memberRepository.searchMemberList(loginId, request);
+    }
+
+    /**
+     * 사용자 검색 - 상세정보
+     * @param memberId - 사용자 ID
+     * @return 상세정보
+     */
+    public SearchMemberDTO.Detail searchMemberDetail(Long memberId) {
+
+        return memberRepository.searchMemberDetail(memberId);
     }
 }
