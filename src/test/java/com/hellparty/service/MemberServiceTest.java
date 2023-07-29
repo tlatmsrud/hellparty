@@ -45,6 +45,11 @@ class MemberServiceTest implements TestFixture {
         given(memberMapper.memberHealthEntityToDto(LOGIN_MEMBER_HEALTH_ENTITY))
                 .willReturn(LOGIN_MEMBER_HEALTH_DTO);
 
+        given(memberRepository.searchMemberList(LOGIN_MEMBER_ID, SEARCH_MEMBER_REQUEST_DTO))
+                .willReturn(SEARCH_MEMBER_SUMMARY_DTO);
+
+        given(memberRepository.searchMemberDetail(VALID_MEMBER_ID))
+                .willReturn(SEARCH_MEMBER_DETAIL_DTO);
     }
 
     @Test
@@ -92,6 +97,19 @@ class MemberServiceTest implements TestFixture {
         assertThatCode(() -> memberService.updatePartnerFindStatus(LOGIN_MEMBER_ID, PartnerFindStatus.Y))
                 .doesNotThrowAnyException();
         verify(memberRepository).findById(LOGIN_MEMBER_ID);
+    }
 
+    @Test
+    @DisplayName("사용자 검색 - 리스트")
+    void searchMemberList(){
+        assertThat(memberService.searchMemberList(LOGIN_MEMBER_ID, SEARCH_MEMBER_REQUEST_DTO))
+                .isEqualTo(SEARCH_MEMBER_SUMMARY_DTO);
+    }
+
+    @Test
+    @DisplayName("사용자 검색 - 상세")
+    void searchMemberDetail(){
+        assertThat(memberService.searchMemberDetail(VALID_MEMBER_ID))
+                .isEqualTo(SEARCH_MEMBER_DETAIL_DTO);
     }
 }

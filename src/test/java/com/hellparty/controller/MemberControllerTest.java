@@ -4,6 +4,7 @@ import attributes.TestFixture;
 import attributes.TestMemberAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.dto.MemberDTO;
+import com.hellparty.dto.SearchMemberDTO;
 import com.hellparty.enums.ExecStatus;
 import com.hellparty.enums.PartnerFindStatus;
 import com.hellparty.service.MemberService;
@@ -59,9 +60,11 @@ class MemberControllerTest implements TestFixture {
         willDoNothing().given(memberService)
                 .updateDetail(eq(VALID_MEMBER_ID), any(MemberDTO.Update.class));
 
+        given(memberService.searchMemberList(eq(LOGIN_MEMBER_ID), any(SearchMemberDTO.Request.class)))
+                .willReturn(SEARCH_MEMBER_SUMMARY_DTO);
 
-
-
+        given(memberService.searchMemberDetail(VALID_MEMBER_ID))
+                .willReturn(SEARCH_MEMBER_DETAIL_DTO);
     }
 
     @Test
@@ -146,4 +149,23 @@ class MemberControllerTest implements TestFixture {
         ).andExpect(status().isNoContent());
     }
 
+    @Test
+    @TestMemberAuth
+    @DisplayName("사용자 검색 - 리스트")
+    void searchMemberList() throws Exception{
+        mockMvc.perform(
+                get("/api/member/search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(SEARCH_MEMBER_REQUEST_DTO)))
+                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_SUMMARY_DTO)));
+    }
+
+    @Test
+    @TestMemberAuth
+    @DisplayName("사용자 검색 - 상세")
+    void searchMemberDetail() throws Exception{
+        mockMvc.perform(
+                        get("/api/member/search-detail/{memberId}", VALID_MEMBER_ID))
+                .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_DETAIL_DTO)));
+    }
 }
