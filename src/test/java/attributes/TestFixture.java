@@ -65,7 +65,7 @@ public interface TestFixture {
             .execEndTime(Time.valueOf("21:00:00"))
             .div(Division.THREE)
             .execArea(123L)
-            .gymAddress(Address.builder().y(1L).x(2L).address("서울시 중랑구").placeName("중랑헬스장").build())
+            .gymAddress(new Address("중랑헬스장","서울시 중랑구", 1L, 2L))
             .spclNote("특이사항")
             .bigThree(new BigThree(100,100,100))
             .healthMotto("헬스 좌우명")
