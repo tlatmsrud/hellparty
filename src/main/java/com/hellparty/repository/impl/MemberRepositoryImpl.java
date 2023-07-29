@@ -80,8 +80,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         eqAge(request.getFromAge(), request.getToAge())
                         ,eqSex(request.getSex())
                         ,eqMbti(request.getMbti())
-                        ,eqExecStartTime(request.getExecStartTime())
-                        ,eqExecEndTime(request.getExecEndTime())
+                        //,eqExecStartTime(request.getExecStartTime()) TODO : Fix error
+                        //,eqExecEndTime(request.getExecEndTime())
                         ,eqExecArea(request.getExecArea())
                         ,eqExecDay(request.getExecDay())
                         ,eqFindStatus(PartnerFindStatus.Y)
@@ -151,11 +151,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     public BooleanExpression eqExecStartTime(Time execStartTime){
-        return execStartTime == null ? null : memberHealthEntity.execStartTime.goe(execStartTime);
+        return execStartTime == null ? null : memberHealthEntity.execStartTime.after(execStartTime);
     }
 
     public BooleanExpression eqExecEndTime(Time execEndTime){
-        return execEndTime == null ? null : memberHealthEntity.execEndTime.loe(execEndTime);
+        return execEndTime == null ? null : memberHealthEntity.execEndTime.before(execEndTime);
     }
 
     public BooleanExpression eqExecArea(Long execArea){
