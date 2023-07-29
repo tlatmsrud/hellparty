@@ -11,18 +11,32 @@ import com.hellparty.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.formParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,18 +52,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MemberController.class) // Web layer만 동작하도록
 @MockBean(JpaMetamodelMappingContext.class)
 @Import(HttpEncodingAutoConfiguration.class)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 class MemberControllerTest implements TestFixture {
 
     @MockBean
     private MemberService memberService;
 
-    @Autowired
     private MockMvc mockMvc;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    void setUp(){
+    void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation){
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter("UTF-8", true);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .apply(documentationConfiguration(restDocumentation))
+                .addFilter(encodingFilter)
+                .build();
 
         given(memberService.getDetail(LOGIN_MEMBER_ID))
                 .willReturn(LOGIN_MEMBER_DTO);
@@ -73,9 +92,27 @@ class MemberControllerTest implements TestFixture {
     void getDetail() throws Exception {
         mockMvc.perform(
                         get("/api/member")
+                                .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(LOGIN_MEMBER_DTO)));
+                .andExpect(content().string(objectMapper.writeValueAsString(LOGIN_MEMBER_DTO)))
+                .andDo(
+                        document("getDetail"
+                                , requestHeaders(
+                                        headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                                , responseFields(
+                                        fieldWithPath("id").description("사용자 ID")
+                                        ,fieldWithPath("nickname").description("닉네임")
+                                        ,fieldWithPath("email").description("이메일 주소")
+                                        ,fieldWithPath("profileUrl").description("프로필 이미지 URL")
+                                        ,fieldWithPath("bodyProfileUrl").description("바디프로필 이미지 URL")
+                                        ,fieldWithPath("birthYear").description("출생 연도")
+                                        ,fieldWithPath("height").description("키")
+                                        ,fieldWithPath("weight").description("몸무게")
+                                        ,fieldWithPath("mbti").description("MBTI")
+                                        ,fieldWithPath("sex").description("성별")
+                                )
+                        ));
     }
 
     @Test
@@ -84,10 +121,32 @@ class MemberControllerTest implements TestFixture {
     void getHealthDetail() throws Exception{
         mockMvc.perform(
                         get("/api/member/health")
+                                .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(LOGIN_MEMBER_HEALTH_DTO)));
+                .andExpect(content().string(objectMapper.writeValueAsString(LOGIN_MEMBER_HEALTH_DTO)))
+                .andDo(document("getHealthDetail"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , responseFields(
+                                fieldWithPath("execStartTime").description("헬스 시작시간")
+                                ,fieldWithPath("execEndTime").description("헬스 종료시간")
+                                ,fieldWithPath("div").description("분할방식")
+                                ,fieldWithPath("execArea").description("헬스 지역")
+                                ,fieldWithPath("gymAddress").description("헬스장 주소")
+                                ,fieldWithPath("gymAddress.placeName").description("헬스장 이름")
+                                ,fieldWithPath("gymAddress.address").description("주소")
+                                ,fieldWithPath("gymAddress.x").description("x 좌표")
+                                ,fieldWithPath("gymAddress.y").description("y 좌표")
+                                ,fieldWithPath("spclNote").description("특이사항")
+                                ,fieldWithPath("bigThree").description("3대 중량")
+                                ,fieldWithPath("bigThree.benchPress").description("벤치프레스")
+                                ,fieldWithPath("bigThree.squat").description("스쿼트")
+                                ,fieldWithPath("bigThree.deadlift").description("데드리프트")
+                                ,fieldWithPath("healthMotto").description("헬스 좌우명")
+                        )
+                ));
     }
 
     @Test
@@ -96,10 +155,28 @@ class MemberControllerTest implements TestFixture {
     void updateDetailWithValidRequest() throws Exception {
         mockMvc.perform(
                 put("/api/member")
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(UPDATE_MEMBER_DETAIL_REQUEST))
-                        .with(csrf())
-        ).andExpect(status().isNoContent());
+                        .with(csrf()))
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "updateDetail"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , requestFields(
+                                fieldWithPath("nickname").description("닉네임")
+                                , fieldWithPath("profileUrl").description("프로필 이미지 URL")
+                                , fieldWithPath("bodyProfileUrl").description("바디프로필 이미지 URL")
+                                , fieldWithPath("birthYear").description("출생 연도")
+                                , fieldWithPath("height").description("키")
+                                , fieldWithPath("weight").description("몸무게")
+                                , fieldWithPath("mbti").description("MBTI")
+                                , fieldWithPath("sex").description("성별")
+                        )
+
+                ));
+
     }
 
     @Test
@@ -121,10 +198,45 @@ class MemberControllerTest implements TestFixture {
     void updateHealthDetail() throws Exception{
         mockMvc.perform(
                 put("/api/member/health")
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .content(objectMapper.writeValueAsString(UPDATE_HEALTH_DETAIL_REQUEST))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf())
-        ).andExpect(status().isNoContent());
+                        .with(csrf()))
+                .andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document(
+                        "updateHealthDetail"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , requestFields(
+                                fieldWithPath("execStartTime").description("헬스 시작시간")
+                                , fieldWithPath("execEndTime").description("헬스 종료시간")
+                                , fieldWithPath("div").description("분할 방식")
+                                , fieldWithPath("execArea").description("헬스 지역")
+                                , fieldWithPath("gymAddress").description("헬스 주소")
+                                , fieldWithPath("gymAddress.placeName").description("헬스장 이름")
+                                , fieldWithPath("gymAddress.address").description("헬스장 주소")
+                                , fieldWithPath("gymAddress.x").description("x 좌표")
+                                , fieldWithPath("gymAddress.y").description("y 좌표")
+                                , fieldWithPath("spclNote").description("특이사항")
+                                , fieldWithPath("bigThree").description("3대 중량")
+                                , fieldWithPath("bigThree.benchPress").description("벤치프레스")
+                                , fieldWithPath("bigThree.squat").description("스쿼트")
+                                , fieldWithPath("bigThree.deadlift").description("데드리프트")
+                                , fieldWithPath("healthMotto").description("헬스 좌우명")
+                                , fieldWithPath("execDay").description("헬스 날짜")
+                                , fieldWithPath("execDay.sun").description("일요일")
+                                , fieldWithPath("execDay.mon").description("월요일")
+                                , fieldWithPath("execDay.tue").description("화요일")
+                                , fieldWithPath("execDay.wed").description("수요일")
+                                , fieldWithPath("execDay.thu").description("목요일")
+                                , fieldWithPath("execDay.fri").description("금요일")
+                                , fieldWithPath("execDay.sat").description("토요일")
+                        )
+
+                ));
+
+
     }
 
     @Test
@@ -133,9 +245,19 @@ class MemberControllerTest implements TestFixture {
     void updateExecStatusToW() throws Exception{
         mockMvc.perform(
                 patch("/api/member/exec-status")
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .param("status", ExecStatus.W.name())
-                        .with(csrf())
-        ).andExpect(status().isNoContent());
+                        .with(csrf().asHeader()))
+                .andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document(
+                        "updateExecStatus"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , formParameters(
+                                parameterWithName("status").description("헬스 상태 (W : 준비중, H : 헬스중, I : 부상으로 쉬는중"))
+                        )
+                );
     }
 
     @Test
@@ -144,9 +266,19 @@ class MemberControllerTest implements TestFixture {
     void updatePartnerFindStatusToW() throws Exception{
         mockMvc.perform(
                 patch("/api/member/partner-find-status")
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .param("status", PartnerFindStatus.Y.name())
-                        .with(csrf())
-        ).andExpect(status().isNoContent());
+                        .with(csrf().asHeader()))
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "updatePartnerFindStatus"
+                        , requestHeaders(
+                                headerWithName("Authorization").description("JWT_ACCESS_TOKEN"))
+                        , formParameters(
+                                parameterWithName("status").description("파트너 구함 상태 (Y, N)"))
+                        )
+
+                );
     }
 
     @Test
@@ -155,6 +287,7 @@ class MemberControllerTest implements TestFixture {
     void searchMemberList() throws Exception{
         mockMvc.perform(
                 get("/api/member/search")
+                        .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(SEARCH_MEMBER_REQUEST_DTO)))
                 .andExpect(content().string(objectMapper.writeValueAsString(SEARCH_MEMBER_SUMMARY_DTO)));
