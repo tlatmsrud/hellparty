@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 import java.sql.Time;
 
 /**
- * title        : 파트너 구하기 DTO
+ * title        : 사용자 검색 DTO
  * author       : sim
- * date         : 2023-07-10
- * description  : 파트너 구하기 DTO 클래스
+ * date         : 2023-07-29
+ * description  : 사용자 검색 DTO 클래스
  */
-public class PartnerFindDTO {
+public class SearchMemberDTO {
 
     @Getter
     @AllArgsConstructor
     @Builder
     @NoArgsConstructor
-    public static class Search{
+    public static class Request{
         private Integer fromAge;
         private Integer toAge;
         private Sex sex;
@@ -38,7 +38,7 @@ public class PartnerFindDTO {
     public static class Summary{
         private Long memberId;
         private String nickname;
-        private int age;
+        private int birthYear;
         private Sex sex;
         private String profileUrl;
         private String bodyProfileUrl;
@@ -54,7 +54,7 @@ public class PartnerFindDTO {
     public static class Detail{
         private Long memberId;
         private String nickname;
-        private int age;
+        private int birthYear;
         private double height;
         private double weight;
         private MBTI mbti;
