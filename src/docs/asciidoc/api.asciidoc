@@ -1,0 +1,134 @@
+= HelParty API 명세서
+:sectnums:
+:toc: left
+:toclevels: 2
+:toc-title: 목차
+:source-highlighter: prettify
+
+Creater : sksim <tlatmsrud@naver.com>
+
+LastUpdateDate : 2023-07-29
+
+== 사용자 API
+
+=== 사용자 정보 조회
+
+==== Http Request
+include::{snippets}/getDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getDetail/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/getDetail/response-fields.adoc[]
+
+:hardbreaks:
+:hardbreaks:
+
+=== 사용자 헬스 정보 조회
+
+==== Http Request
+include::{snippets}/getHealthDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getHealthDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getHealthDetail/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/getHealthDetail/response-fields.adoc[]
+
+=== 사용자 정보 수정
+
+==== Http Request
+include::{snippets}/updateDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updateDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updateDetail/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/updateDetail/request-fields.adoc[]
+
+=== 사용자 헬스 정보 수정
+
+==== Http Request
+include::{snippets}/updateHealthDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updateHealthDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updateHealthDetail/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/updateHealthDetail/request-fields.adoc[]
+
+=== 사용자 운동 상태 수정
+
+==== Http Request
+include::{snippets}/updateExecStatus/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updateExecStatus/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updateExecStatus/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/updateExecStatus/request-body.adoc[]
+
+=== 사용자 헬스 정보 수정
+
+==== Http Request
+include::{snippets}/updateHealthDetail/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updateHealthDetail/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updateHealthDetail/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/updateHealthDetail/request-fields.adoc[]
+
+=== 사용자 운동 상태 수정
+
+==== Http Request
+include::{snippets}/updateExecStatus/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updateExecStatus/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updateExecStatus/request-headers.adoc[]
+
+==== Request Paramters
+include::{snippets}/updateExecStatus/form-parameters.adoc[]
+
+
+=== 사용자 파트너 구함 상태 수정
+
+==== Http Request
+include::{snippets}/updatePartnerFindStatus/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/updatePartnerFindStatus/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/updatePartnerFindStatus/request-headers.adoc[]
+
+==== Request Paramters
+include::{snippets}/updatePartnerFindStatus/form-parameters.adoc[]
+
+
+
+
+
+
