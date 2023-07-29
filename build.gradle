@@ -12,6 +12,9 @@ plugins {
 
 	// querydsl 추가
 	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+
+	// asciidoc
+	id 'org.asciidoctor.jvm.convert' version "3.3.2"
 }
 
 group = 'com.hellparty'
@@ -25,6 +28,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt //asciidoc 설정 종속성 추가
 }
 
 repositories {
@@ -69,6 +73,12 @@ dependencies {
 	// Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// Asciidoctor (.adoc)
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+	// Restdocs
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
 	runtimeOnly 'com.h2database:h2'
 }
 
@@ -94,4 +104,22 @@ configurations{
 		extendsFrom annotationProcessor
 	}
 	querydsl.extendsFrom compileClasspath
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+test{
+	outputs.dir snippetsDir
+}
+asciidoctor{
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+	dependsOn test
+}
+bootJar{
+	dependsOn asciidoctor // jar 빌드 되기 전 asciidoctor task 실행
+	from ("${asciidoctor.outputDir}/html5"){ // 생성된 문서를 jar/static/docs 디렉토리에 복사
+		into 'static/docs'
+	}
 }
