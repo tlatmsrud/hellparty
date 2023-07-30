@@ -78,6 +78,8 @@ public class PartnerRequestService {
         }
 
         partnerRequest.updateStatus(request.getStatus());
+
+        // TODO : 파트너 요청을 승낙할 경우 파트너 테이블 Insert
     }
 
     /**
