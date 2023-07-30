@@ -142,6 +142,9 @@ include::{snippets}/searchMemberList/request-headers.adoc[]
 ==== Request Body
 include::{snippets}/searchMemberList/request-fields.adoc[]
 
+==== Response Body
+include::{snippets}/searchMemberList/response-fields.adoc[]
+
 
 === 사용자 검색 - 상세
 
@@ -157,6 +160,36 @@ include::{snippets}/searchMemberDetail/request-headers.adoc[]
 ==== Request Parameters
 include::{snippets}/searchMemberDetail/path-parameters.adoc[]
 
+==== Response Body
+include::{snippets}/searchMemberDetail/response-fields.adoc[]
 
 
+== 파트너 API
 
+=== 파트너 리스트 조회
+
+==== Http Request
+include::{snippets}/getPartnerList/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getPartnerList/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getPartnerList/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/getPartnerList/response-fields.adoc[]
+
+=== 파트너쉽 삭제
+
+==== Http Request
+include::{snippets}/deletePartnership/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/deletePartnership/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/deletePartnership/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/deletePartnership/path-parameters.adoc[]
