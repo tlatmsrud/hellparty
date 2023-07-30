@@ -42,6 +42,6 @@ public class PartnerController {
     @DeleteMapping("/{partnerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePartner(@LoginMemberId Long loginId, @PathVariable("partnerId") Long partnerId){
-        partnerService.deletePartner(loginId, partnerId);
+        partnerService.deletePartnership(loginId, partnerId);
     }
 }

@@ -39,8 +39,7 @@ class PartnerServiceTest implements TestFixture {
     @Test
     @DisplayName("로그인 사용자의 파트너 삭제")
     void deletePartnerWithLoginMember(){
-        partnerService.deletePartner(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
-
-        verify(partnerRepository).deleteByMemberIdAndPartnerId(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
+        partnerService.deletePartnership(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
+        verify(partnerRepository).deletePartnership(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
     }
 }
