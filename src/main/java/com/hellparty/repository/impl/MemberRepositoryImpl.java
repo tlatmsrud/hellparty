@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.hellparty.domain.QMemberEntity.memberEntity;
-import static com.hellparty.domain.QMemberHealthEntity.memberHealthEntity;
 import static com.hellparty.domain.QPartnerEntity.partnerEntity;
 
 /**
@@ -80,8 +79,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         eqAge(request.getFromAge(), request.getToAge())
                         ,eqSex(request.getSex())
                         ,eqMbti(request.getMbti())
-                        //,eqExecStartTime(request.getExecStartTime()) TODO : Fix error
-                        //,eqExecEndTime(request.getExecEndTime())
+                        ,eqExecStartTime(request.getExecStartTime())
+                        ,eqExecEndTime(request.getExecEndTime())
                         ,eqExecArea(request.getExecArea())
                         ,eqExecDay(request.getExecDay())
                         ,eqFindStatus(PartnerFindStatus.Y)
@@ -151,15 +150,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     public BooleanExpression eqExecStartTime(Time execStartTime){
-        return execStartTime == null ? null : memberHealthEntity.execStartTime.after(execStartTime);
+        return execStartTime == null ? null : memberEntity.memberHealth.execStartTime.after(execStartTime);
     }
 
     public BooleanExpression eqExecEndTime(Time execEndTime){
-        return execEndTime == null ? null : memberHealthEntity.execEndTime.before(execEndTime);
+        return execEndTime == null ? null : memberEntity.memberHealth.execEndTime.before(execEndTime);
     }
 
     public BooleanExpression eqExecArea(Long execArea){
-        return execArea == null ? null : memberHealthEntity.execArea.eq(execArea);
+        return execArea == null ? null : memberEntity.memberHealth.execArea.eq(execArea);
     }
 
     public BooleanExpression neMemberId(Long memberId){
