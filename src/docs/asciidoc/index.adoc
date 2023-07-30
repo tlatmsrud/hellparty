@@ -193,3 +193,63 @@ include::{snippets}/deletePartnership/request-headers.adoc[]
 
 ==== Request Parameters
 include::{snippets}/deletePartnership/path-parameters.adoc[]
+
+
+== 파트너 요청 관리 API
+
+=== 파트너 요청
+
+==== Http Request
+include::{snippets}/requestPartner/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/requestPartner/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/requestPartner/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/requestPartner/path-parameters.adoc[]
+
+=== 로그인한 사용자의 파트너 요청 리스트 조회
+
+==== Http Request
+include::{snippets}/getSentPartnerRequests/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getSentPartnerRequests/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getSentPartnerRequests/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/getSentPartnerRequests/response-fields.adoc[]
+
+=== 로그인한 사용자에게 온 파트너 요청 리스트 조회
+
+==== Http Request
+include::{snippets}/getReceivedPartnerRequests/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getReceivedPartnerRequests/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getReceivedPartnerRequests/request-headers.adoc[]
+
+==== Response Body
+include::{snippets}/getReceivedPartnerRequests/response-fields.adoc[]
+
+
+=== 파트너 요청 응답
+
+==== Http Request
+include::{snippets}/answerPartnerRequest/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/answerPartnerRequest/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/answerPartnerRequest/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/answerPartnerRequest/request-fields.adoc[]
