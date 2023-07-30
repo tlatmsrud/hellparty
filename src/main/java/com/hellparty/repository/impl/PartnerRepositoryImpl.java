@@ -1,8 +1,6 @@
 package com.hellparty.repository.impl;
 
-import com.hellparty.domain.PartnerEntity;
 import com.hellparty.dto.PartnerDTO;
-import com.hellparty.exception.NotFoundException;
 import com.hellparty.repository.custom.PartnerRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -48,25 +46,17 @@ public class PartnerRepositoryImpl implements PartnerRepositoryCustom {
     }
 
     /**
-     * memberId, partnerId에 대한 파트너 엔티티 조회
+     * 파트너쉽 삭제
      * @param loginId - 로그인 ID
      * @param partnerId - 파트너 ID
-     * @return PartnerEntity
      */
     @Override
-    public PartnerEntity findByMemberIdAndPartnerId(Long loginId, Long partnerId) {
-        PartnerEntity result =
-                queryFactory.selectFrom(partnerEntity)
+    public void deletePartnership(Long loginId, Long partnerId) {
+        queryFactory.delete(partnerEntity)
                 .where(
-                        eqMemberId(loginId)
-                        ,eqPartnerId(partnerId)
-                ).fetchOne();
-
-        if(result == null){
-            throw new NotFoundException("요청 정보를 찾을 수 없습니다. 관리자에게 문의해주세요.");
-        }
-
-        return result;
+                        eqMemberId(loginId).and(eqPartnerId(partnerId))
+                                .or(eqMemberId(partnerId).and(eqPartnerId(loginId)))
+                ).execute();
     }
 
     public BooleanExpression eqMemberId(Long memberId){
@@ -75,4 +65,5 @@ public class PartnerRepositoryImpl implements PartnerRepositoryCustom {
     public BooleanExpression eqPartnerId(Long partnerId){
         return partnerId == null ? null : partnerEntity.partner.id.eq(partnerId);
     }
+
 }

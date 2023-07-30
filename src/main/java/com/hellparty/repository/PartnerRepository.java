@@ -5,11 +5,11 @@ import com.hellparty.repository.custom.PartnerRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * title        :
+ * title        : PartnerRepository
  * author       : sim
  * date         : 2023-07-06
- * description  :
+ * description  : PartnerRepository
  */
 public interface PartnerRepository extends JpaRepository<PartnerEntity, Long>, PartnerRepositoryCustom {
-    void deleteByMemberIdAndPartnerId(Long loginId, Long partnerId);
+
 }
