@@ -286,6 +286,8 @@ public interface TestFixture {
 
     String TEST_IMAGE_FILE_PATH = "classpath:image/이미지.png";
 
+    String TEST_TXT_FILE_PATH = "classpath:image/텍스트.txt";
+
     FileDTO IMAGE_FILE_DTO = new FileDTO("/profile/thumbnail/45c2ea37-0c24-47d0-957b-c7e8ecebed63.png", "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png");
 
     String REQUEST_IMAGE_PATH = "profile";
