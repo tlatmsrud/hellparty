@@ -1,6 +1,7 @@
 package com.hellparty.controller;
 
 import com.hellparty.annotation.LoginMemberId;
+import com.hellparty.dto.FileDTO;
 import com.hellparty.enums.ImageType;
 import com.hellparty.service.ImageService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,23 +33,35 @@ public class ImageController {
      */
     @PostMapping("/{imageType}")
     @ResponseStatus(HttpStatus.CREATED)
-    public String saveImageAndReturnUrn(@RequestParam("file") MultipartFile file, @LoginMemberId Long loginId
+    public FileDTO saveImageAndReturnUrn(@RequestParam("file") MultipartFile file, @LoginMemberId Long loginId
             , @PathVariable("imageType") ImageType imageType){
         return imageService.saveImageAndReturnUrn(file, loginId, imageType);
     }
 
     /**
-     * 이미지 조회
+     * 원본 이미지 조회
      * @param response - HttpServletResponse
      * @param path - 파일경로
      * @param fileName - 파일명
      */
     @GetMapping("/{path}/{fileName}")
     @ResponseStatus(HttpStatus.OK)
-    public void getImage(HttpServletResponse response,
+    public void getOriginImage(HttpServletResponse response,
                            @PathVariable("path") String path, @PathVariable("fileName") String fileName){
-        imageService.getImageByte(response, path, fileName);
+        imageService.sendFileFromUrn(response, path, fileName);
     }
 
 
+    /**
+     * 썸네일 이미지 조회
+     * @param response - HttpServletResponse
+     * @param path - 파일경로
+     * @param fileName - 파일명
+     */
+    @GetMapping("/{path}/thumbnail/{fileName}")
+    @ResponseStatus(HttpStatus.OK)
+    public void getThumbnailImage(HttpServletResponse response,
+                         @PathVariable("path") String path, @PathVariable("fileName") String fileName){
+        imageService.sendFileFromUrn(response, "thumbnail/" + path, fileName);
+    }
 }
