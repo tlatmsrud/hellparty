@@ -40,19 +40,19 @@ public class ImageService {
      */
     public FileDTO saveImageAndReturnUrn(MultipartFile file, Long loginId, ImageType imageType) {
 
-            String originFileName = file.getOriginalFilename();
-            String path = imageType.getPath();
-            String thumbnailPath = imageType.getPath() + THUMBNAIL_PATH;
+        String originFileName = file.getOriginalFilename();
+        String path = imageType.getPath();
+        String thumbnailPath = imageType.getPath() + THUMBNAIL_PATH;
 
-            String fileName = fileService.generateUUIDByFileName(originFileName);
+        String fileName = fileService.generateUUIDByFileName(originFileName);
 
-            fileService.saveImage(file, path, fileName);
-            fileService.saveThumbnailImage(file, thumbnailPath, fileName);
+        fileService.saveImage(file, path, fileName);
+        fileService.saveThumbnailImage(file, thumbnailPath, fileName);
 
-            ProfileImageEntity imageEntity = new ProfileImageEntity(loginId, imageType, originFileName, fileName, path, thumbnailPath);
-            imageRepository.save(imageEntity);
+        ProfileImageEntity imageEntity = new ProfileImageEntity(loginId, imageType, originFileName, fileName, path, thumbnailPath);
+        imageRepository.save(imageEntity);
 
-            return new FileDTO(thumbnailPath + fileName, fileName);
+        return new FileDTO(thumbnailPath + fileName, fileName);
     }
 
     /**
