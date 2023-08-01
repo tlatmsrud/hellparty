@@ -283,4 +283,12 @@ public interface TestFixture {
             new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, PARTNER_ID_OF_LOGIN_MEMBER, "조금 늦을것 같습니다.", LocalDateTime.now())
             ,new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, LOGIN_MEMBER_ID, "괜찮습니다. 천천히 오세요~", LocalDateTime.now())
     ) ;
+
+    String TEST_IMAGE_FILE_PATH = "classpath:image/이미지.png";
+
+    FileDTO IMAGE_FILE_DTO = new FileDTO("/profile/thumbnail/45c2ea37-0c24-47d0-957b-c7e8ecebed63.png", "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png");
+
+    String REQUEST_IMAGE_PATH = "profile";
+
+    String REQUEST_IMAGE_FILE_NAME = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png";
 }
