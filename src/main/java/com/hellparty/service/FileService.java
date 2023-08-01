@@ -46,6 +46,7 @@ public class FileService {
      */
     public void saveImage(MultipartFile file, String path, String fileName) {
 
+        validationImageExtension(fileName);
         String savedFilePath = FILE_SAVE_PATH + path;
         try{
             createDirectories(savedFilePath);
@@ -70,6 +71,8 @@ public class FileService {
      * @param fileName - 파일명
      */
     public void saveThumbnailImage(MultipartFile file, String path, String fileName) {
+
+        validationImageExtension(fileName);
         String savedFilePath = FILE_SAVE_PATH + path;
 
         try{
@@ -187,6 +190,19 @@ public class FileService {
                 .getContentType();
     }
 
+    /**
+     * 이미지 파일 확장자에 대한 validation 체크
+     * @param fileName - 파일명
+     */
+    public void validationImageExtension(String fileName){
+
+        String extension = getFileExtension(fileName);
+
+        Arrays.stream(Extension.values())
+                .filter(ext -> ext.isEqualToExtension(extension))
+                .findFirst()
+                .orElseThrow(() -> new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요."));
+    }
     /**
      * 파일명에 대한 확장자 추출
      * @param fileName - 파일명
