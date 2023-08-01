@@ -14,3 +14,9 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+
+file:
+  save-path: C:/Users/sim
+  thumbnail:
+    height: 250
+    weight: 250
