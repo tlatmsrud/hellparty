@@ -4,7 +4,9 @@ import attributes.TestFixture;
 import attributes.TestMemberAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.enums.ImageType;
+import com.hellparty.exception.FileProcessingException;
 import com.hellparty.service.ImageService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -41,6 +44,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,11 +64,14 @@ class ImageControllerTest implements TestFixture {
 
     private MockMvc mockMvc;
 
-    private MockMultipartFile mockMultipartFile;
+    private MockMultipartFile mockImageMultipartFile;
 
+    private MockMultipartFile mockTxtMultipartFile;
     private final MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
     @MockBean
     private ImageService imageService;
+
+    private FileInputStream fileInputStream = null;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     @BeforeEach
@@ -75,14 +82,31 @@ class ImageControllerTest implements TestFixture {
                 .addFilter(encodingFilter)
                 .build();
 
-        File file = ResourceUtils.getFile(TEST_IMAGE_FILE_PATH);
-        FileInputStream fileInputStream = new FileInputStream(file);
-        mockMultipartFile = new MockMultipartFile("file", file.getName(), MediaType.IMAGE_PNG.toString(), fileInputStream);
+        File imageFile = ResourceUtils.getFile(TEST_IMAGE_FILE_PATH);
+        mockImageMultipartFile = getMockMultipartFile(imageFile, MediaType.IMAGE_PNG_VALUE);
 
-        given(imageService.saveImageAndReturnUrn(mockMultipartFile, LOGIN_MEMBER_ID, ImageType.PROFILE))
+        File txtFile = ResourceUtils.getFile(TEST_TXT_FILE_PATH);
+        mockTxtMultipartFile = getMockMultipartFile(txtFile, MediaType.TEXT_PLAIN_VALUE);
+
+        given(imageService.saveImageAndReturnUrn(mockImageMultipartFile, LOGIN_MEMBER_ID, ImageType.PROFILE))
                 .willReturn(IMAGE_FILE_DTO);
 
+        given(imageService.saveImageAndReturnUrn(mockTxtMultipartFile, LOGIN_MEMBER_ID, ImageType.PROFILE))
+                .willThrow(new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요."));
+
         willDoNothing().given(imageService).sendFileFromUrn(mockHttpServletResponse, REQUEST_IMAGE_PATH, REQUEST_IMAGE_FILE_NAME);
+    }
+
+    MockMultipartFile getMockMultipartFile(File file, String mediaType) throws IOException {
+        fileInputStream = new FileInputStream(file);
+        return new MockMultipartFile("file", file.getName(), mediaType, fileInputStream);
+    }
+
+    @AfterEach
+    void end() throws IOException {
+        if(fileInputStream != null){
+            fileInputStream.close();
+        }
     }
     @Test
     @TestMemberAuth
@@ -90,7 +114,7 @@ class ImageControllerTest implements TestFixture {
     void saveImageAndReturnUrn() throws Exception {
         mockMvc.perform(
                         RestDocumentationRequestBuilders.multipart("/api/images/{imageType}", ImageType.PROFILE.name())
-                        .file(mockMultipartFile)
+                        .file(mockImageMultipartFile)
                         .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
                         .with(csrf().asHeader()))
                 .andExpect(content().string(objectMapper.writeValueAsString(IMAGE_FILE_DTO)))
@@ -106,6 +130,20 @@ class ImageControllerTest implements TestFixture {
                                         ,fieldWithPath("fileName").description("파일명"))
                         )
                 );
+    }
+
+    @Test
+    @TestMemberAuth
+    @DisplayName("지원하지 않는 확장자에 대한 파일 저장 및 리턴 URN - 500 에러 발생")
+    void saveImageAndReturnUrnWithNotSupportedExtension() throws Exception {
+        mockMvc.perform(
+                multipart("/api/images/{imageType}", ImageType.PROFILE.name())
+                                .file(mockTxtMultipartFile)
+                                .header("Authorization", "Bearer JWT_ACCESS_TOKEN")
+                                .with(csrf().asHeader()))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string(containsString("지원하지 않는 확장자입니다. 다시 시도해주세요.")))
+                .andDo(print());
     }
 
     @Test
@@ -145,4 +183,5 @@ class ImageControllerTest implements TestFixture {
                         )
                 );
     }
+
 }
