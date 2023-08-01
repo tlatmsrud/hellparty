@@ -253,3 +253,56 @@ include::{snippets}/answerPartnerRequest/request-headers.adoc[]
 
 ==== Request Body
 include::{snippets}/answerPartnerRequest/request-fields.adoc[]
+
+== 이미지 파일 API
+
+=== 이미지 업로드
+
+==== Http Request
+
+NOTE: 이미지가 요청 데이터에 포함된 관계로 httpie 정보로 대체하였음.
+
+include::{snippets}/saveImageAndReturnUrn/httpie-request.adoc[]
+
+==== Http Response
+include::{snippets}/saveImageAndReturnUrn/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/saveImageAndReturnUrn/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/saveImageAndReturnUrn/path-parameters.adoc[]
+
+==== Response Body
+include::{snippets}/saveImageAndReturnUrn/response-fields.adoc[]
+
+=== 원본 이미지 조회
+
+==== Http Request
+
+include::{snippets}/getOriginImage/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getOriginImage/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getOriginImage/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/getOriginImage/path-parameters.adoc[]
+
+
+=== 썸네일 이미지 조회
+
+==== Http Request
+
+include::{snippets}/getThumbnailImage/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/getThumbnailImage/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getThumbnailImage/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/getThumbnailImage/path-parameters.adoc[]
