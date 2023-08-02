@@ -48,7 +48,7 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public void getOriginImage(HttpServletResponse response,
                            @PathVariable("path") String path, @PathVariable("fileName") String fileName){
-        imageService.sendFileFromUrn(response, path, fileName);
+        imageService.sendImageFromUrn(response, path, fileName);
     }
 
 
@@ -62,6 +62,6 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public void getThumbnailImage(HttpServletResponse response,
                          @PathVariable("path") String path, @PathVariable("fileName") String fileName){
-        imageService.sendFileFromUrn(response, "thumbnail/" + path, fileName);
+        imageService.sendImageFromUrn(response, "thumbnail/" + path, fileName);
     }
 }

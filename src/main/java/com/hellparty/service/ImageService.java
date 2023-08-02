@@ -52,7 +52,7 @@ public class ImageService {
         ProfileImageEntity imageEntity = new ProfileImageEntity(loginId, imageType, originFileName, fileName, path, thumbnailPath);
         imageRepository.save(imageEntity);
 
-        return new FileDTO(thumbnailPath + fileName, fileName);
+        return new FileDTO(thumbnailPath + fileName, originFileName);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ImageService {
      * @param path - 파일에 대한 urn 경로
      * @param fileName - 파일 명
      */
-    public void sendFileFromUrn(HttpServletResponse response, String path, String fileName) {
+    public void sendImageFromUrn(HttpServletResponse response, String path, String fileName) {
 
         File findFile = fileService.findFile(path, fileName);
         String contentType = fileService.determineContentTypeByFileName(fileName);

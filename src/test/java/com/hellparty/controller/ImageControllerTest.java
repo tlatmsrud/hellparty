@@ -94,7 +94,7 @@ class ImageControllerTest implements TestFixture {
         given(imageService.saveImageAndReturnUrn(mockTxtMultipartFile, LOGIN_MEMBER_ID, ImageType.PROFILE))
                 .willThrow(new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요."));
 
-        willDoNothing().given(imageService).sendFileFromUrn(mockHttpServletResponse, REQUEST_IMAGE_PATH, REQUEST_IMAGE_FILE_NAME);
+        willDoNothing().given(imageService).sendImageFromUrn(mockHttpServletResponse, REQUEST_IMAGE_PATH, REQUEST_IMAGE_FILE_NAME);
     }
 
     MockMultipartFile getMockMultipartFile(File file, String mediaType) throws IOException {
