@@ -1,0 +1,18 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb
+  jpa:
+    hibernate:
+      ddl-auto: create
+      show-sql: true
+      format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:/sql/data_insert.sql
