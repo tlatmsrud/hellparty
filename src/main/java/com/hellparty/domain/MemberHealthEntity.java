@@ -40,7 +40,7 @@ public class MemberHealthEntity {
     @Temporal(TemporalType.TIME)
     private Time execEndTime;
 
-    @Column(name = "DIV")
+    @Column(name = "EXEC_DIV")
     @Enumerated(EnumType.STRING)
     private Division div;
 
