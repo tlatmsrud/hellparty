@@ -20,3 +20,8 @@ file:
   thumbnail:
     height: 250
     weight: 250
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
