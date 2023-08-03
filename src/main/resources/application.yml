@@ -10,14 +10,39 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 
+--- # LOCAL
+spring:
+  config:
+    activate:
+      on-profile: local
 file:
   save-path: C:/Users/sim
   thumbnail:
     height: 250
     weight: 250
 
-jasypt:
-  encryptor:
-    bean: jasyptStringEncryptor
+--- # DEV
+spring:
+  config:
+    activate:
+      on-profile: dev
+file:
+  save-path: C:/Users/sim
+  thumbnail:
+    height: 250
+    weight: 250
 
+--- # PROD
+spring:
+  config:
+    activate:
+      on-profile: prod
+file:
+  save-path: C:/Users/sim
+  thumbnail:
+    height: 250
+    weight: 250

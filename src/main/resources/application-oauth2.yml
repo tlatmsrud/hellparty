@@ -8,14 +8,12 @@ spring:
             client-secret: ENC(H3J6MhMRMtTdcC/PMywAQDVg66fLzzhH)
             client-name: naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:1234/login/oauth2/code/naver
             client-authentication-method: client_secret_post
           kakao:
             client-id: 02ab99880d479ebc0b463f4402327e0b
             client-secret: ENC(rUCxDIfr63cAm2yV86Jj/7DKhY44zTNpxhI17e0C66aJKELs3BEKtbwgWBsx3dRA)
             client-name: kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:1234/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
           google:
             client-id: 184616621835-6lomb6cbp6vifd0sqb3s4fkp9ohbuqvo.apps.googleusercontent.com
@@ -23,7 +21,6 @@ spring:
             scope: profile, email
             client-name: google
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:1234/login/oauth2/code/google
             client-authentication-method: client_secret_post
         provider:
           naver:
@@ -37,4 +34,50 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+--- # LOCAL
+spring:
+  config:
+    activate:
+      on-profile: local
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            redirect-uri: http://localhost:1234/login/oauth2/code/naver
+          kakao:
+            redirect-uri: http://localhost:1234/login/oauth2/code/kakao
+          google:
+            redirect-uri: http://localhost:1234/login/oauth2/code/google
 
+--- # DEV
+spring:
+  config:
+    activate:
+      on-profile: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/naver
+          kakao:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/kakao
+          google:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/google
+
+--- # PROD
+spring:
+  config:
+    activate:
+      on-profile: prod
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/naver
+          kakao:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/kakao
+          google:
+            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/google
