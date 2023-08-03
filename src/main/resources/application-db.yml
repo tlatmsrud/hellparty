@@ -3,7 +3,12 @@ spring:
     console:
       enabled: true
   datasource:
-    driver-class-name: org.h2.Driver
-    username: ENC(lvfQePYKaLmO5GJpZglQEw==)
-    password: ENC(HefilNAmTOBTUWXOtq0VsA==)
-    url: ENC(JajA2IfRGX27gQzseW0mmVXORbkhKX1iu2p1wqYf7h+Zl8tCg1k2iIdyIBbUtQju)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ENC(nBOKvyDUd9AsSElC/lmDtswD/mIBoQNG)
+    password: ENC(Ljs+Jsb91npn7wWUOIYjhg==)
+    url: ENC(V1/4niPE8wiPlCjlWcTuSAHcXaY1NZFXJsNe7HSBKlkxdI3cprqDAcNYdmMoTvBW4DgEo94YlJhh5fdrTWCHxdahRgmi3UtbzvT88/tz9AuhEh5gZe7UhVIIBbGTbXT5)
+  data:
+    redis:
+      host: ENC(n+TORTTgDCISM/zX5iMLJG8oMvMXSLcA)
+      port: 6379
+      password: ENC(QZ/wJLxVrZNT0hbqTEfcEQ==)
