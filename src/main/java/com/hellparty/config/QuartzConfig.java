@@ -27,7 +27,7 @@ public class QuartzConfig {
                 .withIdentity(JobKey.jobKey(SaveChattingJob.class.getSimpleName())).build();
 
         try {
-            scheduler.scheduleJob(saveChattingJobDetail, buildJobTrigger("0/5 * * * * ?")); // 5초 마다 처리되도록함. 운영 시에는 새벽 3시 예정
+            scheduler.scheduleJob(saveChattingJobDetail, buildJobTrigger("0 0 3 * * ?")); // 5초 마다 처리되도록함. 운영 시에는 새벽 3시 예정
             scheduler.getListenerManager().addJobListener(jobListener);
         }catch(SchedulerException e) {
             e.printStackTrace();
