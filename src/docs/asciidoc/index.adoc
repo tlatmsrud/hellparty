@@ -344,3 +344,18 @@ include::{snippets}/getChatHistory/path-parameters.adoc[]
 
 ==== Response Body
 include::{snippets}/getChatHistory/response-fields.adoc[]
+
+=== 채팅 메시지 보내기
+
+NOTE: 해당 API는 소켓 API 입니다. 클라이언트에서 사용하는 소켓 API에 맞게 파라미터만 참고하여 통신해주시면 됩니다.
+
+==== Http Request
+
+include::{snippets}/sendMessage/httpie-request.adoc[]
+
+==== Http Response
+include::{snippets}/sendMessage/http-response.adoc[]
+
+==== Request Body
+include::{snippets}/sendMessage/request-fields.adoc[]
+

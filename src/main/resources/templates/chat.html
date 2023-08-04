@@ -47,7 +47,7 @@
         messageObj.roomId = roomId
         messageObj.writerId = loginId
         messageObj.message = $("#message").val();
-        alert(messageObj);
+
         stompClient.send("/app/send" ,{}, JSON.stringify(messageObj));
     }
 
