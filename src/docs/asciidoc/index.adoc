@@ -306,3 +306,41 @@ include::{snippets}/getThumbnailImage/request-headers.adoc[]
 
 ==== Request Parameters
 include::{snippets}/getThumbnailImage/path-parameters.adoc[]
+
+== 채팅 API
+
+=== 채팅방 ID 조회
+
+==== Http Request
+
+include::{snippets}/getChattingRoom/httpie-request.adoc[]
+
+==== Http Response
+include::{snippets}/getChattingRoom/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getChattingRoom/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/getChattingRoom/path-parameters.adoc[]
+
+==== Response Body
+include::{snippets}/getChattingRoom/response-body.adoc[]
+
+=== 채팅 내역 조회
+
+==== Http Request
+
+include::{snippets}/getChatHistory/httpie-request.adoc[]
+
+==== Http Response
+include::{snippets}/getChatHistory/http-response.adoc[]
+
+==== Request Header
+include::{snippets}/getChatHistory/request-headers.adoc[]
+
+==== Request Parameters
+include::{snippets}/getChatHistory/path-parameters.adoc[]
+
+==== Response Body
+include::{snippets}/getChatHistory/response-fields.adoc[]
