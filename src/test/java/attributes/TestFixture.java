@@ -279,6 +279,8 @@ public interface TestFixture {
             , new ChattingHistoryDTO(LOGIN_MEMBER_ID, "앗 그럼 같이해요!", LocalDateTime.now())
     );
 
+    ChatDTO SEND_CHAT_DTO = new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, PARTNER_ID_OF_LOGIN_MEMBER, "안녕하세요.");
+
     List<ChatDTO> ADD_CHAT_DTO_LIST = Arrays.asList(
             new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, PARTNER_ID_OF_LOGIN_MEMBER, "조금 늦을것 같습니다.", LocalDateTime.now())
             ,new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, LOGIN_MEMBER_ID, "괜찮습니다. 천천히 오세요~", LocalDateTime.now())
