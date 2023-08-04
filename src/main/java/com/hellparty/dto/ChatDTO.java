@@ -19,9 +19,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ChatDTO implements Serializable {
     private Long roomId;
-
     private Long writerId;
-
     private String message;
-    private LocalDateTime time = LocalDateTime.now();
+    private LocalDateTime time;
+    public ChatDTO(Long roomId, Long writerId, String message){
+        this.roomId = roomId;
+        this.writerId = writerId;
+        this.message = message;
+        this.time = LocalDateTime.now();
+    }
+
+
+
 }
