@@ -2,7 +2,7 @@ package com.hellparty.config;
 
 import com.hellparty.filter.JwtAuthorizationFilter;
 import com.hellparty.jwt.JwtProvider;
-import com.hellparty.oauth.CustomSuccessHandler;
+import com.hellparty.security.CustomSuccessHandler;
 import com.hellparty.repository.MemberRepository;
 import com.hellparty.service.TokenService;
 import lombok.AllArgsConstructor;
@@ -39,7 +39,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/login.html").permitAll()
+                        .requestMatchers("/view/login").permitAll()
                         .requestMatchers("/api/token/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -49,6 +49,7 @@ public class SecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증으로 인한 Session 미생성.
                 .and()
                 .oauth2Login()
+                .loginPage("/view/login")
                 .successHandler(new CustomSuccessHandler(jwtProvider, tokenService, memberRepository))
                 .and()
                 .addFilterBefore(new JwtAuthorizationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
