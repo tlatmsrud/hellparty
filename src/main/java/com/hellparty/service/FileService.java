@@ -30,13 +30,13 @@ import java.util.UUID;
 public class FileService {
 
     @Value("${file.save-path}")
-    private static String FILE_SAVE_PATH;
+    private String FILE_SAVE_PATH;
 
-    @Value("${file.thumbnail.height}}")
-    private static int thumbHeight;
+    @Value("${file.thumbnail.height}")
+    private int thumbHeight;
 
-    @Value("${file.thumbnail.weight}}")
-    private static int thumbWeight;
+    @Value("${file.thumbnail.weight}")
+    private int thumbWeight;
     private final static int BUFFER_SIZE = 1000;
     /**
      * 원본 이미지 저장
