@@ -14,6 +14,9 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
+logging:
+  exclude:
+    uri: /favicon.ico
 --- # LOCAL
 spring:
   config:
