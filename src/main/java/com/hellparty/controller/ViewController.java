@@ -33,4 +33,9 @@ public class ViewController {
 
         return mav;
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
 }
