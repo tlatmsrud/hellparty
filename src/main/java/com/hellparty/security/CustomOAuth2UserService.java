@@ -1,4 +1,4 @@
-package com.hellparty.oauth;
+package com.hellparty.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.enums.Role;

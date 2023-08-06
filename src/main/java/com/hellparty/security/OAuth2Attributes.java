@@ -1,4 +1,4 @@
-package com.hellparty.oauth;
+package com.hellparty.security;
 
 import com.hellparty.enums.OAuthType;
 import lombok.Getter;

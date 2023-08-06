@@ -1,4 +1,4 @@
-package com.hellparty.oauth;
+package com.hellparty.security;
 
 import com.hellparty.domain.MemberEntity;
 import com.hellparty.enums.ExecStatus;
