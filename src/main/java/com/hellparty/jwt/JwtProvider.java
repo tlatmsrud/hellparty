@@ -2,6 +2,7 @@ package com.hellparty.jwt;
 
 
 import com.hellparty.domain.MemberEntity;
+import com.hellparty.exception.JwtTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,15 +90,15 @@ public class JwtProvider {
                     .parseClaimsJws(token).getBody();
 
         } catch (ExpiredJwtException e) {
-            throw new JwtException("토큰이 만료되었습니다. 다시 로그인하세요.");
+            throw new JwtTokenException("토큰이 만료되었습니다. 다시 로그인하세요.");
         } catch (UnsupportedJwtException e) {
-            throw new JwtException("지원하지 않는 토큰입니다. 다시 로그인하세요.");
+            throw new JwtTokenException("지원하지 않는 토큰입니다. 다시 로그인하세요.");
         } catch (MalformedJwtException e) {
-            throw new JwtException("잘못된 형식의 토큰입니다. 다시 로그인하세요.");
+            throw new JwtTokenException("잘못된 형식의 토큰입니다. 다시 로그인하세요.");
         } catch (SignatureException e) {
-            throw new JwtException("위조된 요청입니다. 다시 로그인하세요.");
+            throw new JwtTokenException("위조된 요청입니다. 다시 로그인하세요.");
         } catch (IllegalArgumentException e) {
-            throw new JwtException("토큰 파싱 중 에러가 발생했습니다. 관리자에게 문의해주세요.");
+            throw new JwtTokenException("토큰 파싱 중 에러가 발생했습니다. 관리자에게 문의해주세요.");
         }
     }
 
