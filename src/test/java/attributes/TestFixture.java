@@ -295,4 +295,5 @@ public interface TestFixture {
     FileDTO IMAGE_FILE_DTO = new FileDTO("/profile/thumbnail/45c2ea37-0c24-47d0-957b-c7e8ecebed63.png", "이미지.png");
     String REQUEST_IMAGE_PATH = "profile";
     String REQUEST_IMAGE_FILE_NAME = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png";
+    String THUMBNAIL_PATH = "/thumbnail";
 }
