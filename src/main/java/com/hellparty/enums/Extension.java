@@ -2,6 +2,8 @@ package com.hellparty.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * title        : Extension
  * author       : sim
@@ -12,18 +14,19 @@ import lombok.Getter;
 @Getter
 public enum Extension {
 
-    PNG("png", "image/png")
-    , JPEG("jpeg", "image/jpeg")
-    , JPG("jpg", "image/jpg");
+    PNG("PNG", "image/png")
+    , JPEG("JPEG", "image/jpeg")
+    , JPG("JPG", "image/jpg");
 
-    private final String extension;
+    private final String ext;
     private final String contentType;
-    Extension(String extension, String contentType){
-        this.extension = extension;
+    Extension(String ext, String contentType){
+        this.ext = ext;
         this.contentType = contentType;
     }
 
-    public boolean isEqualToExtension(String extension){
-        return this.extension.equals(extension.toLowerCase());
+    public static boolean isExtension(String ext) {
+        return Arrays.stream(values())
+                .anyMatch(value -> value.ext.equals(ext.toUpperCase()));
     }
 }

@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -30,13 +30,13 @@ import java.util.UUID;
 public class FileService {
 
     @Value("${file.save-path}")
-    private String FILE_SAVE_PATH;
+    private static String fileSavePath;
 
     @Value("${file.thumbnail.height}")
-    private int thumbHeight;
+    private static int thumbHeight;
 
     @Value("${file.thumbnail.weight}")
-    private int thumbWeight;
+    private static int thumbWeight;
     private final static int BUFFER_SIZE = 1000;
     /**
      * 원본 이미지 저장
@@ -47,7 +47,7 @@ public class FileService {
     public void saveImage(MultipartFile file, String path, String fileName) {
 
         validationImageExtension(fileName);
-        String savedFilePath = FILE_SAVE_PATH + path;
+        String savedFilePath = fileSavePath + path;
         try{
             createDirectories(savedFilePath);
             File dest = new File(savedFilePath, fileName);
@@ -73,7 +73,7 @@ public class FileService {
     public void saveThumbnailImage(MultipartFile file, String path, String fileName) {
 
         validationImageExtension(fileName);
-        String savedFilePath = FILE_SAVE_PATH + path;
+        String savedFilePath = fileSavePath + path;
 
         try{
             createDirectories(savedFilePath); // 디렉터리 생성
@@ -118,10 +118,11 @@ public class FileService {
      * @return 찾은 File 객체
      */
     public File findFile( String path, String fileName){
-        File file = new File(FILE_SAVE_PATH+"/"+path+"/"+fileName);
+        Path filePath = Paths.get(fileSavePath, path);
+        File file = new File(filePath.toString(), fileName);
 
         if(!file.exists()){
-            log.error(FILE_SAVE_PATH+"/"+path+"/"+fileName);
+            log.error("file Not Found !! [ file path : "+ fileSavePath + ", file name : "+ fileName +" ]");
             throw new FileProcessingException("이미지 파일을 찾을 수 없습니다. 관리자에게 문의해주세요.");
         }
 
@@ -183,11 +184,10 @@ public class FileService {
 
         String extension = getFileExtension(fileName);
 
-        return Arrays.stream(Extension.values())
-                .filter(ext -> ext.isEqualToExtension(extension))
-                .findFirst()
-                .orElseThrow(() -> new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요."))
-                .getContentType();
+        if(!Extension.isExtension(extension)){
+            throw new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요.");
+        }
+        return Extension.valueOf(extension.toUpperCase()).getContentType();
     }
 
     /**
@@ -198,10 +198,9 @@ public class FileService {
 
         String extension = getFileExtension(fileName);
 
-        Arrays.stream(Extension.values())
-                .filter(ext -> ext.isEqualToExtension(extension))
-                .findFirst()
-                .orElseThrow(() -> new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요."));
+        if(Extension.isExtension(extension)){
+            throw new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요.");
+        }
     }
     /**
      * 파일명에 대한 확장자 추출
