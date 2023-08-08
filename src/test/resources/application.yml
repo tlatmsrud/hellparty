@@ -2,3 +2,10 @@ server:
   servlet:
     encoding:
       force-response: true
+
+
+file:
+  save-path: C:/Users/sim/
+  thumbnail:
+    height: 250
+    weight: 250

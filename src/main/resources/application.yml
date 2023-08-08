@@ -23,7 +23,7 @@ spring:
     activate:
       on-profile: local
 file:
-  save-path: C:/Users/sim
+  save-path: C:/Users/sim/
   thumbnail:
     height: 250
     weight: 250
@@ -34,7 +34,7 @@ spring:
     activate:
       on-profile: dev
 file:
-  save-path: C:/Users/sim
+  save-path: C:/Users/sim/
   thumbnail:
     height: 250
     weight: 250
@@ -45,7 +45,7 @@ spring:
     activate:
       on-profile: prod
 file:
-  save-path: C:/Users/sim
+  save-path: C:/Users/sim/
   thumbnail:
     height: 250
     weight: 250
