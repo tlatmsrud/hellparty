@@ -110,7 +110,7 @@ public class JwtProvider {
 
     public String extractAccessToken(String authorization){
         if(!authorization.startsWith(JWT_TYPE)){
-            throw new JwtException("잘못된 인증 헤더입니다. 다시 로그인해주세요");
+            throw new JwtTokenException("잘못된 인증 헤더입니다. 다시 로그인해주세요");
         }
         return authorization.substring(JWT_TYPE.length());
     }

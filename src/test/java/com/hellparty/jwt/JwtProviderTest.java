@@ -1,7 +1,7 @@
 package com.hellparty.jwt;
 
 import attributes.TestFixture;
-import io.jsonwebtoken.JwtException;
+import com.hellparty.exception.JwtTokenException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,7 +47,7 @@ class JwtProviderTest implements TestFixture {
     void parseJwtTokenWithInvalidToken() {
 
         assertThatThrownBy(()-> jwtProvider.parseJwtToken(INVALID_ACCESS_TOKEN))
-                .isInstanceOf(JwtException.class);
+                .isInstanceOf(JwtTokenException.class);
 
     }
 
@@ -63,7 +63,7 @@ class JwtProviderTest implements TestFixture {
     @DisplayName("유효하지 않은 Authorization 헤더의 엑세스 토큰 추출")
     void extractAccessTokenWithInvalidAuthorization(String authorization){
         assertThatThrownBy(() -> jwtProvider.extractAccessToken(authorization))
-                .isInstanceOf(JwtException.class);
+                .isInstanceOf(JwtTokenException.class);
 
     }
 

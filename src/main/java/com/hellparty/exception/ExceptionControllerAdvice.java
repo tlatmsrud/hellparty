@@ -1,7 +1,6 @@
 package com.hellparty.exception;
 
 import com.hellparty.dto.ErrorResponseDTO;
-import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,9 +31,9 @@ public class ExceptionControllerAdvice {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler(JwtException.class)
+    @ExceptionHandler(JwtTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponseDTO JwtExceptionHandler(JwtException e){
+    public ErrorResponseDTO JwtTokenExceptionHandler(JwtTokenException e){
         log.error(e.getMessage());
         e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
