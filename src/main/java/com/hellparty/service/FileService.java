@@ -53,7 +53,7 @@ public class FileService {
             File dest = new File(savedFilePath, fileName);
 
             file.transferTo(dest);
-            log.info("saved file :"+ savedFilePath);
+            log.info("saved file :"+ savedFilePath+fileName);
         }catch (IOException e){
             e.printStackTrace();
             log.error("Failed save fileName :"+fileName +", path : "+savedFilePath);
@@ -85,7 +85,8 @@ public class FileService {
             int oh = srcImg.getHeight();
 
             // 원본 너비를 기준으로 하여 썸네일의 비율로 높이를 계산합니다.
-            int nw = ow; int nh = (ow * thumbHeight) / thumbWeight;
+            int nw = ow;
+            int nh = (ow * thumbHeight) / thumbWeight;
 
             // 계산된 높이가 원본보다 높다면 crop이 안되므로
             // 원본 높이를 기준으로 썸네일의 비율로 너비를 계산합니다.
@@ -101,8 +102,11 @@ public class FileService {
             BufferedImage destImg = Scalr.resize(cropImg, thumbWeight, thumbHeight);
 
             File thumbFile = new File(savedFilePath, fileName);
-            ImageIO.write(destImg, fileName, thumbFile);
+            String ext = getFileExtension(fileName);
 
+            ImageIO.write(destImg, ext, thumbFile);
+
+            log.info("save fileName :"+fileName +", path : "+savedFilePath);
         }catch (IOException e){
             e.printStackTrace();
             log.error("Failed save fileName :"+fileName +", path : "+savedFilePath);
