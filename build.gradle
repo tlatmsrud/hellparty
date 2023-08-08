@@ -5,6 +5,9 @@ plugins {
 
 	// asciidoc
 	id 'org.asciidoctor.jvm.convert' version "3.3.2"
+
+	// sonarqube
+	id "org.sonarqube" version "4.3.0.3225"
 }
 
 
@@ -100,6 +103,7 @@ clean.doLast {
 ext {
 	snippetsDir = file('build/generated-snippets')
 }
+
 test{
 	outputs.dir snippetsDir
 }
@@ -116,4 +120,11 @@ bootJar{
 }
 jar{
 	enabled = false
+}
+
+sonar {
+	properties {
+		property("sonar.token", "squ_0ea31e56fc97bffa18754cb8ce25748be583b42a")
+		property("sonar.host.url", "http://localhost:9000")
+	}
 }
