@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -25,9 +26,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RedisService {
 
-    private final static String CHATTING_KEY_PREFIX = "CHAT_";
-    private final static String REFRESH_KEY_PREFIX = "RT_";
-    private final static Long REFRESH_TOKEN_TIMEOUT_DAY = 7L;
+    private static final String CHATTING_KEY_PREFIX = "CHAT_";
+    private static final String REFRESH_KEY_PREFIX = "RT_";
+    private static final Long REFRESH_TOKEN_TIMEOUT_DAY = 7L;
     private final RedisTemplate<String, ChatDTO> chatRedisTemplate;
     private final RedisTemplate<String, String> tokenRedisTemplate;
 
@@ -49,6 +50,10 @@ public class RedisService {
     public List<ChattingHistoryDTO> getChattingHistory(String roomId){
         ListOperations<String, ChatDTO> listOperations = chatRedisTemplate.opsForList();
         List<ChatDTO> list = listOperations.range(String.valueOf(roomId), 0, -1);
+
+        if(list == null){
+            return Collections.emptyList();
+        }
 
         return list.stream().
                 map(chatDTO -> new ChattingHistoryDTO(
