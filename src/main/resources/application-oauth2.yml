@@ -60,11 +60,11 @@ spring:
       client:
         registration:
           naver:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/naver
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/naver
           kakao:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/kakao
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/kakao
           google:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/google
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/google
 
 --- # PROD
 spring:
@@ -76,8 +76,8 @@ spring:
       client:
         registration:
           naver:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/naver
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/naver
           kakao:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/kakao
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/kakao
           google:
-            redirect-uri: http://211.46.18.190:1234/login/oauth2/code/google
+            redirect-uri: http://www.helparty.site:1234/login/oauth2/code/google
