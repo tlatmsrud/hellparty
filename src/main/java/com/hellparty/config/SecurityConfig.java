@@ -36,7 +36,7 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http
-                .authorizeHttpRequests((authz) -> authz
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/view/login").permitAll()
