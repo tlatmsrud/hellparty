@@ -15,7 +15,7 @@
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
             </encoder>
             <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>helparty.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+                <fileNamePattern>C:/Users/sim/log/helparty.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
                 <maxHistory>7</maxHistory>
                 <totalSizeCap>50MB</totalSizeCap>
             </rollingPolicy>
@@ -32,7 +32,7 @@
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
             </encoder>
             <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>helparty_error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+                <fileNamePattern>C:/Users/sim/log/helparty_error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
                 <maxHistory>7</maxHistory>
                 <totalSizeCap>50MB</totalSizeCap>
             </rollingPolicy>
@@ -58,7 +58,7 @@
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
             </encoder>
             <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>helparty.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+                <fileNamePattern>/home/sksim/helparty/logs/helparty.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
                 <maxHistory>7</maxHistory>
                 <totalSizeCap>50MB</totalSizeCap>
             </rollingPolicy>
@@ -74,7 +74,7 @@
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5level] [%thread] %logger %msg%n</pattern>
             </encoder>
             <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>helparty_error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+                <fileNamePattern>/home/sksim/helparty/logs/helparty_error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
                 <maxHistory>7</maxHistory>
                 <totalSizeCap>50MB</totalSizeCap>
             </rollingPolicy>
