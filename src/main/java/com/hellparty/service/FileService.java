@@ -215,10 +215,10 @@ public class FileService {
     public String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf(".");
 
-        if(dotIndex == -1) { // "."이 존재하는 경우
+        if(dotIndex == -1) {
             throw new FileProcessingException("확장자가 없는 파일입니다. 확장자가 있는 파일로 다시 시도해주세요.");
         }
-        return fileName.substring(dotIndex);
+        return fileName.substring(dotIndex+1);
     }
 
     /**

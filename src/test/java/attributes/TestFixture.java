@@ -286,6 +286,10 @@ public interface TestFixture {
             ,new ChatDTO(CHATTING_ROOM_ID_FOR_LOGIN_MEMBER_AND_VALID_MEMBER, LOGIN_MEMBER_ID, "괜찮습니다. 천천히 오세요~", LocalDateTime.now())
     ) ;
 
+    String FILE_SAVE_PATH = "C:/Users/sim/";
+    String INVALID_FILE_SAVE_PATH = "K://...";
+    int THUMB_HEIGHT = 250;
+    int THUMB_WEIGHT = 250;
     String TEST_IMAGE_FILE_PATH = "classpath:image/이미지.png";
     String TEST_IMAGE_FILE_NAME = "이미지.png";
     String TEST_IMAGE_UUID = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png";
@@ -294,6 +298,7 @@ public interface TestFixture {
     String TEST_TXT_UUID = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.txt";
     FileDTO IMAGE_FILE_DTO = new FileDTO("/profile/thumbnail/45c2ea37-0c24-47d0-957b-c7e8ecebed63.png", "이미지.png");
     String REQUEST_IMAGE_PATH = "profile";
+    String INVALID_IMAGE_FILE_NAME = "invalid_file.png";
     String REQUEST_IMAGE_FILE_NAME = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png";
     String THUMBNAIL_PATH = "/thumbnail";
 }
