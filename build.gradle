@@ -97,6 +97,7 @@ tasks.withType(JavaCompile) {
 	options.generatedSourceOutputDirectory = file(querydslDir)
 }
 
+// 사용자 정의 변수 선언
 ext {
 	snippetsDir = file('build/generated-snippets')
 }
