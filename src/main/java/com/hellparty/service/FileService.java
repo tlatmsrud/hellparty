@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -173,7 +174,7 @@ public class FileService {
     public void createDirectories(String path) {
         try {
             Files.createDirectories(Path.of(path)); // 디렉터리 생성
-        } catch (IOException e) {
+        } catch (IOException | InvalidPathException e) {
             e.printStackTrace();
             throw new FileProcessingException(path+" 경로에 대한 디렉토리 생성 중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
         }
