@@ -203,7 +203,7 @@ public class FileService {
 
         String extension = getFileExtension(fileName);
 
-        if(Extension.isExtension(extension)){
+        if(!Extension.isExtension(extension)){
             throw new FileProcessingException("지원하지 않는 확장자입니다. 다시 시도해주세요.");
         }
     }
