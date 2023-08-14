@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
  */
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Table(name = "TBL_PARTNER")
@@ -30,4 +29,9 @@ public class PartnerEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARTNER_ID")
     private MemberEntity partner;
+
+    public PartnerEntity(MemberEntity member, MemberEntity partner){
+        this.member = member;
+        this.partner = partner;
+    }
 }
