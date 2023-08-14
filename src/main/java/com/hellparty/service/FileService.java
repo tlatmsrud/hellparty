@@ -141,9 +141,9 @@ public class FileService {
     public void sendImage(HttpServletResponse response, String contentType, File imageFile){
 
         response.setContentType(contentType);
-        InputStream inputStream = null;
-        try{
-            inputStream = new FileInputStream(imageFile);
+
+        try(InputStream inputStream = new FileInputStream(imageFile)){
+
             ServletOutputStream outputStream = response.getOutputStream();
 
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -156,14 +156,6 @@ public class FileService {
         }catch(IOException e){
             e.printStackTrace();
             throw new FileProcessingException("이미지 파일 전송 도중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
-        }finally {
-            try{
-                if(inputStream != null){
-                    inputStream.close();
-                }
-            }catch(IOException e){
-                e.printStackTrace();
-            }
         }
     }
 
