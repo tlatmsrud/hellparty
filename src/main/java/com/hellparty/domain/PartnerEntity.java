@@ -1,15 +1,14 @@
 package com.hellparty.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * title        :
+ * title        : PartnerEntity
  * author       : sim
  * date         : 2023-06-30
- * description  :
+ * description  : 파트너 엔티티
  */
 
 @Entity

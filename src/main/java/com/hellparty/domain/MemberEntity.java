@@ -68,7 +68,6 @@ public class MemberEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "EXEC_STATUS", nullable = false)
-    @Builder.Default // TODO : 초기화 하지 않는 쪽으로 구상해보자.
     private ExecStatus execStatus = ExecStatus.W;
 
     @Enumerated(EnumType.STRING)

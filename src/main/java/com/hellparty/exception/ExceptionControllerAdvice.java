@@ -25,49 +25,49 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponseDTO NotFoundExceptionHandler(NotFoundException e){
+    public ErrorResponseDTO notFoundExceptionHandler(NotFoundException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(JwtTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponseDTO JwtTokenExceptionHandler(JwtTokenException e){
+    public ErrorResponseDTO jwtTokenExceptionHandler(JwtTokenException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO BadRequestExceptionHandler(BadRequestException e){
+    public ErrorResponseDTO badRequestExceptionHandler(BadRequestException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
+    public ErrorResponseDTO methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(FileProcessingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponseDTO FileProcessingExceptionHandler(FileProcessingException e){
+    public ErrorResponseDTO fileProcessingExceptionHandler(FileProcessingException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(IOException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponseDTO IOExceptionHandler(IOException e){
+    public ErrorResponseDTO iOExceptionHandler(IOException e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponseDTO ExceptionHandler(Exception e){
+    public ErrorResponseDTO exceptionHandler(Exception e){
         log.error(e.getMessage());
         return new ErrorResponseDTO(UNKNOWN_ERROR_MESSAGE);
     }
