@@ -107,6 +107,7 @@ test{
 	jacoco {
 		destinationFile = file("$buildDir/jacoco/jacoco.exec")
 	}
+	finalizedBy 'jacocoTestReport'
 }
 asciidoctor{
 	inputs.dir snippetsDir
@@ -127,6 +128,7 @@ sonar {
 	properties {
 		property("sonar.token", "squ_0ea31e56fc97bffa18754cb8ce25748be583b42a")
 		property("sonar.host.url", "http://localhost:9000")
+		property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml") // jacoco xml 파일 위치
 	}
 }
 
@@ -134,9 +136,7 @@ jacocoTestReport {
 	reports {
 		// 원하는 리포트를 켜고 끌 수 있습니다.
 		html.enabled true
-		xml.enabled false
+		xml.enabled true
 		csv.enabled false
 	}
-
-	dependsOn test
 }
