@@ -9,6 +9,7 @@ import com.hellparty.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Component
+@Slf4j
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
@@ -43,6 +45,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Map<String,Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
 
+        log.info("success get authentication for :"+ email);
         MemberEntity memberEntity = memberRepository.findByEmail(email);
 
         if(memberEntity == null){

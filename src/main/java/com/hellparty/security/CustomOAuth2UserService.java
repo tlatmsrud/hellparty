@@ -3,6 +3,7 @@ package com.hellparty.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hellparty.enums.Role;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -24,16 +25,18 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
 
     private final ObjectMapper objectMapper;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
+        log.info("success to get oauth2 authentication");
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest); // 유저 정보 조회
 
+        log.info("success to get oauth2 userInfo : " + oAuth2User.getName());
         // registrationId는 서비스 Owner를 가리킴 (naver. kakao)
         String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
 
