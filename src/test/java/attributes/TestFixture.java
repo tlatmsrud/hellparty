@@ -287,7 +287,7 @@ public interface TestFixture {
     ) ;
 
     String FILE_SAVE_PATH = "C:/Users/sim/";
-    String INVALID_FILE_SAVE_PATH = "K://...";
+    String INVALID_FILE_SAVE_PATH = "K:/No";
     int THUMB_HEIGHT = 250;
     int THUMB_WEIGHT = 250;
     String TEST_IMAGE_FILE_PATH = "classpath:image/이미지.png";
