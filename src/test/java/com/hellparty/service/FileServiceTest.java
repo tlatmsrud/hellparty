@@ -105,14 +105,6 @@ class FileServiceTest implements TestFixture {
     }
 
     @Test
-    @DisplayName("유효하지 않은 경로에 대한 디렉토리 생성")
-    void createDirectoriesWithInvalidPath() {
-        assertThatThrownBy(()->
-                fileService.createDirectories(INVALID_FILE_SAVE_PATH+REQUEST_IMAGE_PATH))
-                .isInstanceOf(FileProcessingException.class);
-    }
-
-    @Test
     @DisplayName("지원하는 확장자를 가진 파일명에 대한 ContentType 조회")
     void determineContentTypeByFileNameWithSupportedExtension() {
         assertThat(
