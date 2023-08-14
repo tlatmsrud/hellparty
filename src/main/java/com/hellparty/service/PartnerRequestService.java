@@ -31,6 +31,8 @@ public class PartnerRequestService {
 
     private final MemberRepository memberRepository;
 
+    private final PartnerService partnerService;
+
     /**
      * 파트너 요청하기
      * @param fromMemberId - 요청 사용자 ID
@@ -70,6 +72,7 @@ public class PartnerRequestService {
      * @param request - 파트너 요청 응답 Dto
      */
     public void answerPartnerRequest(Long loginId, PartnerRequestDTO.Answer request){
+
         PartnerRequestEntity partnerRequest = partnerRequestRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("요청 데이터를 찾을 수 없습니다. 관리자에게 문의해주세요."));
 
@@ -78,8 +81,7 @@ public class PartnerRequestService {
         }
 
         partnerRequest.updateStatus(request.getStatus());
-
-        // TODO : 파트너 요청을 승낙할 경우 파트너 테이블 Insert
+        partnerService.registrationPartner(loginId, partnerRequest.getFromMember().getId());
     }
 
     /**
