@@ -120,15 +120,16 @@ bootJar{
 		into 'static/docs'
 	}
 }
+
 jar{
 	enabled = false
 }
 
 sonar {
 	properties {
-		property("sonar.token", "squ_0ea31e56fc97bffa18754cb8ce25748be583b42a")
+		property("sonar.token", "squ_23756b9e844d32fae4963cbf7f199f43358eedb7")
 		property("sonar.host.url", "http://localhost:9000")
-		property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml") // jacoco xml 파일 위치
+		property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml") // jacoco xml 파일 위치
 	}
 }
 
