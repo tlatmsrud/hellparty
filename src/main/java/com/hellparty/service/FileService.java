@@ -38,7 +38,7 @@ public class FileService {
 
     @Value("${file.thumbnail.weight}")
     private static int thumbWeight;
-    private final static int BUFFER_SIZE = 1000;
+    private static final int BUFFER_SIZE = 1000;
     /**
      * 원본 이미지 저장
      * @param file - 파일
