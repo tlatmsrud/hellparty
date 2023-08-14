@@ -33,7 +33,9 @@ import static org.mockito.Mockito.verify;
 class PartnerRequestServiceTest implements TestFixture {
     private final PartnerRequestRepository partnerRequestRepository = mock(PartnerRequestRepository.class);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final PartnerRequestService partnerRequestService = new PartnerRequestService(partnerRequestRepository, memberRepository);
+    private final PartnerService partnerService = mock(PartnerService.class);
+
+    private final PartnerRequestService partnerRequestService = new PartnerRequestService(partnerRequestRepository, memberRepository, partnerService);
 
     @BeforeEach
     void setUp(){
@@ -93,6 +95,7 @@ class PartnerRequestServiceTest implements TestFixture {
     @DisplayName("로그인 사용자에게 온 파트너 요청 수락")
     void answerPartnerRequestWithValidRequest(){
         partnerRequestService.answerPartnerRequest(LOGIN_MEMBER_ID, VALID_PARTNER_REQUEST_ANSWER);
+        verify(partnerService).registrationPartner(LOGIN_MEMBER_ID, VALID_MEMBER_ID);
     }
 
     @Test
