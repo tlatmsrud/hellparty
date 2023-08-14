@@ -292,6 +292,8 @@ public interface TestFixture {
     int THUMB_WEIGHT = 250;
     String TEST_IMAGE_FILE_PATH = "classpath:image/이미지.png";
     String TEST_IMAGE_FILE_NAME = "이미지.png";
+
+    String NOT_EXIST_EXTENSION_FILE_NAME = "이미지";
     String TEST_IMAGE_UUID = "45c2ea37-0c24-47d0-957b-c7e8ecebed63.png";
     String TEST_TXT_FILE_PATH = "classpath:image/텍스트.txt";
     String TEST_TXT_FILE_NAME = "텍스트.txt";

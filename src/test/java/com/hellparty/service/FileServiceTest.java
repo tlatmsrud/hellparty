@@ -150,7 +150,7 @@ class FileServiceTest implements TestFixture {
     @DisplayName("확장자가 없는 파일에 대한 확장자 조회")
     void getFileExtensionWithNoExtension() {
 
-        assertThatThrownBy(()->fileService.getFileExtension(TEST_IMAGE_FILE_NAME.substring(0,3)))
+        assertThatThrownBy(()->fileService.getFileExtension(NOT_EXIST_EXTENSION_FILE_NAME))
                 .isInstanceOf(FileProcessingException.class);
 
     }
