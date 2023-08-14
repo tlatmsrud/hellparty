@@ -27,7 +27,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponseDTO NotFoundExceptionHandler(NotFoundException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -35,7 +34,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponseDTO JwtTokenExceptionHandler(JwtTokenException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -43,7 +41,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO BadRequestExceptionHandler(BadRequestException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -51,7 +48,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -59,7 +55,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDTO FileProcessingExceptionHandler(FileProcessingException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -67,7 +62,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDTO IOExceptionHandler(IOException e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -75,7 +69,6 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDTO ExceptionHandler(Exception e){
         log.error(e.getMessage());
-        e.printStackTrace();
         return new ErrorResponseDTO(UNKNOWN_ERROR_MESSAGE);
     }
 

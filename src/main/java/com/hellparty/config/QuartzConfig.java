@@ -3,6 +3,7 @@ package com.hellparty.config;
 import com.hellparty.quartz.SaveChattingJob;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class QuartzConfig {
 
     private final Scheduler scheduler;
@@ -30,7 +32,7 @@ public class QuartzConfig {
             scheduler.scheduleJob(saveChattingJobDetail, buildJobTrigger("0 0 3 * * ?")); // 5초 마다 처리되도록함. 운영 시에는 새벽 3시 예정
             scheduler.getListenerManager().addJobListener(jobListener);
         }catch(SchedulerException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 

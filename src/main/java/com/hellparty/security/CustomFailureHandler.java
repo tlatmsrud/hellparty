@@ -20,7 +20,6 @@ public class CustomFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
 
-        e.printStackTrace();
         log.error(e.getMessage());
         response.sendRedirect("/login?status=fail");
     }

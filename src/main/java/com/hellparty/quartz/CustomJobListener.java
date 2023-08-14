@@ -45,7 +45,6 @@ public class CustomJobListener implements JobListener {
         String jobKey = context.getJobDetail().getKey().getName();
 
         if(e != null) {
-            e.printStackTrace();
             log.error("["+jobKey+"] 에 대한 Job 실행 도중 에러가 발생하였습니다.!!",e);
         }else {
             log.info("["+jobKey+"] 에 대한 Job이 정상적으로 종료되었습니다.");

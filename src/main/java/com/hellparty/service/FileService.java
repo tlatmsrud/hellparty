@@ -56,7 +56,6 @@ public class FileService {
             file.transferTo(dest);
             log.info("saved file :"+ savedFilePath+fileName);
         }catch (IOException e){
-            e.printStackTrace();
             log.error("Failed save fileName :"+fileName +", path : "+savedFilePath);
             throw new FileProcessingException(fileName+" 이미지 저장 도중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
         }
@@ -109,7 +108,6 @@ public class FileService {
 
             log.info("save fileName :"+fileName +", path : "+savedFilePath);
         }catch (IOException e){
-            e.printStackTrace();
             log.error("Failed save fileName :"+fileName +", path : "+savedFilePath);
             throw new FileProcessingException(fileName+" 썸네일 이미지 저장 도중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
         }
@@ -154,7 +152,6 @@ public class FileService {
             }
 
         }catch(IOException e){
-            e.printStackTrace();
             throw new FileProcessingException("이미지 파일 전송 도중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
         }
     }
@@ -167,7 +164,6 @@ public class FileService {
         try {
             Files.createDirectories(Path.of(path)); // 디렉터리 생성
         } catch (IOException | InvalidPathException e) {
-            e.printStackTrace();
             throw new FileProcessingException(path+" 경로에 대한 디렉토리 생성 중 에러가 발생하였습니다. 관리자에게 문의해주세요.");
         }
     }
