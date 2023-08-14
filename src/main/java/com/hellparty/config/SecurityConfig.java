@@ -2,6 +2,7 @@ package com.hellparty.config;
 
 import com.hellparty.filter.JwtAuthorizationFilter;
 import com.hellparty.jwt.JwtProvider;
+import com.hellparty.security.CustomFailureHandler;
 import com.hellparty.security.CustomSuccessHandler;
 import com.hellparty.repository.MemberRepository;
 import com.hellparty.service.TokenService;
@@ -51,6 +52,7 @@ public class SecurityConfig{
                 .oauth2Login()
                 .loginPage("/view/login")
                 .successHandler(new CustomSuccessHandler(jwtProvider, tokenService, memberRepository))
+                .failureHandler(new CustomFailureHandler())
                 .and()
                 .addFilterBefore(new JwtAuthorizationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
